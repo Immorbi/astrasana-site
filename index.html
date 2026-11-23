@@ -215,7 +215,7 @@ html{scroll-padding-top:96px}
 /* story page: the stage starts at the very top, full bleed, like a film */
 @property --rv{syntax:'<percentage>';inherits:false;initial-value:100%}
 .story{padding-top:0}
-.story .hist-track{height:2650vh;margin-top:0}
+.story .hist-track{height:1850vh;margin-top:0}
 /* one menu: inside the story the rail carries the sections, the top bar keeps the logo and Contact */
 .story .hist-rail{gap:0;padding:8px 0;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line-2),0 16px 40px -16px rgba(0,0,0,.7)}
 .story .hist-rail li{display:flex}
@@ -1583,7 +1583,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 <script>
 document.documentElement.classList.add('js');
 /* scroll to story position: the partners chapter (8.5 to 9.5) is stretched five times */
-var STW=[[-.98,-.5,3],[1.45,5.5,.04],[5.6,7.4,1.8],[7.55,8.45,4],[8.5,9.5,5]];
+var STW=[[-.98,-.5,2],[1.45,5.5,.04],[5.6,7.4,1.3],[7.55,8.45,3],[8.5,9.5,3.4]];
 function stwK(N){ var k=[[-1,0]], F=-1, s=0; STW.forEach(function(g){ s+=g[0]-F; k.push([g[0],s]); s+=(g[1]-g[0])*g[2]; k.push([g[1],s]); F=g[1]; }); s+=N-1-F; k.push([N-1,s]); return k; }
 function stwF(p,N){ var k=stwK(N), s=p*k[k.length-1][1]; for(var i=1;i<k.length;i++) if(s<=k[i][1]) return k[i-1][0]+(k[i][0]-k[i-1][0])*(s-k[i-1][1])/(k[i][1]-k[i-1][1]); return N-1; }
 function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) return (k[i-1][1]+(k[i][1]-k[i-1][1])*(F-k[i-1][0])/(k[i][0]-k[i-1][0]))/k[k.length-1][1]; return 1; }
@@ -2214,7 +2214,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var PH=[['Rosengarten Apotheke, Kloten',8.6310,47.4430],['Stauffacher-Apotheke, Zurich',8.5279,47.3730],['Apotheke Unitobler, Bern',7.4301,46.9551],['Alpstein Apotheke, Swiss Bio Pharma',9.2849,47.3539],['Apotheke Sumiswald',7.7444,47.0291],['Apotheke zur Waage, Basel',7.5894,47.5775],['Farmacia Camorino',9.0015,46.1670],['Farmacia Cattaneo, Lugano',8.9510,46.0046],['Farmacia Fenice, Bellinzona',9.0139,46.1784],['Farmacia Fiore, Locarno',8.7879,46.1685],['Farmacia Internazionale dr. Merloni',9.0316,45.8330],['Farmacia Portone, Bellinzona',9.0231,46.1939],['Farmacia San Nicolao, Lugano',8.9437,46.0059],['TopPharm Apotheke Wuelflingen, Winterthur',8.6936,47.5107],['TopPharm Limmatplatz Apotheke, Zurich',8.5323,47.3839],['Sonnen-Apotheke, Zurich',8.5459,47.3681]];
     var parcels=[], pinGeo=new THREE.CylinderGeometry(.06,.06,2.6,8), headGeo=new THREE.SphereGeometry(.48,18,12);
     var pinMat=new THREE.MeshBasicMaterial({color:0xe9fff8,transparent:true,opacity:0,fog:false}); mapMats.push([pinMat,.95]);
-    var parcelGeo=new THREE.BoxGeometry(1,1,1), parcelMat=glassMat({rim:1.6,body:'vec3(.36,.22,.62)',a:'.6'}); mapMats.push([parcelMat,1,true]);
+    var parcelGeo=new THREE.SphereGeometry(.62,24,16), parcelMat=glassMat({rim:1.8,body:'vec3(.42,.3,.72)',a:'.62'}); mapMats.push([parcelMat,1,true]);
     PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
       var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
       var stem=new THREE.Mesh(pinGeo,pinMat); stem.rotation.x=Math.PI/2; stem.position.z=1.3; pin.add(stem); var head=new THREE.Mesh(headGeo,pinMat); head.position.z=2.7; pin.add(head);
@@ -2236,8 +2236,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       var bt=ss(.16,.74,p); batch.visible=p>.14&&p<.76; curve.getPointAt(Math.min(1,bt),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       var h=ss(.3,.42,p); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.6*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=.6*h; hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;
       var mp=ss(.6,.72,p); map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); kloDot.material.opacity=ss(.7,.76,p); var kp=(p*14)%1; kloRing.scale.setScalar(1+kp*1.6); kloRing.material.opacity=.6*(1-kp)*ss(.7,.76,p); pools[3].userData.o=.3*mp;
-      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.12,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.6*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); q.m.rotation.set(u*4,u*6,0); }
-        var land=ss(q.t0+.1,q.t0+.16,p); q.pin.scale.set(1,1,Math.max(.001,.25+.75*ss(q.t0+.1,q.t0+.13,p))); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; }); }
+      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.12,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.6*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); }
+        var land=ss(q.t0+.1,q.t0+.16,p); var pg=ss(q.t0+.1,q.t0+.14,p); q.pin.visible=pg>.001; q.pin.scale.set(1,1,Math.max(.001,pg)); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; }); }
     function camLocal(p,pos,look){ var i=0; while(i<K.length-2&&p>K[i+1][0]) i++; var a=K[i], b=K[i+1], u=ss(a[0],b[0],p);
       var tx=a[1]+(b[1]-a[1])*u, ty=a[2]+(b[2]-a[2])*u, d=a[3]+(b[3]-a[3])*u; look.set(tx-d*.04,ty+d*.03,0); pos.set(look.x+d*.12,look.y+d*.22,d); jg.localToWorld(look); jg.localToWorld(pos); }
     var lastP=-1;
@@ -2473,7 +2473,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       if(D.names&&D.k>=1){ D.timer+=dt; if(D.timer>4.6){ D.timer=0; D.tg=1-D.tg; D.lbl.innerHTML=D.names[D.tg]; } } else if(D.names&&D.k<.05&&D.tg!==0){ D.tg=0; D.mx=0; D.timer=0; D.lbl.innerHTML=D.names[0]; }
       D.mx+=((D.tg)-D.mx)*Math.min(1,dt*1.6); D.u.mx.value=D.mx; if(D.pts) D.pts.rotation.y=Math.sin(uT.value*.3)*.08; });
     jr.labels(f,cam,canvas.clientWidth,canvas.clientHeight);
-    markers.forEach(function(M){ M.rotation.y=uT.value*.7+M.userData.ph; var mo=M.children[0].material.opacity; M.visible=mo>.5; });
+    var mwp=new THREE.Vector3(); markers.forEach(function(M){ M.getWorldPosition(mwp); M.rotation.y=Math.atan2(cam.position.x-mwp.x,cam.position.z-mwp.z)+Math.sin(uT.value*.9+M.userData.ph)*.45; var mo=M.children[0].material.opacity; M.visible=mo>.5; });
     cards.forEach(function(K){ var on=gI<.05&&chap>=K.ch[0]&&chap<=K.ch[1]&&Math.abs(f-chap)<.45; K.k=on?Math.min(1,K.k+dt*1.1):Math.max(0,K.k-dt*2.5); var e=Math.max(0,Math.min(1,(K.k-K.dl)/(1-K.dl))); e=1-Math.pow(1-e,3);
       K.o.visible=e>.005; K.o.scale.set(1,Math.max(.001,e),1); K.o.position.y=K.y-(1-e)*3+Math.sin(uT.value*.8+K.ph)*.7*e; K.o.quaternion.copy(cam.quaternion);
       if(K.ring){ var ra=K.ring.a0-(window.__pa||0)*Math.PI/3; K.o.position.x=K.ring.c.x+Math.sin(ra)*K.ring.r; K.o.position.z=K.ring.c.z+Math.cos(ra)*K.ring.rz; } });
