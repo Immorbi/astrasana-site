@@ -10,3 +10,5 @@ Open `index.html` in a browser, or serve the folder with any static server.
 - 3D rendering: [three.js](https://threejs.org) r128 (MIT).
 - Country outlines: Natural Earth via world-atlas 2.0.2, © Michael Bostock (ISC). Kosovo is drawn as part of Serbia at the client's request.
 - Elevation: AWS Terrain Tiles (Mapzen Terrarium, open data incl. SRTM).
+
+- Buildings and terrain in Tagelswangen and Kloten: ©swisstopo (swissBUILDINGS3D 3.0, swissALTI3D), open government data.
