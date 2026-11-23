@@ -1937,7 +1937,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
   /* routes: lifted arcs with light pulses travelling along them */
   var pulses=[];
   function route(a,b,lift,g,col){ var mid=a.clone().add(b).multiplyScalar(.5); mid.y+=lift; var cv=new THREE.QuadraticBezierCurve3(a,mid,b);
-    var cg=new THREE.BufferGeometry().setFromPoints(cv.getPoints(80)); var rl=new THREE.Line(cg,new THREE.LineBasicMaterial({color:col||PL,transparent:true,opacity:.9,blending:ADD,fog:true})); rl.renderOrder=11; g.add(rl);
+    var cg=new THREE.BufferGeometry().setFromPoints(cv.getPoints(80)); var rl=new THREE.Line(cg,new THREE.LineBasicMaterial({color:col||PL,transparent:true,opacity:.9,blending:ADD,fog:true,depthWrite:false})); rl.renderOrder=5; g.add(rl);
     var m=14, pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(m*3),3));
     var pt=new THREE.Points(pg,new THREE.PointsMaterial({map:glowTex,color:W,size:7,transparent:true,blending:ADD,depthWrite:false,fog:true})); g.add(pt);
     pt.visible=false; pulses.push({cv:cv,pt:pt,m:m,sp:.12+.08*Math.random()}); }
