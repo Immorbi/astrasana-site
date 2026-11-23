@@ -1574,7 +1574,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 <script src="land/vendor/landmask.js"></script>
 <script src="land/vendor/countries.js?v=4"></script>
 <script src="land/vendor/relief.js?v=2"></script>
-<script src="land/sites.js?v=2"></script>
+<script src="land/sites.js?v=3"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -2230,7 +2230,14 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var parcelGeo=new THREE.SphereGeometry(.62,24,16), parcelMat=glassMat({rim:1.8,body:'vec3(.42,.3,.72)',a:'.62'}); mapMats.push([parcelMat,1,true]);
     PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
       var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
-      var stem=new THREE.Mesh(pinGeo,pinMat); stem.rotation.x=Math.PI/2; stem.position.z=1.3; pin.add(stem); var head=new THREE.Mesh(headGeo,pinMat); head.position.z=2.7; pin.add(head);
+      var H=SITES&&SITES.ph&&SITES.ph[i];
+      if(H){ /* the pharmacy's own building from swissBUILDINGS3D, drawn at one common size so every pharmacy reads */
+        var hk=1.9/Math.max(8,H.w)*.1, hs=new THREE.Group(); hs.rotation.x=Math.PI/2; hs.scale.setScalar(hk); pin.add(hs);
+        var hg=new THREE.BufferGeometry(); hg.setAttribute('position',new THREE.Float32BufferAttribute(H.t,3)); hg.computeVertexNormals();
+        var hm=glassMat({rim:1,body:'vec3(.26,.18,.52)',a:'.34',side:THREE.DoubleSide}); hs.add(new THREE.Mesh(hg,hm)); mapMats.push([hm,1,true]);
+        var he=new THREE.BufferGeometry(); he.setAttribute('position',new THREE.Float32BufferAttribute(H.e,3));
+        var hl=new THREE.LineSegments(he,new THREE.LineBasicMaterial({color:0xe9e4ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); hs.add(hl); mapMats.push([hl.material,.6]); }
+      else { var stem=new THREE.Mesh(pinGeo,pinMat); stem.rotation.x=Math.PI/2; stem.position.z=1.3; pin.add(stem); var head=new THREE.Mesh(headGeo,pinMat); head.position.z=2.7; pin.add(head); }
       var ring=new THREE.Mesh(new THREE.RingGeometry(.9,1.15,40),new THREE.MeshBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); ring.position.z=.05; pin.add(ring);
       var dist=KL.distanceTo(to), mid=KL.clone().lerp(to,.5); mid.z=4+dist*.45; var cv=new THREE.QuadraticBezierCurve3(KL.clone(),mid,to.clone().setZ(2.7));
       var ag=new THREE.BufferGeometry().setFromPoints(cv.getPoints(60));
