@@ -12,7 +12,7 @@
 /* Swiss Precision 2: near-black base, warm white type, Astrasana purples as the single accent (Cantourage-style accent logic).
    One type scale, one spacing scale, two radii. Glass only on the floating mark and the 3D story. */
 :root{
-  --bg:#1c0433; --bg-2:#17141b; --surface:#1f1b25; --line:rgba(243,238,235,.1); --line-2:rgba(243,238,235,.18);
+  --bg:#1c0433; --bg-2:#17141b; --surface:#2a0d4a; --line:rgba(196,176,255,.12); --line-2:rgba(196,176,255,.22);
   --fg:#f3eeeb; --fg-2:rgba(243,238,235,.8); --fg-3:rgba(243,238,235,.6);
   /* one accent family, the Astrasana purples, used the way Cantourage uses its orange:
      solid fills for labels and the primary button, accent-coloured lede and dates, nothing else */
@@ -78,7 +78,7 @@ h3{font-size:var(--t-h3);line-height:1.15;letter-spacing:-.015em}
 .nav{position:fixed;top:16px;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;pointer-events:none}
 .nav .wrap{width:min(1136px,calc(100% - 2 * var(--gut) - 48px));position:relative;isolation:isolate;height:64px;padding:0 12px 0 24px;display:flex;align-items:center;gap:var(--s4);pointer-events:auto}
 .nav .wrap::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line-2),0 16px 40px -16px rgba(0,0,0,.7);transform:skewX(var(--slant));transition:background-color .35s ease}
-.nav.solid .wrap::before{background:#241f2b}
+.nav.solid .wrap::before{background:#2d1050}
 html{scroll-padding-top:96px}
 .logo{display:flex;align-items:center;color:var(--fg)}
 .logo svg{height:36px;width:auto}
@@ -227,7 +227,7 @@ html{scroll-padding-top:96px}
 .nav.instory{transform:translateY(-140%);opacity:0;pointer-events:none}
 .story .hist-rail button:focus-visible{outline:none;color:var(--fg)} .story .hist-rail button:focus-visible::after{transform:scaleX(1)}
 .story .hist-rail{background:none;box-shadow:none;padding:16px 8px 12px;isolation:isolate}
-.story .hist-rail::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;background:rgba(31,27,37,.58);box-shadow:inset 0 0 0 1px var(--line-2),0 16px 40px -16px rgba(0,0,0,.5);transform:skewX(8deg)}
+.story .hist-rail::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;background:rgba(45,16,80,.6);box-shadow:inset 0 0 0 1px var(--line-2),0 16px 40px -16px rgba(0,0,0,.5);transform:skewX(8deg)}
 .story .hist-rail li{transform:translateX(calc((var(--k) - 4) * 5.6px))}
 .story .hist-rail .rl-logo{display:block;margin:0 20px 12px;color:var(--fg)}
 .story .hist-rail .rl-logo svg{display:block;width:88px;height:auto}
