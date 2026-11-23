@@ -2130,7 +2130,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     /* soft light behind the objects so glass and line separate from the background */
     var pools=[pool(-38,2,-6,1,0x5b4fc4,0),pool(-26,1,-9,40,0x3f8f7c,0),pool(12.5,2,-7,28,0x3f8f7c,0),pool(44,0,-9,40,0x5b4fc4,0)];
     /* the route: one thin line with a white core, a soft mint halo, and a pulse that runs with the scroll */
-    var MAPC=new THREE.Vector3(44,0,-4), MK=7, MKY=10.2; function mapP(lon,lat,z){ return new THREE.Vector3(MAPC.x+(lon-8.23)*MK,MAPC.y+(lat-46.8)*MKY,MAPC.z+(z||0)); }
+    var MAPC=new THREE.Vector3(50,-3,-8), MK=11.5, MKY=16.6, MAPR=-.98; var MAPM=new THREE.Matrix4().compose(MAPC,new THREE.Quaternion().setFromEuler(new THREE.Euler(MAPR,0,0)),new THREE.Vector3(1,1,1));
+    function mapL(lon,lat,z){ return new THREE.Vector3((lon-8.23)*MK,(lat-46.8)*MKY,z||0); } function mapP(lon,lat,z){ return mapL(lon,lat,z).applyMatrix4(MAPM); }
     var KLO=mapP(8.5815,47.4518,.3);
     var curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-44,-.4,.6),new THREE.Vector3(-32,-.4,.6),new THREE.Vector3(-20,-.4,.6),new THREE.Vector3(-9,-.5,.6),new THREE.Vector3(1,-.8,.4),new THREE.Vector3(8,-1,.8),new THREE.Vector3(12.5,-.6,1.2),new THREE.Vector3(19,1.4,.6),new THREE.Vector3(28,4.6,-1.4),new THREE.Vector3(36,6.6,-3),KLO],false,'catmullrom',.45);
     var uProg={value:0}, uPulse={value:-1};
@@ -2193,36 +2194,50 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
       var l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0xc9c2ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); hq.add(l); hq.userData.lines=l;
       var door=new THREE.Mesh(new THREE.PlaneGeometry(2.2,2.6),new THREE.MeshBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); door.position.set(0,1.3,D/2+.05); hq.add(door); hq.userData.door=door; })();
-    /* 5. Switzerland as a flat outline: the line arrives at Kloten and parcels go out to partner pharmacies across the country.
-       Pharmacies are the client's partner pharmacies, placed from their Google Maps pins. */
-    var map=new THREE.Group(); jg.add(map); var mapMats=[];
-    (function(){ var CHp=(window.COUNTRIES&&COUNTRIES['756'])?COUNTRIES['756'].p:[];
-      CHp.forEach(function(poly){ var r=poly[0], pts=[]; for(var i=0;i<r.length;i+=2) pts.push(mapP(r[i],r[i+1]));
+    /* 5. the delivery map: Switzerland, large and laid back in perspective, filled with points like the globe.
+       From Kloten, light arcs rise and land on each partner pharmacy; a pin stands at every pharmacy and a ring spreads when the parcel arrives. */
+    var map=new THREE.Group(); map.position.copy(MAPC); map.rotation.x=MAPR; jg.add(map); var mapMats=[];
+    var CHp=(window.COUNTRIES&&COUNTRIES['756'])?COUNTRIES['756'].p:[];
+    (function(){ var rings=[];
+      CHp.forEach(function(poly){ var r=poly[0], pts=[]; for(var i=0;i<r.length;i+=2) pts.push(mapL(r[i],r[i+1])); rings.push(r);
         var sh=new THREE.Shape(pts.map(function(v){ return new THREE.Vector2(v.x,v.y); }));
-        var fill=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshBasicMaterial({color:0x5b3fb8,transparent:true,opacity:0,depthWrite:false,fog:false})); fill.position.z=MAPC.z-.05; map.add(fill); mapMats.push([fill.material,.32]);
-        var lg=new THREE.BufferGeometry().setFromPoints(pts.concat([pts[0]])); var ln=new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xc9c2ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,fog:false})); map.add(ln); mapMats.push([ln.material,.9]); }); })();
+        var fill=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshBasicMaterial({color:0x3a1a78,transparent:true,opacity:0,depthWrite:false,fog:false})); fill.position.z=-.05; map.add(fill); mapMats.push([fill.material,.55]);
+        var lg=new THREE.BufferGeometry().setFromPoints(pts.concat([pts[0]]));
+        var ln=new THREE.Line(lg,new THREE.LineBasicMaterial({color:0xd6ccff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,fog:false})); map.add(ln); mapMats.push([ln.material,1]);
+        var glow=new THREE.Line(lg,new THREE.LineBasicMaterial({color:0x8a6cf0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,fog:false})); glow.position.z=-.08; glow.scale.setScalar(1.004); map.add(glow); mapMats.push([glow.material,.5]); });
+      function inside(lon,lat){ var o=false; rings.forEach(function(r){ for(var i=0,j=r.length-2;i<r.length;j=i,i+=2){ var xi=r[i],yi=r[i+1],xj=r[j],yj=r[j+1]; if((yi>lat)!==(yj>lat)&&lon<(xj-xi)*(lat-yi)/(yj-yi)+xi) o=!o; } }); return o; }
+      var dp=[]; for(var lat=45.8;lat<47.85;lat+=.045) for(var lon=5.9;lon<10.55;lon+=.064){ if(inside(lon,lat)){ var v=mapL(lon,lat,.02); dp.push(v.x,v.y,v.z); } }
+      var dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
+      var dots=new THREE.Points(dg,new THREE.PointsMaterial({color:0xb6a6ff,size:.22,transparent:true,opacity:0,depthWrite:false,fog:false})); map.add(dots); mapMats.push([dots.material,.75]); })();
+    var KL=mapL(8.5815,47.4518,.3);
     /* partner pharmacies from the client's list (Google Maps pins), name, lon, lat */
     var PH=[['Rosengarten Apotheke, Kloten',8.6310,47.4430],['Stauffacher-Apotheke, Zurich',8.5279,47.3730],['Apotheke Unitobler, Bern',7.4301,46.9551],['Alpstein Apotheke, Swiss Bio Pharma',9.2849,47.3539],['Apotheke Sumiswald',7.7444,47.0291],['Apotheke zur Waage, Basel',7.5894,47.5775],['Farmacia Camorino',9.0015,46.1670],['Farmacia Cattaneo, Lugano',8.9510,46.0046],['Farmacia Fenice, Bellinzona',9.0139,46.1784],['Farmacia Fiore, Locarno',8.7879,46.1685],['Farmacia Internazionale dr. Merloni',9.0316,45.8330],['Farmacia Portone, Bellinzona',9.0231,46.1939],['Farmacia San Nicolao, Lugano',8.9437,46.0059],['TopPharm Apotheke Wuelflingen, Winterthur',8.6936,47.5107],['TopPharm Limmatplatz Apotheke, Zurich',8.5323,47.3839],['Sonnen-Apotheke, Zurich',8.5459,47.3681]];
-    var parcels=[], dotPos=[]; var phDotGeo=new THREE.SphereGeometry(.42,16,12), phDotMat=new THREE.MeshBasicMaterial({color:0xe9fff8,transparent:true,opacity:0,fog:false}); mapMats.push([phDotMat,.95]);
-    var parcelGeo=new THREE.BoxGeometry(.9,.9,.9), parcelMat=glassMat({rim:1.5,body:'vec3(.3,.18,.55)',a:'.5'}); mapMats.push([parcelMat,1,true]);
-    PH.forEach(function(ph,i){ var to=mapP(ph[1],ph[2],.3); dotPos.push(to.x,to.y,to.z);
-      var mid=KLO.clone().lerp(to,.5); mid.z+=3+KLO.distanceTo(to)*.25; var cv=new THREE.QuadraticBezierCurve3(KLO.clone(),mid,to);
-      var ag=new THREE.BufferGeometry().setFromPoints(cv.getPoints(40)); var arc=new THREE.Line(ag,new THREE.LineBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); arc.geometry.setDrawRange(0,0); map.add(arc);
-      var dot=new THREE.Mesh(phDotGeo,phDotMat); dot.position.copy(to); map.add(dot); var m=new THREE.Mesh(parcelGeo,parcelMat); m.visible=false; map.add(m); parcels.push({cv:cv,arc:arc,m:m,t0:.72+i*.0095}); });
-    var dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.Float32BufferAttribute(dotPos,3));
-    var phDots=new THREE.Points(dg,new THREE.PointsMaterial({map:glowTex,color:0xd8fff0,size:3.6,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); map.add(phDots);
-    var kloDot=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); kloDot.position.copy(KLO); kloDot.scale.set(2.4,2.4,1); map.add(kloDot);
-    var K=[[0,-38,0,24],[.14,-30,0,24],[.3,-16,0,26],[.42,-2,.5,32],[.52,11,1,34],[.62,18,2,44],[.74,40,1,62],[.88,44,0,66],[1,30,0,100]];
+    var parcels=[], pinGeo=new THREE.CylinderGeometry(.06,.06,2.6,8), headGeo=new THREE.SphereGeometry(.48,18,12);
+    var pinMat=new THREE.MeshBasicMaterial({color:0xe9fff8,transparent:true,opacity:0,fog:false}); mapMats.push([pinMat,.95]);
+    var parcelGeo=new THREE.BoxGeometry(1,1,1), parcelMat=glassMat({rim:1.6,body:'vec3(.36,.22,.62)',a:'.6'}); mapMats.push([parcelMat,1,true]);
+    PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
+      var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
+      var stem=new THREE.Mesh(pinGeo,pinMat); stem.rotation.x=Math.PI/2; stem.position.z=1.3; pin.add(stem); var head=new THREE.Mesh(headGeo,pinMat); head.position.z=2.7; pin.add(head);
+      var ring=new THREE.Mesh(new THREE.RingGeometry(.9,1.15,40),new THREE.MeshBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); ring.position.z=.05; pin.add(ring);
+      var dist=KL.distanceTo(to), mid=KL.clone().lerp(to,.5); mid.z=4+dist*.45; var cv=new THREE.QuadraticBezierCurve3(KL.clone(),mid,to.clone().setZ(2.7));
+      var ag=new THREE.BufferGeometry().setFromPoints(cv.getPoints(60));
+      var arc=new THREE.Line(ag,new THREE.LineBasicMaterial({color:0xc9f7e8,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); arc.geometry.setDrawRange(0,0); map.add(arc);
+      var m=new THREE.Mesh(parcelGeo,parcelMat); m.visible=false; map.add(m);
+      parcels.push({cv:cv,arc:arc,m:m,pin:pin,ring:ring,t0:.72+i*.0072}); });
+    var kloDot=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); kloDot.position.copy(KL); kloDot.scale.set(4,4,1); map.add(kloDot);
+    var kloRing=new THREE.Mesh(new THREE.RingGeometry(1.4,1.7,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); kloRing.position.copy(KL); map.add(kloRing);
+    var K=[[0,-38,0,24],[.14,-30,0,24],[.3,-16,0,26],[.42,-2,.5,32],[.52,11,1,34],[.62,22,1,50],[.74,48,-5,64],[.88,50,-6,66],[1,44,-6,74]];
     var tmp=new THREE.Vector3(), Tl=new THREE.Vector3(), Pw=new THREE.Vector3();
-    var stepsEl=document.querySelector('.jr-steps'), steps=stepsEl?[].slice.call(stepsEl.querySelectorAll('li')):[], anchors=[new THREE.Vector3(-24,8.4,0),new THREE.Vector3(12.5,7,0),new THREE.Vector3(44,12.5,-4)], show=[.04,.44,.7];
+    var stepsEl=document.querySelector('.jr-steps'), steps=stepsEl?[].slice.call(stepsEl.querySelectorAll('li')):[], anchors=[new THREE.Vector3(-24,8.4,0),new THREE.Vector3(12.5,7,0),new THREE.Vector3(50,12,-16)], show=[.04,.44,.7];
     function apply(p){
       uProg.value=.002+1.098*ss(.06,.74,p); uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
       var r=ss(0,.08,p)*(1-.65*ss(.5,.66,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       var bt=ss(.16,.74,p); batch.visible=p>.14&&p<.76; curve.getPointAt(Math.min(1,bt),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       var h=ss(.3,.42,p); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.6*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=.6*h; hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;
-      var mp=ss(.6,.72,p); map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); phDots.material.opacity=.9*ss(.7,.8,p); kloDot.material.opacity=ss(.7,.76,p); pools[3].userData.o=.28*mp;
-      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.12,p); q.arc.geometry.setDrawRange(0,Math.round(41*u)); q.arc.material.opacity=.55*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); q.m.rotation.set(u*4,u*6,0); } }); }
+      var mp=ss(.6,.72,p); map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); kloDot.material.opacity=ss(.7,.76,p); var kp=(p*14)%1; kloRing.scale.setScalar(1+kp*1.6); kloRing.material.opacity=.6*(1-kp)*ss(.7,.76,p); pools[3].userData.o=.3*mp;
+      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.12,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.6*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); q.m.rotation.set(u*4,u*6,0); }
+        var land=ss(q.t0+.1,q.t0+.16,p); q.pin.scale.set(1,1,Math.max(.001,.25+.75*ss(q.t0+.1,q.t0+.13,p))); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; }); }
     function camLocal(p,pos,look){ var i=0; while(i<K.length-2&&p>K[i+1][0]) i++; var a=K[i], b=K[i+1], u=ss(a[0],b[0],p);
       var tx=a[1]+(b[1]-a[1])*u, ty=a[2]+(b[2]-a[2])*u, d=a[3]+(b[3]-a[3])*u; look.set(tx-d*.04,ty+d*.03,0); pos.set(look.x+d*.12,look.y+d*.22,d); jg.localToWorld(look); jg.localToWorld(pos); }
     var lastP=-1;
