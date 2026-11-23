@@ -2221,7 +2221,30 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       function inside(lon,lat){ var o=false; rings.forEach(function(r){ for(var i=0,j=r.length-2;i<r.length;j=i,i+=2){ var xi=r[i],yi=r[i+1],xj=r[j],yj=r[j+1]; if((yi>lat)!==(yj>lat)&&lon<(xj-xi)*(lat-yi)/(yj-yi)+xi) o=!o; } }); return o; }
       var dp=[]; for(var lat=45.8;lat<47.85;lat+=.045) for(var lon=5.9;lon<10.55;lon+=.064){ if(inside(lon,lat)){ var v=mapL(lon,lat,.02); dp.push(v.x,v.y,v.z); } }
       var dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
-      var dots=new THREE.Points(dg,new THREE.PointsMaterial({color:0xb6a6ff,size:.22,transparent:true,opacity:0,depthWrite:false,fog:false})); map.add(dots); mapMats.push([dots.material,.75]); })();
+      var dots=new THREE.Points(dg,new THREE.PointsMaterial({color:0xb6a6ff,size:.22,transparent:true,opacity:0,depthWrite:false,fog:false})); map.add(dots); mapMats.push([dots.material,.3]);
+      /* a texture of houses over the whole country: small glass houses scattered by real terrain (dense on the plateau and in valleys, around the big towns, none on lakes or high in the Alps).
+         Placement is illustrative; elevation from the RELIEF grid (AWS Terrain Tiles). */
+      var RL=window.RELIEF&&RELIEF['756'];
+      if(RL){ var raw=atob(RL.d), elev=function(lon,lat){ var c=Math.round((lon-RL.lon0)/RL.st), r=Math.round((RL.lat0-lat)/RL.st); if(c<1||r<1||c>=RL.w-1||r>=RL.h-1) return -1; return raw.charCodeAt(r*RL.w+c)*RL.max/255; },
+          flat=function(lon,lat){ var e=elev(lon,lat); return Math.abs(elev(lon+RL.st,lat)-e)<1&&Math.abs(elev(lon,lat+RL.st)-e)<1&&Math.abs(elev(lon-RL.st,lat)-e)<1; };
+        var TOWNS=[[8.54,47.37,1],[6.14,46.2,.8],[7.59,47.56,.7],[7.45,46.95,.6],[6.63,46.52,.6],[8.72,47.5,.45],[8.31,47.05,.45],[9.37,47.42,.4],[8.95,46.0,.4],[7.25,47.14,.35],[7.63,46.76,.3],[7.16,46.8,.3],[8.63,47.7,.25],[9.53,46.85,.25],[6.93,46.99,.3],[7.36,46.23,.25],[9.02,46.19,.25],[8.79,46.17,.25],[8.04,47.39,.3],[8.52,47.17,.3],[8.58,47.45,.35],[7.9,47.35,.25],[7.54,47.21,.25],[8.31,47.47,.3],[8.9,47.56,.2]];
+        var seed=7; function rnd(){ seed=(seed*16807)%2147483647; return seed/2147483647; }
+        var TP=[], TN=[], TE=[];
+        (function(){ var g=new THREE.BoxGeometry(1,1,1).toNonIndexed(); g.translate(0,0,.5); var p=g.attributes.position.array, n=g.attributes.normal.array; for(var i=0;i<p.length;i++){ TP.push(p[i]); TN.push(n[i]); }
+          var R=[[-.5,-.5,1],[.5,-.5,1],[0,-.5,1.45],[ -.5,.5,1],[.5,.5,1],[0,.5,1.45]], F=[[0,1,2],[5,4,3],[0,2,5],[0,5,3],[1,4,5],[1,5,2]];
+          F.forEach(function(f){ var a=new THREE.Vector3().fromArray(R[f[0]]), b=new THREE.Vector3().fromArray(R[f[1]]), c=new THREE.Vector3().fromArray(R[f[2]]), nn=b.clone().sub(a).cross(c.clone().sub(a)).normalize(); [a,b,c].forEach(function(v){ TP.push(v.x,v.y,v.z); TN.push(nn.x,nn.y,nn.z); }); });
+          [[-.5,-.5,0,-.5,-.5,1],[.5,-.5,0,.5,-.5,1],[.5,.5,0,.5,.5,1],[-.5,.5,0,-.5,.5,1],[-.5,-.5,1,.5,-.5,1],[-.5,.5,1,.5,.5,1],[-.5,-.5,1,-.5,.5,1],[.5,-.5,1,.5,.5,1],[0,-.5,1.45,0,.5,1.45],[-.5,-.5,1,0,-.5,1.45],[.5,-.5,1,0,-.5,1.45],[-.5,.5,1,0,.5,1.45],[.5,.5,1,0,.5,1.45]].forEach(function(e){ TE.push.apply(TE,e); }); })();
+        var P=[], N=[], E=[], M=new THREE.Matrix4(), Q=new THREE.Quaternion(), Sv=new THREE.Vector3(), Vv=new THREE.Vector3(), Nm=new THREE.Matrix3(), tv=new THREE.Vector3(), cnt=0;
+        function house(lon,lat){ var v=mapL(lon,lat,0), w=.2+rnd()*.16, d=.2+rnd()*.14, h=.14+rnd()*.16; Q.setFromAxisAngle(new THREE.Vector3(0,0,1),rnd()*Math.PI); Sv.set(w,d,h); Vv.copy(v); M.compose(Vv,Q,Sv); Nm.getNormalMatrix(M);
+          for(var i=0;i<TP.length;i+=3){ tv.set(TP[i],TP[i+1],TP[i+2]).applyMatrix4(M); P.push(tv.x,tv.y,tv.z); tv.set(TN[i],TN[i+1],TN[i+2]).applyMatrix3(Nm).normalize(); N.push(tv.x,tv.y,tv.z); }
+          for(var j=0;j<TE.length;j+=3){ tv.set(TE[j],TE[j+1],TE[j+2]).applyMatrix4(M); E.push(tv.x,tv.y,tv.z); } cnt++; }
+        for(var la=45.82;la<47.83;la+=.017) for(var lo=5.96;lo<10.5;lo+=.023){ var x=lo+(rnd()-.5)*.02, y=la+(rnd()-.5)*.015; if(!inside(x,y)) continue; var e=elev(x,y); if(e<0||e>1500||flat(x,y)) continue;
+          var pr=.05+.5*Math.max(0,1-Math.max(0,e-380)/700); TOWNS.forEach(function(t){ var dd=Math.hypot((x-t[0])*.68,y-t[1]); pr+=t[2]*Math.exp(-dd*dd/.006); });
+          if(rnd()<Math.min(.95,pr)) house(x,y); }
+        var hg=new THREE.BufferGeometry(); hg.setAttribute('position',new THREE.Float32BufferAttribute(P,3)); hg.setAttribute('normal',new THREE.Float32BufferAttribute(N,3));
+        var hm=glassMat({rim:.45,body:'vec3(.2,.13,.4)',a:'.1'}); map.add(new THREE.Mesh(hg,hm)); mapMats.push([hm,1,true]);
+        var eg=new THREE.BufferGeometry(); eg.setAttribute('position',new THREE.Float32BufferAttribute(E,3));
+        var el=new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:0xb9aef5,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); map.add(el); mapMats.push([el.material,.07]); window.__houses=cnt; } })();
     var KL=mapL(8.5815,47.4518,.3);
     /* partner pharmacies from the client's list (Google Maps pins), name, lon, lat */
     var PH=[['Rosengarten Apotheke, Kloten',8.6310,47.4430],['Stauffacher-Apotheke, Zurich',8.5279,47.3730],['Apotheke Unitobler, Bern',7.4301,46.9551],['Alpstein Apotheke, Swiss Bio Pharma',9.2849,47.3539],['Apotheke Sumiswald',7.7444,47.0291],['Apotheke zur Waage, Basel',7.5894,47.5775],['Farmacia Camorino',9.0015,46.1670],['Farmacia Cattaneo, Lugano',8.9510,46.0046],['Farmacia Fenice, Bellinzona',9.0139,46.1784],['Farmacia Fiore, Locarno',8.7879,46.1685],['Farmacia Internazionale dr. Merloni',9.0316,45.8330],['Farmacia Portone, Bellinzona',9.0231,46.1939],['Farmacia San Nicolao, Lugano',8.9437,46.0059],['TopPharm Apotheke Wuelflingen, Winterthur',8.6936,47.5107],['TopPharm Limmatplatz Apotheke, Zurich',8.5323,47.3839],['Sonnen-Apotheke, Zurich',8.5459,47.3681]];
