@@ -293,8 +293,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
   .btn-glass:hover{background:rgba(196,176,255,.1);box-shadow:inset 0 0 0 1px rgba(196,176,255,.8)}
 }
 .btn:active,.nav .cta:active{transform:scale(.97)}
-</style>
-<style>.vtog{display:inline-flex;align-items:center;gap:2px;padding:3px;margin-right:12px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(196,176,255,.28)}.vtog a{padding:6px 12px;border-radius:8px;font-size:14px;line-height:1;color:rgba(243,238,235,.7);text-decoration:none;transition:background .2s,color .2s}.vtog a:hover{color:#f3eeeb}.vtog a.on{background:rgba(196,176,255,.18);color:#f3eeeb}@media (max-width:1240px){.vtog{margin-left:auto}}</style></head>
+.lmenu{display:none}.lm-only{display:none}@media (max-width:560px){header.nav .cta{display:none}.vtog{margin-right:0}.nav.open #lnav .lm-only{display:block}}@media (max-width:920px){.lmenu{flex:0 0 44px;display:grid;place-items:center;width:44px;height:44px;margin-left:8px;border-radius:12px;border:1px solid rgba(196,176,255,.28);background:none;color:#f3eeeb;cursor:pointer}.lmenu svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}.nav.open #lnav{display:flex!important;position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;gap:0;padding:8px;border-radius:16px;background:#2a0d4a;box-shadow:0 20px 40px -12px rgba(0,0,0,.6),inset 0 0 0 1px rgba(196,176,255,.2)}.nav.open #lnav a{display:block;padding:14px 16px;font-size:17px}}@media (pointer:coarse){footer a,.foot a,.contact a{display:inline-block;padding-block:10px}}</style>
+<style>.vtog{display:inline-flex;align-items:center;gap:2px;padding:3px;margin-right:12px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(196,176,255,.28)}.vtog a{padding:6px 12px;border-radius:8px;font-size:14px;line-height:1;color:rgba(243,238,235,.7);text-decoration:none;transition:background .2s,color .2s}.vtog a:hover{color:#f3eeeb}.vtog a.on{background:rgba(196,176,255,.18);color:#f3eeeb}@media (max-width:1240px){.vtog{margin-left:auto}}@media (pointer:coarse){.vtog a{padding:14px 14px}}</style></head>
 <body>
 <div class="cur" aria-hidden="true"></div><div class="cur-halo" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
@@ -682,15 +682,16 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 -119 -134 -147 -143 -12 -4 -35 -16 -52 -28 -28 -19 -45 -21 -247 -25 -216 -3
 -216 -3 -232 22 -25 37 -20 1022 5 1040 29 21 426 10 464 -12z"/>
 </g></svg></a>
-  <ul>
+  <ul id="lnav">
     <li><a href="#about">About Us</a></li>
     <li><a href="#partners">Partners</a></li>
     <li><a href="#patients">Medical Cannabis</a></li>
     <li><a href="#portfolio">Product Portfolio</a></li>
     <li><a href="#news">Newsroom</a></li>
+    <li class="lm-only"><a href="#contact">Contact</a></li>
   </ul>
   <div class="vtog" role="group" aria-label="Site version"><a href="./">3D</a><a class="on" aria-current="page" href="lite.html">Lite</a></div>
-  <a class="cta" href="#contact">Contact</a>
+  <a class="cta" href="#contact">Contact</a><button class="lmenu" type="button" aria-expanded="false" aria-controls="lnav" aria-label="Open menu"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
 </header>
 
 <main id="main">
@@ -934,5 +935,5 @@ document.documentElement.classList.add('js');
   Object.keys(map).forEach(function(id){ io.observe(document.getElementById(id)); });
 })();
 </script>
-</body>
+<script>(function(){var b=document.querySelector(".lmenu"),n=document.querySelector("header.nav");if(!b||!n)return;b.addEventListener("click",function(){var o=n.classList.toggle("open");b.setAttribute("aria-expanded",o);b.setAttribute("aria-label",o?"Close menu":"Open menu");});n.querySelectorAll("#lnav a").forEach(function(a){a.addEventListener("click",function(){n.classList.remove("open");b.setAttribute("aria-expanded","false");});});})();</script></body>
 </html>
