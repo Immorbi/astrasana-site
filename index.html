@@ -2346,7 +2346,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function camLocal(p,pos,look){ var i=0; while(i<K.length-2&&p>K[i+1][0]) i++; var a=K[i], b=K[i+1], u=ss(a[0],b[0],p);
       var tx=a[1]+(b[1]-a[1])*u, ty=a[2]+(b[2]-a[2])*u, d=a[3]+(b[3]-a[3])*u, el=(a[4]||0)+((b[4]||0)-(a[4]||0))*u; look.set(tx-d*.04,ty+d*.03,0); pos.set(look.x+d*.12,look.y+d*.22+el,d);
       /* in the grow room the camera looks straight down the aisle and moves through it */
-      var ai=1-ss(.3,.44,p); if(ai>0){ var ax=-76+80*ss(0,.38,p); AP.set(ax,.5,.6); AL.set(ax+22,-.9,.6); pos.lerp(AP,ai); look.lerp(AL,ai); }
+      /* it starts outside, facing the greenhouse's gable end with the whole house in view, then glides in through the door */
+      var ai=1-ss(.3,.44,p); if(ai>0){ var gin=ss(0,.15,p), ax=-98+32*gin+70*ss(.13,.38,p), ay=.5+2.4*(1-gin); AP.set(ax,ay,.6); AL.set(ax+22,ay-1.4-.6*(1-gin),.6); pos.lerp(AP,ai); look.lerp(AL,ai); }
       jg.localToWorld(look); jg.localToWorld(pos); }
     var AP=new THREE.Vector3(), AL=new THREE.Vector3();
     var lastP=-1;
