@@ -710,10 +710,10 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
           <div><b>18+</b><span>countries worldwide</span></div>
         </div>
       </div>
-      <div class="globe-wrap lite-mark" id="globe-off" hidden style="display:none"><div class="tags" hidden>
+      <div class="globe-wrap" id="globe" aria-label="Map: Switzerland HQ, Czech Republic, United Kingdom, Belgium, Japan" role="img">
         <div class="tags" aria-hidden="true">
           <span class="tag hq" style="--c:#42118f;--tc:#f1f4ee;--glow:#7364e3" data-color="0x7364e3" data-lat="46.8" data-lon="8.2" data-dx="-1">Switzerland <b>HQ</b></span>
-          <span class="tag" style="--c:#da9708;--tc:#2a0d4a" data-color="0xda9708" data-lat="49.8" data-lon="15.5" data-dx="1">Czech Republic</span>
+          <span class="tag" style="--c:#da9708;--tc:#2a0d4a" data-color="0xda9708" data-lat="49.8" data-lon="15.5" data-dx="1" data-dy="1">Czech Republic</span>
           <span class="tag" style="--c:#dfd9c3;--tc:#2a0d4a" data-color="0xdfd9c3" data-lat="53.5" data-lon="-2" data-dx="-1" data-dy="-1">United Kingdom</span>
           <span class="tag" style="--c:#dfd9c3;--tc:#2a0d4a" data-color="0xdfd9c3" data-lat="50.6" data-lon="4.6" data-dx="1" data-dy="-1">Belgium</span>
           <span class="tag" style="--c:#dfd9c3;--tc:#2a0d4a" data-color="0xdfd9c3" data-lat="36.2" data-lon="138.3" data-dx="1">Japan</span>
@@ -817,6 +817,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
   </div>
 </main>
 
+<script src="land/vendor/landmask.js"></script>
 <script>
 document.documentElement.classList.add('js');
 (function(){
@@ -826,85 +827,56 @@ document.documentElement.classList.add('js');
   els.forEach(function(e){ io.observe(e); });
 })();
 
-/* Dot-matrix globe: land points from a land mask, a sparse constellation shell, and HTML tags tracking each country. */
+/* Dot-matrix globe drawn on a plain 2D canvas (Lite has no WebGL): land points from the land mask, HTML tags tracking each country. */
 (function(){
-  var wrap=document.getElementById('globe'); if(!wrap||!window.THREE) return;
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var R=100, scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(32,1,1,2000); cam.position.z=440;
-  var renderer; try{ renderer=new THREE.WebGLRenderer({alpha:true,antialias:true}); }catch(e){ return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2)); wrap.insertBefore(renderer.domElement,wrap.firstChild);
-  var world=new THREE.Group(); scene.add(world);
-  function vec(lat,lon,r){ var la=lat*Math.PI/180, lo=lon*Math.PI/180; return new THREE.Vector3(r*Math.cos(la)*Math.sin(lo), r*Math.sin(la), r*Math.cos(la)*Math.cos(lo)); }
-
-  // land mask lookup
+  var wrap=document.getElementById('globe'); if(!wrap) return;
+  var cv=document.createElement('canvas'), cx=cv.getContext('2d'); if(!cx) return; wrap.insertBefore(cv,wrap.firstChild);
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, D2R=Math.PI/180;
   var M=window.LANDMASK, bits=null;
   if(M){ var s=atob(M.b64); bits=new Uint8Array(s.length); for(var i=0;i<s.length;i++) bits[i]=s.charCodeAt(i); }
-  function land(lat,lon){ if(!bits) return true; var x=Math.floor((lon+180)/360*M.w)%M.w, y=Math.min(M.h-1,Math.floor((90-lat)/180*M.h)); var idx=y*M.w+x; return (bits[idx>>3]>>(7-(idx&7)))&1; }
-
-  // land dots on a fibonacci sphere
-  var N=16000, pos=[], faint=[], ga=Math.PI*(3-Math.sqrt(5));
-  for(var k=0;k<N;k++){
-    var y=1-(k/(N-1))*2, rad=Math.sqrt(1-y*y), th=ga*k;
-    var x=Math.cos(th)*rad, z=Math.sin(th)*rad;
-    var lat=Math.asin(y)*180/Math.PI, lon=Math.atan2(x,z)*180/Math.PI;
-    if(lat<-62) continue;
-    (land(lat,lon)?pos:faint).push(x*R,y*R,z*R);
+  function land(lat,lon){ if(!bits) return false; var x=Math.floor((lon+180)/360*M.w)%M.w, y=Math.min(M.h-1,Math.floor((90-lat)/180*M.h)), idx=y*M.w+x; return (bits[idx>>3]>>(7-(idx&7)))&1; }
+  var N=matchMedia('(max-width:640px)').matches?9000:14000, L=[], O=[], ga=Math.PI*(3-Math.sqrt(5));
+  for(var k=0;k<N;k++){ var y=1-(k/(N-1))*2, r=Math.sqrt(1-y*y), th=ga*k, x=Math.cos(th)*r, z=Math.sin(th)*r, lat=Math.asin(y)/D2R, lon=Math.atan2(x,z)/D2R;
+    if(lat<-60) continue; if(land(lat,lon)) L.push(x,y,z); else if(((k*2654435761)>>>0)%9===0) O.push(x,y,z); }
+  L=new Float32Array(L); O=new Float32Array(O);
+  var marks=[].slice.call(wrap.querySelectorAll('.tag')).map(function(el){ var la=+el.dataset.lat*D2R, lo=+el.dataset.lon*D2R;
+    return {el:el,hq:el.classList.contains('hq'),v:[Math.cos(la)*Math.sin(lo),Math.sin(la),Math.cos(la)*Math.cos(lo)],dx:+(el.dataset.dx||1),dy:+(el.dataset.dy||0)}; });
+  var size=0, dpr=1, R=0, C=0, rotY=-0.2, tilt=0.5;
+  function resize(){ var w=wrap.clientWidth; if(w===size) return; size=w; dpr=Math.min(devicePixelRatio||1,2); cv.width=cv.height=Math.round(w*dpr); R=w*.36; C=w/2; }
+  var cy, sy, ct, st;
+  function proj(x,y,z,o){ var X=x*cy+z*sy, Z=-x*sy+z*cy, Y=y*ct-Z*st; Z=y*st+Z*ct; o[0]=C+X*R; o[1]=C-Y*R; o[2]=Z; return o; }
+  var pp=[0,0,0], BK=5;
+  function dots(arr,front,sz,col,alphaOf){
+    var paths=[]; for(var b=0;b<BK;b++) paths.push(new Path2D());
+    for(var i=0;i<arr.length;i+=3){ proj(arr[i],arr[i+1],arr[i+2],pp); if(front?pp[2]<0:pp[2]>=0) continue;
+      var b=Math.min(BK-1,Math.floor(Math.abs(pp[2])*BK)); paths[b].rect(pp[0]-sz/2,pp[1]-sz/2,sz,sz); }
+    for(var b=0;b<BK;b++){ cx.globalAlpha=alphaOf((b+.5)/BK); cx.fillStyle=col; cx.fill(paths[b]); }
   }
-  function pts(arr,color,size,op){ var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3)); return new THREE.Points(g,new THREE.PointsMaterial({color:color,size:size,transparent:true,opacity:op,depthWrite:false})); }
-  world.add(new THREE.Mesh(new THREE.SphereGeometry(R*0.985,48,48),new THREE.MeshBasicMaterial({color:0x1f3a34,transparent:true,opacity:.96})));
-  world.add(pts(pos,0xa3ddb4,1.9,.95));
-  world.add(pts(faint.filter(function(_,i){ return (Math.floor(i/3)%5)===0; }),0xdfd9c3,1.0,.22));
-
-  // constellation shell: deterministic scatter + nearest-neighbour links
-  var seed=7; function rnd(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
-  var shell=[], SR=R*1.16;
-  for(var j=0;j<64;j++){ var u=rnd()*2-1, t=rnd()*Math.PI*2, q=Math.sqrt(1-u*u); shell.push(new THREE.Vector3(q*Math.cos(t)*SR,u*SR,q*Math.sin(t)*SR)); }
-  var lines=[];
-  shell.forEach(function(a,ai){
-    var near=shell.map(function(b,bi){ return [a.distanceTo(b),bi]; }).filter(function(d){ return d[1]!==ai; }).sort(function(p,q){ return p[0]-q[0]; }).slice(0,3);
-    near.forEach(function(d){ if(d[1]>ai){ var b=shell[d[1]]; lines.push(a.x,a.y,a.z,b.x,b.y,b.z); } });
-  });
-  var lg=new THREE.BufferGeometry(); lg.setAttribute('position',new THREE.Float32BufferAttribute(lines,3));
-  world.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0xa3ddb4,transparent:true,opacity:.3,depthWrite:false})));
-  var sp=[]; shell.forEach(function(v){ sp.push(v.x,v.y,v.z); });
-  world.add(pts(sp,0xdfd9c3,3.4,.9));
-
-  // country markers + HTML tags
-  var tags=[].slice.call(wrap.querySelectorAll('.tag')), marks=[];
-  tags.forEach(function(el){
-    var lat=+el.dataset.lat, lon=+el.dataset.lon, v=vec(lat,lon,R*1.01);
-    var hq=el.classList.contains('hq');
-    var m=new THREE.Mesh(new THREE.BoxGeometry(hq?4.4:3.6,hq?4.4:3.6,hq?4.4:3.6),new THREE.MeshBasicMaterial({color:parseInt(el.dataset.color||'0xa3ddb4')}));
-    m.position.copy(v); m.visible=false; world.add(m);
-    marks.push({el:el,obj:m,dx:+(el.dataset.dx||1),dy:+(el.dataset.dy||0)});
-  });
-
-  world.rotation.x=0.42; world.rotation.y=-0.32;
-  var size=0;
-  function resize(){ var s=wrap.clientWidth; if(s===size) return; size=s; renderer.setSize(s,s,false); }
-  var tmp=new THREE.Vector3(), camDir=new THREE.Vector3();
-  function place(){
-    marks.forEach(function(mk){
-      mk.obj.getWorldPosition(tmp);
-      var facing=tmp.clone().normalize().dot(camDir.copy(cam.position).normalize());
-      tmp.project(cam);
-      var x=(tmp.x*.5+.5)*size, y=(-tmp.y*.5+.5)*size;
-      var w=mk.el.offsetWidth, h=mk.el.offsetHeight;
-      var ox=mk.dx<0? -w-10 : 10, oy=mk.dy<0? -h-6 : -h/2;
-      mk.el.style.transform='translate('+(x+ox).toFixed(1)+'px,'+(y+oy).toFixed(1)+'px)';
-      mk.el.style.opacity=facing>0.25?1:0;
-    });
+  function draw(){
+    cy=Math.cos(rotY); sy=Math.sin(rotY); ct=Math.cos(tilt); st=Math.sin(tilt);
+    cx.setTransform(dpr,0,0,dpr,0,0); cx.clearRect(0,0,size,size); cx.globalAlpha=1;
+    var g=cx.createRadialGradient(C-R*.35,C-R*.4,R*.1,C,C,R*1.02); g.addColorStop(0,'rgba(90,58,154,.55)'); g.addColorStop(.75,'rgba(42,13,74,.85)'); g.addColorStop(1,'rgba(28,4,51,.9)');
+    var sz=Math.max(1.4,size/330);
+    dots(L,false,sz*.8,'#c4b0ff',function(d){ return .05+.12*(1-d); });
+    cx.globalAlpha=1; cx.fillStyle=g; cx.beginPath(); cx.arc(C,C,R,0,7); cx.fill();
+    dots(O,true,sz*.7,'#ece6ff',function(d){ return .06+.14*d; });
+    dots(L,true,sz,'#c4b0ff',function(d){ return .35+.65*d; });
+    cx.globalAlpha=1; var h=cx.createRadialGradient(C,C,R*.92,C,C,R*1.14); h.addColorStop(0,'rgba(196,176,255,0)'); h.addColorStop(.45,'rgba(196,176,255,.28)'); h.addColorStop(1,'rgba(196,176,255,0)');
+    cx.fillStyle=h; cx.beginPath(); cx.arc(C,C,R*1.14,0,7); cx.fill();
+    marks.forEach(function(m){ proj(m.v[0],m.v[1],m.v[2],pp); var x=pp[0], y=pp[1], on=pp[2]>.2;
+      cx.globalAlpha=on?1:0; cx.fillStyle=m.hq?'#ece6ff':'#c4b0ff'; var q=m.hq?7:5; cx.fillRect(x-q/2,y-q/2,q,q);
+      if(m.hq&&on){ cx.globalAlpha=.35; cx.strokeStyle='#c4b0ff'; cx.lineWidth=1; cx.beginPath(); cx.arc(x,y,11,0,7); cx.stroke(); }
+      var w=m.el.offsetWidth, hh=m.el.offsetHeight, ox=m.dx<0?-w-12:12, oy=m.dy<0?-hh-6:m.dy>0?6:-hh/2;
+      m.el.style.transform='translate('+(x+ox).toFixed(1)+'px,'+(y+oy).toFixed(1)+'px)'; m.el.style.opacity=on?1:0; });
   }
-  var visible=true, raf=0, t0=performance.now();
-  function frame(now){
-    raf=0; resize();
-    if(!reduce){ var t=(now-t0)/1000; world.rotation.y=-0.32-t*0.09; }
-    renderer.render(scene,cam); place();
-    if(!reduce&&visible) raf=requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible&&!reduce&&!raf) raf=requestAnimationFrame(frame); }).observe(wrap); }
-  addEventListener('resize',function(){ size=0; if(!raf) requestAnimationFrame(frame); },{passive:true});
+  var visible=true, raf=0, last=performance.now();
+  function frame(now){ raf=0; var dt=Math.min(.05,(now-last)/1000); last=now; resize();
+    if(!reduce) rotY+=dt*.12;
+    draw(); if(visible&&!reduce) raf=requestAnimationFrame(frame); }
+  function kick(){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(frame); } }
+  kick();
+  if('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) kick(); }).observe(wrap);
+  addEventListener('resize',function(){ size=0; kick(); },{passive:true});
 })();
 </script>
 <script>
