@@ -343,6 +343,20 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .p-contact .ctas{justify-content:flex-start}
 @media (min-width:1001px){ .p-patients .pat-grid{grid-template-columns:1.05fr .95fr} .p-patients .photo{order:-1} }
 @media (max-width:1000px){ .p-about .photo,.p-patients .photo{margin-inline:0} }
+
+/* motion: slanted photos open along their slant and drift on scroll; step chips slide in one after another along a drawn line */
+.photo img{transition:clip-path 1.5s var(--ease) .15s,transform 1.8s var(--ease);translate:0 var(--py,0px);transform:scale(1.08);will-change:transform,translate}
+.js .photo.rv:not(.in) img{clip-path:polygon(16% 0,16% 0,0 100%,0 100%);transform:scale(1.2)}
+.js .photo.rv:not(.in){transform:none;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+@media (hover:hover) and (pointer:fine){ .photo:hover img{transform:scale(1.12)} }
+.steps{position:relative}
+.steps::before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:linear-gradient(90deg,rgba(122,92,240,.9),rgba(196,176,255,.35) 70%,transparent);transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .3s;z-index:-1}
+.p-patients.in .steps::before{transform:scaleX(1)}
+.steps .n::before{transition:transform .9s var(--ease),opacity .9s var(--ease);transition-delay:calc(var(--d,0ms) + 450ms)}
+.js .steps li:not(.in) .n::before{transform:skewX(-14deg) translateX(-24px);opacity:0}
+.steps .n{background:#1c0433}
+.geo li.rv:not(.in){transform:translateY(30px)}
+@media (prefers-reduced-motion:reduce){ .photo img,.steps::before,.steps .n::before{transition:none} .js .photo.rv:not(.in) img{clip-path:none} .steps::before{transform:none} }
 </style></head>
 <body>
 <div class="cur" aria-hidden="true"></div><div class="cur-halo" aria-hidden="true"></div>
@@ -782,7 +796,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
           <p class="small">As the first Swiss company, Astrasana maintains an exclusive partnership with the publicly listed GSI Creos corporation and distributes CBD products for both human and veterinary use.</p>
           <a class="link" href="https://www.astrasana.ch/en/companies" target="_blank" rel="noopener">Discover Our Companies<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         </div>
-        <figure class="photo rv" style="--d:120ms"><img src="land/site/homepage-ueber-uns-2.webp" alt="The Astrasana team in front of the office in Kloten" width="1200" height="900" loading="lazy"></figure>
+        <figure class="photo rv" style="--d:120ms"><img src="land/site/homepage-ueber-uns-2@2x.webp" alt="The Astrasana team in front of the office in Kloten" width="1170" height="1528" loading="lazy"></figure>
       </div>
       <ul class="geo" aria-label="Group companies by country">
         <li class="card dim rv"><b>Switzerland</b><span>Astrasana Holding AG<br>Bogen Pharma AG<br>Astrasana Pharma AG<br>Astrasana Research AG<br>Astrasana Animal Health AG</span></li>
@@ -867,6 +881,12 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 </main>
 
 <script src="land/vendor/landmask.js"></script>
+<script>
+/* gentle parallax for the slanted photos */
+(function(){ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; var ph=[].slice.call(document.querySelectorAll('.photo img')), q=0;
+  function run(){ q=0; var vh=innerHeight; ph.forEach(function(im){ var r=im.parentNode.getBoundingClientRect(); if(r.bottom<0||r.top>vh) return; var k=((r.top+r.height/2)-vh/2)/vh; im.style.setProperty('--py',(-k*40).toFixed(1)+'px'); }); }
+  addEventListener('scroll',function(){ if(!q) q=requestAnimationFrame(run); },{passive:true}); run(); })();
+</script>
 <script>
 document.documentElement.classList.add('js');
 (function(){
