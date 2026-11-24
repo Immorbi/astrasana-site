@@ -2307,16 +2307,40 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       function fm(c){ return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:0,fog:false,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}); }
       /* solid faces shaded by direction: front, back, top, bottom, sides */
       var FM=[fm(0x5a4cc0),fm(0x34297e),fm(0x6f62d2),fm(0x1d1744),fm(0x5546b8),fm(0x4a3da6)], mB=FM, dark=fm(0x14112a), hubM=fm(0xb9b0ff), fills=FM.concat([dark,hubM]);
-      function part(w,h,d,x,y,z){ var g=new THREE.BoxGeometry(w,h,d); var m=new THREE.Mesh(g,FM); m.position.set(x,y,z||0); truck.add(m); var e=new THREE.LineSegments(new THREE.EdgesGeometry(g),mE); e.position.copy(m.position); truck.add(e); }
-      part(2.4,1.3,1.3,-.55,.95); part(.95,1,1.2,1.25,.8); part(3.5,.14,1.0,.1,.24); part(.12,.22,1.24,1.78,.42);
-      function pane(w,h,x,y,z,ry){ var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),dark); m.position.set(x,y,z); m.rotation.y=ry; truck.add(m); }
-      pane(1.0,.32,1.731,1.1,0,Math.PI/2); pane(.6,.3,1.2,1.1,.605,0); pane(.6,.3,1.2,1.1,-.605,Math.PI);
+      var blk=fm(0x15122a);
+      function edges(g,m){ var e=new THREE.LineSegments(new THREE.EdgesGeometry(g,25),mE); e.position.copy(m.position); e.rotation.copy(m.rotation); truck.add(e); }
+      function box(w,h,d,x,y,z,mat,noEdge){ var g=new THREE.BoxGeometry(w,h,d), m=new THREE.Mesh(g,mat||FM); m.position.set(x,y,z||0); truck.add(m); if(!noEdge) edges(g,m); return m; }
+      function flat(pts,z,mat,flip){ var sh=new THREE.Shape(pts.map(function(q){ return new THREE.Vector2(q[0],q[1]); })), m=new THREE.Mesh(new THREE.ShapeGeometry(sh),mat); m.position.z=z; if(flip) m.rotation.y=Math.PI, m.position.x=0; truck.add(m); return m; }
+      /* cargo box: tall van body behind the cab */
+      box(2.75,1.5,1.42,-.62,1.3,0);
+      /* cab-over cab with a slanted, rounded front */
+      var cp=[[.78,.5],[1.7,.5],[1.72,1.0],[1.64,1.5],[1.5,1.74],[.78,1.74]], cs=new THREE.Shape(cp.map(function(q){ return new THREE.Vector2(q[0],q[1]); }));
+      var cg=new THREE.ExtrudeGeometry(cs,{depth:1.32,bevelEnabled:false,curveSegments:4}); cg.translate(0,0,-.66); var cab=new THREE.Mesh(cg,[FM[4],FM[0]]); truck.add(cab); edges(cg,cab);
+      /* glass: windscreen across the slanted front, side windows, door handle line */
+      var ws=new THREE.Mesh(new THREE.PlaneGeometry(1.16,.5),dark); ws.position.set(1.69,1.27,0); ws.rotation.set(0,Math.PI/2,0); ws.rotateX(-.16); truck.add(ws);
+      [.663,-.663].forEach(function(z){ var w=flat([[1.0,1.08],[1.6,1.08],[1.56,1.46],[1.44,1.64],[1.0,1.64]],z,dark); if(z<0) w.scale.z=-1; });
+      /* black chassis, front bumper with grille, side guard between the axles */
+      box(3.75,.18,1.0,-.12,.42,0,blk,true); box(.14,.3,1.36,1.72,.5,0,blk); box(.03,.2,.8,1.72,.8,0,blk,true);
+      [.64,-.64].forEach(function(z){ box(1.3,.06,.03,.07,.52,z,blk,true); box(.4,.18,.2,.3,.4,z*.75,blk,true); });
+      /* mirrors on arms */
+      var mp=[]; [.66,-.66].forEach(function(z){ var s2=z>0?1:-1; mp.push(1.62,1.35,z,1.78,1.35,z+.2*s2, 1.78,1.35,z+.2*s2,1.78,1.2,z+.2*s2); box(.06,.3,.12,1.79,1.2,z+.26*s2,blk,true); });
+      var mg=new THREE.BufferGeometry(); mg.setAttribute('position',new THREE.Float32BufferAttribute(mp,3)); truck.add(new THREE.LineSegments(mg,mE));
+      /* rear doors: centre seam and hinges */
+      var rd=[-2.0,.6,0,-2.0,2.0,0]; [.7,1.3,1.8].forEach(function(y){ rd.push(-2.0,y,.55,-2.0,y,.62, -2.0,y,-.55,-2.0,y,-.62); }); for(var i=0;i<rd.length;i+=3) rd[i]-=.001;
+      var rg2=new THREE.BufferGeometry(); rg2.setAttribute('position',new THREE.Float32BufferAttribute(rd,3)); truck.add(new THREE.LineSegments(rg2,mE));
       var hl=new THREE.MeshBasicMaterial({color:0xfff6d8,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}); truck.userData.hl=hl;
-      [.42,-.42].forEach(function(z){ var h=new THREE.Mesh(new THREE.PlaneGeometry(.2,.12),hl); h.rotation.y=Math.PI/2; h.position.set(1.84,.55,z); truck.add(h);
-        var t=new THREE.Mesh(new THREE.PlaneGeometry(.12,.16),hl); t.rotation.y=-Math.PI/2; t.position.set(-1.76,.5,z); truck.add(t); });
-      [[-1.25,.62],[-1.25,-.62],[.05,.62],[.05,-.62],[1.3,.62],[1.3,-.62]].forEach(function(q){ var g=new THREE.CylinderGeometry(.3,.3,.18,20); g.rotateX(Math.PI/2); var w=new THREE.Mesh(g,dark); w.position.set(q[0],.3,q[1]); truck.add(w);
-        var e=new THREE.LineSegments(new THREE.EdgesGeometry(g,30),mE); e.position.copy(w.position); truck.add(e);
-        var hg=new THREE.CylinderGeometry(.12,.12,.2,12); hg.rotateX(Math.PI/2); var hb=new THREE.Mesh(hg,hubM); hb.position.copy(w.position); truck.add(hb); });
+      [.44,-.44].forEach(function(z){ var h=new THREE.Mesh(new THREE.PlaneGeometry(.26,.1),hl); h.rotation.y=Math.PI/2; h.position.set(1.725,.88,z); truck.add(h);
+        var t=new THREE.Mesh(new THREE.PlaneGeometry(.1,.14),hl); t.rotation.y=-Math.PI/2; t.position.set(-2.02,.45,z); truck.add(t); });
+      /* wheels: rounded tyres shaded by a fixed light, a recessed rim and a hub */
+      function shadeM(g,base,amb){ g.computeVertexNormals(); var n=g.attributes.normal, c=[], col=new THREE.Color(base), Lt=new THREE.Vector3(.4,.8,.45).normalize(), v=new THREE.Vector3();
+        for(var i=0;i<n.count;i++){ v.set(n.getX(i),n.getY(i),n.getZ(i)); var k=amb+(1-amb)*Math.max(0,v.dot(Lt)); c.push(col.r*k,col.g*k,col.b*k); }
+        g.setAttribute('color',new THREE.Float32BufferAttribute(c,3)); var m=new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:0,fog:false}); fills.push(m); return m; }
+      var tyreG=new THREE.TorusGeometry(.27,.1,14,28); tyreG.scale(1,1,1.25); var tyreM=shadeM(tyreG,0x3a3366,.35);
+      var rimG=new THREE.CylinderGeometry(.2,.2,.2,24); rimG.rotateX(Math.PI/2); var rimM=shadeM(rimG,0x9d92f0,.45);
+      var hubG=new THREE.SphereGeometry(.08,12,8); hubG.scale(1,1,.6); var hubS=shadeM(hubG,0xe6e2ff,.5);
+      [[1.2,.6],[1.2,-.6],[-1.05,.6],[-1.05,-.6]].forEach(function(q){ var s3=q[1]>0?1:-1, w=new THREE.Mesh(tyreG,tyreM); w.position.set(q[0],.37,q[1]); truck.add(w);
+        var r=new THREE.Mesh(rimG,rimM); r.position.set(q[0],.37,q[1]-.02*s3); truck.add(r); var h=new THREE.Mesh(hubG,hubS); h.position.set(q[0],.37,q[1]+.1*s3); truck.add(h); });
+      fills.push(blk);
       truck.userData.fills=fills;
       truck.scale.setScalar(1.5); truck.userData.mE=mE; truck.visible=false;
       /* parcels: after the truck, the load becomes a small stack of boxes that rides the line onto the map */
