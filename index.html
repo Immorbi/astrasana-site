@@ -1597,7 +1597,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 /* key-holds */ (function(){ var K0=stwK, KEYS=[-.62,0,1.27,5.8,6.42,7.3,8,9,10], A=2, W=.07, cache={};
   function table(N){ if(cache[N]) return cache[N]; var k=K0(N), F0=-1, F1=N-1, n=Math.round((F1-F0)/.004), d=(F1-F0)/n, S=[0], s=0;
     function slope(f){ for(var i=1;i<k.length;i++) if(f<=k[i][0]) return (k[i][1]-k[i-1][1])/Math.max(1e-9,k[i][0]-k[i-1][0]); return 1; }
-    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=0; for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
+    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=(fm>6.12&&fm<6.62?.8:0); /* gh-hq-slow */ for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
     return cache[N]={F0:F0,d:d,S:S,T:s}; }
   stwP=function(F,N){ var t=table(N), x=(F-t.F0)/t.d; if(x<=0) return 0; if(x>=t.S.length-1) return 1; var i=Math.floor(x); return (t.S[i]+(t.S[i+1]-t.S[i])*(x-i))/t.T; };
   stwF=function(p,N){ var t=table(N), s=Math.min(1,Math.max(0,p))*t.T, lo=0, hi=t.S.length-1; while(hi-lo>1){ var m=(lo+hi)>>1; if(t.S[m]<s) lo=m; else hi=m; }
@@ -2301,7 +2301,16 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     (function(){ var st=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(0,-1.2,0),new THREE.Vector3(.1,-.4,0),new THREE.Vector3(0,.4,0)]),16,.1,8,false),glassMat({rim:1.6})); batch.add(st);
       [1,-1].forEach(function(d){ var mir=new THREE.Group(); mir.scale.x=d; batch.add(mir); var pv=new THREE.Group(); pv.position.set(0,.35,0); pv.rotation.set(0,.12,.55); mir.add(pv); var inner=new THREE.Group(); inner.scale.setScalar(.62); inner.rotation.x=.45; pv.add(inner); inner.add(new THREE.Mesh(leafGeo,leafMatG)); }); })();
     /* 4. the headquarters in Kloten: a glass building with floor lines and window mullions */
-    var hq=new THREE.Group(); hq.position.set(12.5,-5.2,-2.2); jg.add(hq); var hqMats=[];
+    var hq=new THREE.Group(); hq.position.set(12.5,-5.2,-2.2); jg.add(hq);
+    /* truck */ var truck=new THREE.Group(); jg.add(truck); function groundY(x){ return -3.7+Math.min(1,Math.max(0,(x+3)/15.5))*-1.5; }
+    (function(){ var mB=new THREE.MeshBasicMaterial({color:0x8f86ec,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}), mE=new THREE.LineBasicMaterial({color:0xe6e2ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false});
+      function part(w,h,d,x,y){ var g=new THREE.BoxGeometry(w,h,d); var m=new THREE.Mesh(g,mB); m.position.set(x,y,0); truck.add(m); var e=new THREE.LineSegments(new THREE.EdgesGeometry(g),mE); e.position.set(x,y,0); truck.add(e); }
+      part(2.4,1.3,1.3,-.55,.95); part(.95,1,1.2,1.25,.8);
+      [[-1.25,.62],[-1.25,-.62],[.05,.62],[.05,-.62],[1.3,.62],[1.3,-.62]].forEach(function(q){ var g=new THREE.CylinderGeometry(.3,.3,.16,18); g.rotateX(Math.PI/2); var e=new THREE.LineSegments(new THREE.EdgesGeometry(g,30),mE); e.position.set(q[0],.3,q[1]); truck.add(e); });
+      truck.scale.setScalar(1.5); truck.userData.mB=mB; truck.userData.mE=mE; truck.visible=false;
+      /* the road: two edges and a dashed centre line on the ground from the greenhouse to the HQ */
+      var r=[]; for(var x=-3;x<12;x+=.5){ var x2=x+.5; [-1.1,1.1].forEach(function(o){ r.push(x,groundY(x)+.02,.6+o,x2,groundY(x2)+.02,.6+o); }); if(Math.round(x*2)%2===0) r.push(x,groundY(x)+.02,.6,x+.3,groundY(x+.3)+.02,.6); }
+      var rg=new THREE.BufferGeometry(); rg.setAttribute('position',new THREE.Float32BufferAttribute(r,3)); var rl=new THREE.LineSegments(rg,new THREE.LineBasicMaterial({color:0xb9b2ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); jg.add(rl); truck.userData.road=rl.material; })(); var hqMats=[];
     if(SITES){ var kl=siteModel(SITES.kloten,.42,new THREE.Vector3(-4.6*.42,0,1.2*.42)); hq.add(kl.g); kl.body.material.uniforms.rim.value=1.1; hqMats.push(kl.body.material); hq.userData.lines=kl.edge; hq.userData.nb=kl.nb; hq.userData.grid=kl.grid;
       hq.userData.door=new THREE.Mesh(new THREE.PlaneGeometry(.01,.01),new THREE.MeshBasicMaterial({transparent:true,opacity:0})); } else
     (function(){ var W=9,H=10,D=5, body=new THREE.Mesh(new THREE.BoxGeometry(W,H,D),glassMat({rim:1.2,body:'vec3(.18,.1,.36)',a:'.18'})); body.position.y=H/2; hq.add(body); hqMats.push(body.material);
@@ -2402,7 +2411,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function apply(p){
       uProg.value=Math.max(.02*ss(0,.05,p),.002+(p<.3?uGH*Math.min(1,Math.max(0,(p-.04)/.26)):uGH+(1.096-uGH)*ss(.3,.74,p))); /* aisle-line */ uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
-      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; room.userData.fill.opacity=.95*r; room.userData.pot.opacity=.95*r; room.userData.net.material.opacity=.14*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
+      var r=ss(0,.05,p)*(1-.85*ss(.38,.5,p))/* gh-stay */*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; room.userData.fill.opacity=.95*r; room.userData.pot.opacity=.95*r; room.userData.net.material.opacity=.14*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       if(tagSite){ var sv=1-ss(.03,.08,p), bv=(1-ss(.04,.08,p))*(1-.5*ss(.02,.05,p)); tagSite.g.visible=bv>.001; tagSite.body.material.uniforms.op.value=bv; tagSite.edge.material.opacity=.9*bv; tagSite.nb.material.opacity=.6*sv; tagSite.grid.material.opacity=.32*sv; }
       batch.visible=p>.08&&p<.76; curve.getPointAt(Math.min(1,uProg.value),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*ss(.08,.14,p)*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       uFade.value=.94*ss(.72,.86,p); var h=ss(.3,.42,p)*(1-ss(.76,.86,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.22*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.32*h; hq.userData.grid.material.opacity=.3*h; } hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;
@@ -2414,10 +2423,13 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       /* in the grow room the camera looks straight down the aisle and moves through it */
       /* it starts outside, facing the greenhouse's gable end with the whole house in view, then glides in through the door */
       var ai=1-ss(.3,.44,p); if(ai>0){ var gin=ss(0,.15,p), ax=-98+32*gin+58*ss(.13,.4,p), ay=.5+2.4*(1-gin); AP.set(ax,ay,.6); AL.set(ax+22,ay-1.4-.6*(1-gin),.6); pos.lerp(AP,ai); look.lerp(AL,ai); /* lift-out */ if(ai<1) pos.y+=Math.sin(Math.PI*Math.min(1,(1-ai)*1.25))*9; }
+      /* truck-drive */ var tw=ss(.29,.32,p)*(1-ss(.45,.48,p)), rw=ss(.27,.31,p)*(1-ss(.5,.56,p)); truck.visible=tw>.01; truck.userData.road.opacity=.5*rw;
+      if(truck.visible){ var tx=Math.max(-2.5,Math.min(10.5,batch.position.x)); truck.position.set(tx,groundY(tx),.6); truck.userData.mB.opacity=.14*tw; truck.userData.mE.opacity=.85*tw; }
       /* chase-cam */ var CA=camLocal.CA||(camLocal.CA=new THREE.Vector3()), CB=camLocal.CB||(camLocal.CB=new THREE.Vector3()), CS=camLocal.CS||(camLocal.CS=new THREE.Vector3()), CD=camLocal.CD||(camLocal.CD=new THREE.Vector3()), CL=camLocal.L||(camLocal.L=curve.getLength());
       var u=Math.min(1,uProg.value), cw=ss(.26,.34,p)*(1-ss(.62,.7,p)); curve.getPointAt(u,CS);
       if(cw>0){ curve.getPointAt(Math.min(1,u+12/CL),CB); CD.subVectors(CB,CS); CD.y=0; if(CD.lengthSq()<1e-6) CD.set(1,0,0); CD.normalize();
-        CA.copy(CS).addScaledVector(CD,-18); CA.y=CS.y+9; CB.copy(CS).addScaledVector(CD,34); CB.y=CS.y-7; pos.lerp(CA,cw); look.lerp(CB,cw); }
+        var bump=Math.sin(Math.PI*ss(.29,.47,p)); CA.copy(CS).addScaledVector(CD,-18-20*bump); CA.z+=14*bump; CA.y=CS.y+9+13*bump; CB.copy(CS).addScaledVector(CD,34); CB.y=CS.y-7;
+        if(bump>0){ CB.lerp(hq.position,.45*bump); } pos.lerp(CA,cw); look.lerp(CB,cw); }
       var mw=ss(.6,.68,p)*(1-ss(.74,.8,p)); if(mw>0) look.lerp(CS,.4*mw);
       jg.localToWorld(look); jg.localToWorld(pos); }
     var AP=new THREE.Vector3(), AL=new THREE.Vector3();
