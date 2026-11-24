@@ -987,5 +987,7 @@ document.documentElement.classList.add('js');
   Object.keys(map).forEach(function(id){ io.observe(document.getElementById(id)); });
 })();
 </script>
-<script>(function(){var b=document.querySelector(".lmenu"),n=document.querySelector("header.nav");if(!b||!n)return;b.addEventListener("click",function(){var o=n.classList.toggle("open");b.setAttribute("aria-expanded",o);b.setAttribute("aria-label",o?"Close menu":"Open menu");});n.querySelectorAll("#lnav a").forEach(function(a){a.addEventListener("click",function(){n.classList.remove("open");b.setAttribute("aria-expanded","false");});});})();</script></body>
+<script>(function(){var b=document.querySelector(".lmenu"),n=document.querySelector("header.nav");if(!b||!n)return;b.addEventListener("click",function(){var o=n.classList.toggle("open");b.setAttribute("aria-expanded",o);b.setAttribute("aria-label",o?"Close menu":"Open menu");});n.querySelectorAll("#lnav a").forEach(function(a){a.addEventListener("click",function(){n.classList.remove("open");b.setAttribute("aria-expanded","false");});});})();</script><script id="fix-reveal">/* slanted photos start fully clipped, so IntersectionObserver never sees them; reveal them by position instead */
+(function(){ function chk(){ var vh=innerHeight; [].forEach.call(document.querySelectorAll('.rv:not(.in)'),function(e){ var r=e.getBoundingClientRect(); if(r.top<vh*.92&&r.bottom>0) e.classList.add('in'); }); } addEventListener('scroll',chk,{passive:true}); addEventListener('load',chk); setTimeout(chk,300); })();</script>
+<style id="fix-br">@media (max-width:760px){p br,.lead br,.sub br{display:none}}</style></body>
 </html>

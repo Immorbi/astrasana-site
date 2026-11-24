@@ -2597,5 +2597,9 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 
 </script>
 
-</body>
+<script id="fix-nav">/* menu links to story chapters: close the phone menu first (it restores the old scroll on close), then jump; works on repeat clicks too */
+(function(){ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#history-"],a[href="#top"]'); if(!a) return; var h=a.getAttribute('href'); if(!document.querySelector('.hist-track')) return;
+  e.preventDefault(); var sh=document.getElementById('sheet'), open=sh&&getComputedStyle(sh).visibility!=='hidden';
+  if(open){ var c=sh.querySelector('[aria-label="Close menu"]')||document.querySelector('.menu-btn'); if(c) c.click(); }
+  setTimeout(function(){ if(location.hash!==h) history.replaceState(null,'',h); dispatchEvent(new HashChangeEvent('hashchange')); }, open?120:0); },true); })();</script></body>
 </html>
