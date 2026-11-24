@@ -2524,6 +2524,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       parcels.push({cv:cv,arc:arc,m:m,pin:pin,ring:ring,t0:.72+((i*17)%PH.length)*(.0675/(PH.length-1))}); });
     var kloDot=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); kloDot.position.copy(KL); kloDot.scale.set(4,4,1); map.add(kloDot);
     var kloRing=new THREE.Mesh(new THREE.RingGeometry(1.4,1.7,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); kloRing.position.copy(KL); map.add(kloRing);
+    var uApp=1; (function(){ var L=curve.getLength(); uApp=Math.max(.5,1-150/L); })();
     jg.updateMatrixWorld(true); window.__GHW=jg.localToWorld(new THREE.Vector3(-50,-3.7,.6)); window.__WHW=jg.localToWorld(WH.gate.clone().addScaledVector(WH.e,WH.L/2));
     var tmp=new THREE.Vector3(), Tl=new THREE.Vector3(), Pw=new THREE.Vector3(), uGH=.01; for(var qi=0;qi<=20000;qi++){ if(curve.getPointAt(qi/20000).x>-21){ uGH=qi/20000; break; } }
     jg.updateMatrixWorld(true); map.updateMatrixWorld(true);
@@ -2534,24 +2535,24 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var stepsEl=document.querySelector('.jr-steps'), steps=stepsEl?[].slice.call(stepsEl.querySelectorAll('li')):[], anchors=[new THREE.Vector3(-50,8,.6),WH.gate.clone().addScaledVector(WH.e,WH.L/2).setY(-3.7+WH.H+5),KLW.clone().add(new THREE.Vector3(0,1.4,0))], show=[.04,.48,.66];
     var TP=new THREE.Vector3(), TQ=new THREE.Vector3(), CS=new THREE.Vector3(), CB=new THREE.Vector3(), CA=new THREE.Vector3(), CD=new THREE.Vector3(), E1=new THREE.Vector3(), E2=new THREE.Vector3();
     function apply(p,q,w){
-      uProg.value=Math.max(uGH*.05*ss(0,.05,p),.002+(p<.3?uGH*Math.min(1,Math.max(0,(p-.04)/.26)):uGH+(1-uGH)*ss(.3,.6,p))); /* aisle, then the road at the truck's pace */ uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
+      uProg.value=Math.max(uGH*.05*ss(0,.05,p),.002+(p<.3?uGH*Math.min(1,Math.max(0,(p-.04)/.26)):(p<.53?uGH+(uApp-uGH)*ss(.3,.53,p):uApp+(1-uApp)*ss(.53,.625,p)))); /* aisle, then the road at the truck's pace */ uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
       /* the greenhouse fades in at the end of the dive and stays while the truck leaves */
       var r=(q<1?ss(.45,.85,q):1)*(1-.85*ss(.45,.55,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; room.userData.fill.opacity=.95*r; room.userData.pot.opacity=.95*r; room.userData.net.material.opacity=.14*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       batch.visible=p>.08&&p<.34; batch.position.copy(tmp); batch.scale.setScalar(.9*ss(.08,.14,p)*(1-ss(.292,.304,p))+.001); batch.rotation.y=p*9;
       uFade.value=.94*ss(.72,.86,p); uGA.value=1-ss(.53,.57,p)*(1-ss(.6,.66,p))*.95; /* the line stays out of the way at the gate */ planU.value=uGH; uPlan.value=.85*ss(.28,.36,p)*(1-ss(.52,.56,p))*w;
-      var h=ss(.44,.52,p)*(1-ss(.64,.7,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h*.6; m.uniforms.fl.value=0; }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.25*h; hq.userData.grid.material.opacity=.15*h; } hq.userData.door.material.opacity=0; pools[2].userData.o=0; pools[3].userData.o=0;
+      var h=ss(.44,.52,p)*(1-ss(.66,.72,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h*.6; m.uniforms.fl.value=0; }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.25*h; hq.userData.grid.material.opacity=.15*h; } hq.userData.door.material.opacity=0; pools[2].userData.o=0; pools[3].userData.o=0;
       /* the warehouse: appears on the approach, the middle door rolls up as the truck arrives */
-      var wv=ss(.4,.5,p)*(1-ss(.64,.7,p)), op=ss(.535,.565,p); wh.visible=wv>.001; whMats.forEach(function(m){ m.uniforms.op.value=wv; }); whLines.forEach(function(a){ a[0].opacity=a[1]*wv; }); wh.userData.door.scale.y=Math.max(.02,1-op); wh.userData.floor.opacity=.09*wv*(.3+.7*op); whGlow.userData.o=.16*wv*op;
-      var mp=ss(.6,.68,p)*w; map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); kloDot.material.opacity=ss(.7,.76,p)*w; var kp=(p*14)%1; kloRing.scale.setScalar(1+kp*1.6); kloRing.material.opacity=.6*(1-kp)*ss(.7,.76,p)*w;
+      var wv=ss(.4,.5,p)*(1-ss(.66,.72,p)), op=ss(.55,.585,p); wh.visible=wv>.001; whMats.forEach(function(m){ m.uniforms.op.value=wv; }); whLines.forEach(function(a){ a[0].opacity=a[1]*wv; }); wh.userData.door.scale.y=Math.max(.02,1-op); wh.userData.floor.opacity=.09*wv*(.3+.7*op); whGlow.userData.o=.16*wv*op;
+      var mp=ss(.63,.7,p)*w; map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); kloDot.material.opacity=ss(.7,.76,p)*w; var kp=(p*14)%1; kloRing.scale.setScalar(1+kp*1.6); kloRing.material.opacity=.6*(1-kp)*ss(.7,.76,p)*w;
       parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.08,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.8*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); }
         var land=ss(q.t0+.07,q.t0+.13,p); var pg=ss(q.t0+.04,q.t0+.08,p); q.pin.visible=pg>.001; q.pin.scale.set(1,1,Math.max(.001,pg)); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; });
       /* the sprout rides the line in the greenhouse, the truck takes the load at the door, drives the real road to Kloten and into the warehouse; on the map the load is a stack of boxes */
-      var mt=ss(.296,.312,p)*(1-ss(.6,.612,p)), mc=ss(.68,.72,p)*(1-ss(.76,.8,p))*w, crate=truck.userData.crate; truck.visible=mt>.01; truck.userData.road.opacity=0; crate.visible=mc>.01; crate.scale.setScalar(1.2*mc+.001);
+      var mt=ss(.296,.312,p)*(1-ss(.625,.635,p)), mc=ss(.68,.72,p)*(1-ss(.76,.8,p))*w, crate=truck.userData.crate; truck.visible=mt>.01; truck.userData.road.opacity=0; crate.visible=mc>.01; crate.scale.setScalar(1.2*mc+.001);
       var uu=Math.min(1,uProg.value); curve.getPointAt(uu,TP); curve.getPointAt(Math.min(1,uu+6/CL),TQ);
       if(truck.visible){ truck.position.copy(TP); truck.position.y-=.4; truck.rotation.y=Math.atan2(-(TQ.z-TP.z),TQ.x-TP.x); truck.userData.bs=1.3*mt+.001; truck.scale.setScalar(truck.userData.bs); }
       truck.userData.fills.forEach(function(m){ m.opacity=.94*Math.max(mt,mc); }); truck.userData.mE.opacity=.55*Math.max(mt,mc); truck.userData.hl.opacity=.9*mt;
-      if(truck.visible&&TP.distanceTo(WH.gate)<45){ gateW.copy(WH.gate); jg.localToWorld(gateW); gateN.copy(WH.e).negate().transformDirection(jg.matrixWorld); gatePlane.setFromNormalAndCoplanarPoint(gateN,gateW); } else { gatePlane.normal.set(1,0,0); gatePlane.constant=1e9; } }
+      if(truck.visible&&TP.distanceTo(WH.gate)<45&&p<.64){ gateW.copy(WH.gate); jg.localToWorld(gateW); gateN.copy(WH.e).negate().transformDirection(jg.matrixWorld); gatePlane.setFromNormalAndCoplanarPoint(gateN,gateW); } else { gatePlane.normal.set(1,0,0); gatePlane.constant=1e9; } }
     /* camera states: a target, a unit direction from the target to the eye and a distance; they blend with the distance in log space,
        so every zoom (Europe to the greenhouse door, the road to the overview, the warehouse to the whole country) runs at a steady visual pace */
     function V(){ return {t:new THREE.Vector3(),d:new THREE.Vector3(),r:1}; }
@@ -2568,10 +2569,10 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       /* the drive: the camera rises to a tilted view a few hundred metres up, buildings and streets around, and keeps the truck in the middle all the way to Kloten */
       var fz=ss(.31,.37,p); if(fz>0){ E1.copy(CS).addScaledVector(SOUTH,430).add(new THREE.Vector3(0,560,0)); E2.copy(CS); E2.y=-3.7; mix(VA,setV(VB,E1,E2),fz,fz,fz); }
       /* down at the warehouse, beside the gate */
-      var ar=ss(.52,.575,p); if(ar>0){ E2.copy(CS).lerp(tmp.copy(WH.gate).addScaledVector(WH.e,2),ss(.56,.595,p)); E2.y=-1; E1.copy(WH.gate).addScaledVector(WH.e,-34).addScaledVector(WH.side,-18); E1.y=12; mix(VA,setV(VB,E1,E2),ar,ar,ar); }
+      var ar=ss(.5,.54,p); if(ar>0){ E2.copy(CS).lerp(tmp.copy(WH.gate).addScaledVector(WH.e,2),.45+.4*ss(.58,.625,p)); E2.y=-1.5; E1.copy(WH.gate).addScaledVector(WH.e,-30).addScaledVector(WH.side,-12); E1.y=14; mix(VA,setV(VB,E1,E2),ar,ar,ar); }
       toW(VA);
       /* pull back from Kloten to the whole country for the pharmacy deliveries */
-      var mz=ss(.595,.69,p); if(mz>0){ VW.t.copy(KLW).lerp(CHC,ss(.64,.78,p)); VW.d.set(0,.78,.62).normalize(); VW.r=46+6*ss(.72,1,p); mix(VA,VW,mz,mz*mz,ss(0,.6,mz)); }
+      var mz=ss(.625,.71,p); if(mz>0){ VW.t.copy(KLW).lerp(CHC,ss(.66,.79,p)); VW.d.set(0,.78,.62).normalize(); VW.r=46+6*ss(.72,1,p); mix(VA,VW,mz,mz*mz,ss(0,.6,mz)); }
       /* the dive: from the map of Switzerland down to the greenhouse door */
       if(q<1){ var Z=window.__ZK, k=ss(0,1,q); VW.t.copy(Z?Z.c:P3(8.627,47.443,2.5)); VW.d.set(0,.78,.62).normalize(); VW.r=(Z?Z.D:8)*.996; mix(VW,VA,k,ss(0,.12,k),ss(.72,1,k)); VA.t.copy(VW.t); VA.d.copy(VW.d); VA.r=VW.r; }
       look.copy(VA.t); pos.copy(VA.t).addScaledVector(VA.d,VA.r); }
@@ -2786,8 +2787,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     FL.forEach(function(F,i){ var t=sst(FT[i][0],FT[i][1],oT), n=F.air.length-1, k=Math.min(n-1,Math.floor(t*n)), fr=t*n-k;
       F.trail.uniforms.t.value=t; F.trail.uniforms.a.value=a; F.track.material.opacity=.35*a;
       var P=F.plane.g.position.copy(F.air[k]).lerp(F.air[k+1],fr); fQ.copy(F.air[Math.min(n,k+2)]); fF.subVectors(fQ,P).normalize(); fR.crossVectors(fU,fF).normalize(); var up2=new THREE.Vector3().crossVectors(fF,fR); fM.makeBasis(fR,up2,fF); F.plane.g.quaternion.setFromRotationMatrix(fM);
-      var fly=t>.001&&t<.995; F.plane.g.visible=fly; F.plane.g.scale.setScalar(ps); F.plane.mats.forEach(function(m){ m.opacity=a*m.userData.o; }); F.plane.lights.forEach(function(l){ l.material.opacity=fly?a*blink:0; });
-      F.glow.position.copy(P); F.glow.scale.set(ps*9,ps*9,1); F.glow.material.opacity=fly?.45*a:0; F.shadow.position.copy(P).setY(2.07); F.shadow.scale.set(ps*5,ps*5,1); F.shadow.material.opacity=fly?.5*a:0;
+      var fly=t>.001&&t<.999, land=1-sst(.9,.995,t); /* the plane fades out gently as it lands */ F.plane.g.visible=fly; F.plane.g.scale.setScalar(ps*(.75+.25*land)); F.plane.mats.forEach(function(m){ m.opacity=a*m.userData.o*land; }); F.plane.lights.forEach(function(l){ l.material.opacity=fly?a*blink*land:0; });
+      F.glow.position.copy(P); F.glow.scale.set(ps*9,ps*9,1); F.glow.material.opacity=fly?.45*a*land:0; F.shadow.position.copy(P).setY(2.07); F.shadow.scale.set(ps*5,ps*5,1); F.shadow.material.opacity=fly?.5*a*land:0;
       var arr=sst(.96,1,t), pulse=(uT.value*.6)%1; F.ring.scale.setScalar(ps*(2+pulse*5)); F.ring.material.opacity=.8*a*arr*(1-pulse);
       tmp.copy(F.end).project(cam); var x=(tmp.x*.5+.5)*W2, y=(-tmp.y*.5+.5)*H2, show=t>.55&&tmp.z<1&&(W2<=1000||x>W2*.44)&&x<W2-20; F.el.style.transform='translate('+x.toFixed(1)+'px,'+(y-14).toFixed(1)+'px) translate(-50%,-100%)'; F.el.style.opacity=show?Math.min(1,(t-.55)*4)*oW:0; });
     flLbl.forEach(function(L){ tmp.copy(L.v).project(cam); L.el.style.transform='translate('+((tmp.x*.5+.5)*W2).toFixed(1)+'px,'+((-tmp.y*.5+.5)*H2-14).toFixed(1)+'px) translate(-50%,-100%)'; L.el.style.opacity=(tmp.z<1?sst(.12,.2,oT)*(1-sst(.55,.65,oT))*oW:0); }); }
