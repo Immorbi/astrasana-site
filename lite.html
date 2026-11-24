@@ -319,7 +319,6 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .photo img{clip-path:polygon(16% 0,100% 0,84% 100%,0 100%);aspect-ratio:5/4}
 .photo::after{display:none}
 .p-about .photo{margin-right:calc(-1 * max(16px,(100vw - var(--wrap)) / 2))}
-.p-patients .photo{margin-left:calc(-1 * max(16px,(100vw - var(--wrap)) / 2))}
 /* group companies: plain columns, no tiles */
 .geo .card{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 0 0 0;border-radius:0}
 .geo .card::before{display:none}
@@ -344,11 +343,13 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 @media (min-width:1001px){ .p-patients .pat-grid{grid-template-columns:1.05fr .95fr} .p-patients .photo{order:-1} }
 @media (max-width:1000px){ .p-about .photo,.p-patients .photo{margin-inline:0} }
 
-/* motion: slanted photos open along their slant and drift on scroll; step chips slide in one after another along a drawn line */
-.photo img{transition:clip-path 1.5s var(--ease) .15s,transform 1.8s var(--ease);translate:0 var(--py,0px);transform:scale(1.08);will-change:transform,translate}
-.js .photo.rv:not(.in) img{clip-path:polygon(16% 0,16% 0,0 100%,0 100%);transform:scale(1.2)}
-.js .photo.rv:not(.in){transform:none;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
-@media (hover:hover) and (pointer:fine){ .photo:hover img{transform:scale(1.12)} }
+/* motion: the slanted frame opens along its slant; inside it the picture drifts on scroll, so the corners never move */
+.photo{clip-path:polygon(16% 0,100% 0,84% 100%,0 100%);overflow:hidden;filter:none;transition:clip-path 1.5s var(--ease) .15s,opacity .8s var(--ease)}
+.photo img{clip-path:none;translate:0 var(--py,0px);transform:scale(1.12);transition:transform 1.8s var(--ease);will-change:transform,translate}
+.js .photo.rv:not(.in){clip-path:polygon(16% 0,16% 0,0 100%,0 100%);transform:none;filter:none}
+.js .photo.rv:not(.in) img{transform:scale(1.25)}
+@media (hover:hover) and (pointer:fine){ .photo:hover img{transform:scale(1.17)} }
+.p-patients .steps{margin-top:clamp(64px,8vw,112px)}
 .steps{position:relative}
 .steps::before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:linear-gradient(90deg,rgba(122,92,240,.9),rgba(196,176,255,.35) 70%,transparent);transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .3s;z-index:-1}
 .p-patients.in .steps::before{transform:scaleX(1)}
@@ -356,7 +357,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .js .steps li:not(.in) .n::before{transform:skewX(-14deg) translateX(-24px);opacity:0}
 .steps .n{background:#1c0433}
 .geo li.rv:not(.in){transform:translateY(30px)}
-@media (prefers-reduced-motion:reduce){ .photo img,.steps::before,.steps .n::before{transition:none} .js .photo.rv:not(.in) img{clip-path:none} .steps::before{transform:none} }
+@media (prefers-reduced-motion:reduce){ .photo,.photo img,.steps::before,.steps .n::before{transition:none} .js .photo.rv:not(.in){clip-path:polygon(16% 0,100% 0,84% 100%,0 100%)} .steps::before{transform:none} }
 </style></head>
 <body>
 <div class="cur" aria-hidden="true"></div><div class="cur-halo" aria-hidden="true"></div>
@@ -884,7 +885,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 <script>
 /* gentle parallax for the slanted photos */
 (function(){ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; var ph=[].slice.call(document.querySelectorAll('.photo img')), q=0;
-  function run(){ q=0; var vh=innerHeight; ph.forEach(function(im){ var r=im.parentNode.getBoundingClientRect(); if(r.bottom<0||r.top>vh) return; var k=((r.top+r.height/2)-vh/2)/vh; im.style.setProperty('--py',(-k*40).toFixed(1)+'px'); }); }
+  function run(){ q=0; var vh=innerHeight; ph.forEach(function(im){ var r=im.parentNode.getBoundingClientRect(); if(r.bottom<0||r.top>vh) return; var k=((r.top+r.height/2)-vh/2)/vh; im.style.setProperty('--py',(-k*26).toFixed(1)+'px'); }); }
   addEventListener('scroll',function(){ if(!q) q=requestAnimationFrame(run); },{passive:true}); run(); })();
 </script>
 <script>
