@@ -2169,7 +2169,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('uu',new THREE.Float32BufferAttribute(us,1)); g.setAttribute('rn',new THREE.Float32BufferAttribute(rn,1));
       var m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,uniforms:{p:uProg,t:uT,fz:uFade},
         vertexShader:'attribute float uu,rn; uniform float p,t,fz; varying float va; void main(){ va=smoothstep(fz-.1,fz,uu)*(1.-smoothstep(p-.06,p,uu))*(.35+.65*pow(.5+.5*sin(t*2.+rn*40.),3.)); vec4 mv=modelViewMatrix*vec4(position,1.); gl_PointSize=(1.5+rn*2.)*(300./-mv.z); gl_Position=projectionMatrix*mv; }',
-        fragmentShader:'varying float va; void main(){ float d=length(gl_PointCoord-.5); if(d>.5) discard; discard; /* no-sparks */ }'});
+        fragmentShader:'varying float va; void main(){ float d=length(gl_PointCoord-.5); if(d>.5) discard; gl_FragColor=vec4(0.);discard; /* no-sparks */ }'});
       var pts=new THREE.Points(g,m); pts.frustumCulled=false; jg.add(pts); return pts; })();
     /* real sites from swisstopo open data (swissBUILDINGS3D 3.0, swissALTI3D): the building itself in glass, the neighbourhood and the terrain as fading lines */
     function siteModel(S,sc,off){ var g=new THREE.Group(), k=sc*.1; g.scale.setScalar(k); g.position.copy(off);
@@ -2525,6 +2525,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
   addEventListener('pointermove',function(e){ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; var r=canvas.getBoundingClientRect(); mN.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height*2-1)); },{passive:true});
   function size(){ var w=canvas.clientWidth||innerWidth, h=canvas.clientHeight||innerHeight; renderer.setSize(w,h,false); cam.aspect=w/h; cam.fov=w/h<1.1?Math.min(66,2*Math.atan(Math.tan(18*Math.PI/180)*1.1/(w/h))*180/Math.PI):36; cam.updateProjectionMatrix(); uAsp.value=w/h; uRes.value.set(w*renderer.getPixelRatio(),h*renderer.getPixelRatio()); if(composer){ composer.setPixelRatio&&composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w,h); } }
   size(); addEventListener('resize',size);
+  /* precompile */ (function(){ var go=function(){ try{ var hid=[]; scene.traverse(function(o){ if(!o.visible){ hid.push(o); o.visible=true; } }); renderer.compile(scene,cam); hid.forEach(function(o){ o.visible=false; }); }catch(e){} };
+    if(window.requestIdleCallback) requestIdleCallback(go,{timeout:4000}); else setTimeout(go,1500); })();
   if('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; }).observe(track);
   function frame(t){ requestAnimationFrame(frame); if(!visible&&!first) return;
     var dt=Math.min(.05,(t-(frame.last||t))/1000); frame.last=t;
