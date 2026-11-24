@@ -2200,10 +2200,10 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
         for(var k=0;k<=6;k++){ var t=k/6; P.push(new THREE.Vector3(x+bx*t*t,FL+h*t,z)); } for(var k=0;k<6;k++) seg(green,P[k],P[k+1]);
         [[.34,.62,.32],[.6,.82,.55],[.84,.6,.85]].forEach(function(q,j){ var y=FL+h*q[0], yw=yaw+j*1.57; leaf(x+bx*q[0]*q[0],y,z,q[1]*s,q[2],yw,false); leaf(x+bx*q[0]*q[0],y,z,q[1]*s,q[2],yw,true); });
         leaf(x+bx,FL+h,z,.32*s,1.15,yaw+.8,false); leaf(x+bx,FL+h,z,.32*s,1.15,yaw+.8,true); }
-      [-1,1].forEach(function(sd){ var z=C+sd*3.3;
-        for(var x=X0+.8;x<X1;x+=1.7) plant(x+(Math.random()-.5)*.4,z+(Math.random()-.5)*.5,.9+Math.random()*.25);
+      [-1,1].forEach(function(sd){ var z=C+sd*3.9;
+        for(var x=X0+.8;x<X1;x+=2.7) plant(x+(Math.random()-.5)*.4,z+(Math.random()-.5)*.3,.62+Math.random()*.14);
         /* bed: a glowing front edge, a dim back edge */
-        green.push(X0,FL+.05,C+sd*2.2,X1,FL+.05,C+sd*2.2); det.push(X0,FL+.05,C+sd*4.4,X1,FL+.05,C+sd*4.4); });
+        green.push(X0,FL+.05,C+sd*2.9,X1,FL+.05,C+sd*2.9); det.push(X0,FL+.05,C+sd*4.9,X1,FL+.05,C+sd*4.9); });
       /* frames of the glass house: posts, curved knees, a gabled roof, purlins and crossed bracing between frames */
       var N=20, dx=(X1-X0)/N, EV=4.4, RG=8.6;
       for(var i=0;i<=N;i++){ var x=X0+i*dx;
@@ -2214,8 +2214,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       [[EV,-W],[EV,W],[(EV+RG)/2,-W/2],[(EV+RG)/2,W/2],[RG,0]].forEach(function(q){ frame.push(X0,q[0],C+q[1],X1,q[0],C+q[1]); });
       for(var i=0;i<N;i++){ var x=X0+i*dx; [-1,1].forEach(function(sd){ frame.push(x,EV,C+sd*W,x+dx,RG,C, x,RG,C,x+dx,EV,C+sd*W); }); }
       /* aisle floor: tiles */
-      for(var x=X0;x<=X1;x+=1.3) det.push(x,FL,C-2.2,x,FL,C+2.2);
-      for(var z=-2.2;z<=2.21;z+=1.1) det.push(X0,FL,C+z,X1,FL,C+z);
+      for(var x=X0;x<=X1;x+=1.3) det.push(x,FL,C-2.9,x,FL,C+2.9);
+      for(var z=-2.9;z<=2.91;z+=1.45) det.push(X0,FL,C+z,X1,FL,C+z);
       /* the glowing path down the middle, gently winding */
       [-.05,0,.05].forEach(function(o){ var pp=null; for(var x=X0;x<=X1+.01;x+=.5){ var pt=new THREE.Vector3(x,FL+.03,C+o+Math.sin(x*.33)*.35+Math.sin(x*.11)*.2); if(pp) seg(ledPts,pp,pt); pp=pt; } });
       var BGU=THREE.BufferGeometryUtils, leafM=glassMat({rim:.35,body:'vec3(.1,.38,.3)',a:'.07'}); roomMats.push(leafM);
@@ -2292,23 +2292,23 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function genHouse(){ var X=100,Z=70,W=140,R=200, v=[[-X,0,-Z],[X,0,-Z],[X,0,Z],[-X,0,Z],[-X,W,-Z],[X,W,-Z],[X,W,Z],[-X,W,Z],[-X,R,0],[X,R,0]],
         f=[[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7],[4,5,9],[4,9,8],[7,6,9],[7,9,8],[4,8,7],[5,6,9]], ed=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7],[8,9],[4,8],[7,8],[5,9],[6,9]], t=[], e=[];
       f.forEach(function(q){ q.forEach(function(k){ t.push.apply(t,v[k]); }); }); ed.forEach(function(q){ e.push.apply(e,v[q[0]]); e.push.apply(e,v[q[1]]); });
-      return {t:t,e:e,w:20}; }
+      return {t:t,e:e,w:32}; }
     PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
       var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
       var H=(SITES&&SITES.ph&&SITES.ph[i])||(SITES&&genHouse());
       if(H){ /* the pharmacy's own building from swissBUILDINGS3D, drawn at one common size so every pharmacy reads */
-        var hk=1.9/Math.max(8,H.w)*.1, hs=new THREE.Group(); hs.rotation.x=Math.PI/2; hs.scale.setScalar(hk); pin.add(hs);
+        var hk=1.9/Math.max(8,H.w)*.1, hs=new THREE.Group(); for(var yi=1,my=0;yi<H.t.length;yi+=3) my=Math.max(my,H.t[yi]); var roof=my*hk; hs.rotation.x=Math.PI/2; hs.scale.setScalar(hk); pin.add(hs);
         var hg=new THREE.BufferGeometry(); hg.setAttribute('position',new THREE.Float32BufferAttribute(H.t,3)); hg.computeVertexNormals();
         var hm=glassMat({rim:1,body:'vec3(.26,.18,.52)',a:'.34',side:THREE.DoubleSide}); hs.add(new THREE.Mesh(hg,hm)); mapMats.push([hm,1,true]);
         var he=new THREE.BufferGeometry(); he.setAttribute('position',new THREE.Float32BufferAttribute(H.e,3));
         var hl=new THREE.LineSegments(he,new THREE.LineBasicMaterial({color:0xe9e4ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); hs.add(hl); mapMats.push([hl.material,.6]); }
       else { var stem=new THREE.Mesh(pinGeo,pinMat); stem.rotation.x=Math.PI/2; stem.position.z=1.3; pin.add(stem); var head=new THREE.Mesh(headGeo,pinMat); head.position.z=2.7; pin.add(head); }
       var ring=new THREE.Mesh(new THREE.RingGeometry(.9,1.15,40),new THREE.MeshBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); ring.position.z=.05; pin.add(ring);
-      var dist=KL.distanceTo(to), mid=KL.clone().lerp(to,.5); mid.z=4+dist*.45; var cv=new THREE.QuadraticBezierCurve3(KL.clone(),mid,to.clone().setZ(2.7));
+      var dist=KL.distanceTo(to), mid=KL.clone().lerp(to,.5); mid.z=4+dist*.45; var cv=new THREE.QuadraticBezierCurve3(KL.clone(),mid,to.clone().setZ(H?roof:2.7));
       var ag=new THREE.BufferGeometry().setFromPoints(cv.getPoints(60));
       var arc=new THREE.Line(ag,new THREE.LineBasicMaterial({color:0xc9f7e8,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); arc.geometry.setDrawRange(0,0); map.add(arc);
       var m=new THREE.Mesh(parcelGeo,parcelMat); m.visible=false; map.add(m);
-      parcels.push({cv:cv,arc:arc,m:m,pin:pin,ring:ring,t0:.72+i*.0072}); });
+      parcels.push({cv:cv,arc:arc,m:m,pin:pin,ring:ring,t0:.72+i*.0045}); });
     var kloDot=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); kloDot.position.copy(KL); kloDot.scale.set(4,4,1); map.add(kloDot);
     var kloRing=new THREE.Mesh(new THREE.RingGeometry(1.4,1.7,48),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false})); kloRing.position.copy(KL); map.add(kloRing);
     var K=[[0,-27,0,56],[.14,-27,0,56],[.3,-19,0,52],[.42,5,.5,44],[.52,15,1,40],[.62,22,1,50],[.74,54,-5,66],[.88,56,-6,68],[1,54,-6,74]];
@@ -2317,13 +2317,13 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function apply(p){
       uProg.value=.002+1.098*ss(.06,.74,p); uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
-      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.38*r; endGlow.userData.o=.15*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
+      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       if(tagSite){ var sv=1-ss(.03,.08,p), bv=(1-ss(.04,.08,p))*(1-.5*ss(.02,.05,p)); tagSite.g.visible=bv>.001; tagSite.body.material.uniforms.op.value=bv; tagSite.edge.material.opacity=.9*bv; tagSite.nb.material.opacity=.6*sv; tagSite.grid.material.opacity=.32*sv; }
       var bt=ss(.16,.74,p); batch.visible=p>.14&&p<.76; curve.getPointAt(Math.min(1,bt),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       uFade.value=.94*ss(.72,.86,p); var h=ss(.3,.42,p)*(1-ss(.76,.86,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.22*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.32*h; hq.userData.grid.material.opacity=.3*h; } hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;
       var mp=ss(.6,.72,p); map.visible=mp>.001; mapMats.forEach(function(a){ if(a[2]) a[0].uniforms.op.value=mp; else a[0].opacity=a[1]*mp; }); kloDot.material.opacity=ss(.7,.76,p); var kp=(p*14)%1; kloRing.scale.setScalar(1+kp*1.6); kloRing.material.opacity=.6*(1-kp)*ss(.7,.76,p); pools[3].userData.o=.3*mp;
-      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.12,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.6*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); }
-        var land=ss(q.t0+.1,q.t0+.16,p); var pg=ss(q.t0+.1,q.t0+.14,p); q.pin.visible=pg>.001; q.pin.scale.set(1,1,Math.max(.001,pg)); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; }); }
+      parcels.forEach(function(q){ var u=ss(q.t0,q.t0+.08,p); q.arc.geometry.setDrawRange(0,Math.round(61*u)); q.arc.material.opacity=.8*mp; q.m.visible=u>.001&&u<.999; if(q.m.visible){ q.cv.getPoint(u,tmp); q.m.position.copy(tmp); }
+        var land=ss(q.t0+.07,q.t0+.13,p); var pg=ss(q.t0+.04,q.t0+.08,p); q.pin.visible=pg>.001; q.pin.scale.set(1,1,Math.max(.001,pg)); q.ring.scale.setScalar(1+land*2.4); q.ring.material.opacity=.7*(land>0&&land<1?1-land:0)*mp; }); }
     function camLocal(p,pos,look){ var i=0; while(i<K.length-2&&p>K[i+1][0]) i++; var a=K[i], b=K[i+1], u=ss(a[0],b[0],p);
       var tx=a[1]+(b[1]-a[1])*u, ty=a[2]+(b[2]-a[2])*u, d=a[3]+(b[3]-a[3])*u, el=(a[4]||0)+((b[4]||0)-(a[4]||0))*u; look.set(tx-d*.04,ty+d*.03,0); pos.set(look.x+d*.12,look.y+d*.22+el,d);
       /* in the grow room the camera looks straight down the aisle and moves through it */
