@@ -2169,7 +2169,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('uu',new THREE.Float32BufferAttribute(us,1)); g.setAttribute('rn',new THREE.Float32BufferAttribute(rn,1));
       var m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,uniforms:{p:uProg,t:uT,fz:uFade},
         vertexShader:'attribute float uu,rn; uniform float p,t,fz; varying float va; void main(){ va=smoothstep(fz-.1,fz,uu)*(1.-smoothstep(p-.06,p,uu))*(.35+.65*pow(.5+.5*sin(t*2.+rn*40.),3.)); vec4 mv=modelViewMatrix*vec4(position,1.); gl_PointSize=(1.5+rn*2.)*(300./-mv.z); gl_Position=projectionMatrix*mv; }',
-        fragmentShader:'varying float va; void main(){ float d=length(gl_PointCoord-.5); if(d>.5) discard; gl_FragColor=vec4(.75,1.,.9,va*smoothstep(.5,.1,d)); }'});
+        fragmentShader:'varying float va; void main(){ float d=length(gl_PointCoord-.5); if(d>.5) discard; discard; /* no-sparks */ }'});
       var pts=new THREE.Points(g,m); pts.frustumCulled=false; jg.add(pts); return pts; })();
     /* real sites from swisstopo open data (swissBUILDINGS3D 3.0, swissALTI3D): the building itself in glass, the neighbourhood and the terrain as fading lines */
     function siteModel(S,sc,off){ var g=new THREE.Group(), k=sc*.1; g.scale.setScalar(k); g.position.copy(off);
@@ -2604,5 +2604,5 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 (function(){ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#history-"],a[href="#top"]'); if(!a) return; var h=a.getAttribute('href'); if(!document.querySelector('.hist-track')) return;
   e.preventDefault(); var sh=document.getElementById('sheet'), open=sh&&getComputedStyle(sh).visibility!=='hidden';
   if(open){ var c=sh.querySelector('[aria-label="Close menu"]')||document.querySelector('.menu-btn'); if(c) c.click(); }
-  setTimeout(function(){ if(location.hash!==h) history.replaceState(null,'',h); dispatchEvent(new HashChangeEvent('hashchange')); }, open?120:0); },true); })();</script></body>
+  setTimeout(function(){ if(location.hash!==h) history.replaceState(null,'',h); dispatchEvent(new HashChangeEvent('hashchange')); }, open?120:0); },true); })();</script><script id="fix-stage">(function(){ var s=document.querySelector('.hist-stage'); if(!s) return; function z(){ if(s.scrollTop||s.scrollLeft){ s.scrollTop=0; s.scrollLeft=0; } } s.addEventListener('scroll',z,{passive:true}); addEventListener('load',z); addEventListener('hashchange',function(){ setTimeout(z,0); }); z(); })();</script></body>
 </html>

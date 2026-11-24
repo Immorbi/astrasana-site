@@ -790,7 +790,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
           <span class="tag" style="--c:#da9708;--tc:#1a1a1f" data-color="0xda9708" data-lat="49.8" data-lon="15.5" data-dx="1" data-dy="1">Czech Republic</span>
           <span class="tag" style="--c:#dfd9c3;--tc:#1a1a1f" data-color="0xdfd9c3" data-lat="53.5" data-lon="-2" data-dx="-1" data-dy="-1">United Kingdom</span>
           <span class="tag" style="--c:#dfd9c3;--tc:#1a1a1f" data-color="0xdfd9c3" data-lat="50.6" data-lon="4.6" data-dx="1" data-dy="-1">Belgium</span>
-          <span class="tag" style="--c:#dfd9c3;--tc:#1a1a1f" data-color="0xdfd9c3" data-lat="36.2" data-lon="138.3" data-dx="1">Japan</span>
+          <span class="tag" style="--c:#dfd9c3;--tc:#1a1a1f" data-color="0xdfd9c3" data-lat="36.2" data-lon="138.3" data-dx="-1">Japan</span>
         </div>
       </div>
     </div>
@@ -921,7 +921,7 @@ document.documentElement.classList.add('js');
   L=new Float32Array(L); O=new Float32Array(O);
   var marks=[].slice.call(wrap.querySelectorAll('.tag')).map(function(el){ var la=+el.dataset.lat*D2R, lo=+el.dataset.lon*D2R;
     return {el:el,hq:el.classList.contains('hq'),v:[Math.cos(la)*Math.sin(lo),Math.sin(la),Math.cos(la)*Math.cos(lo)],dx:+(el.dataset.dx||1),dy:+(el.dataset.dy||0)}; });
-  var size=0, dpr=1, R=0, C=0, rotY=-0.2, tilt=0.5;
+  var size=0, dpr=1, R=0, C=0, rotY=-1.28, tilt=0.5, swT=0; /* sway-jp */
   function resize(){ var w=wrap.clientWidth; if(w===size) return; size=w; dpr=Math.min(devicePixelRatio||1,2); cv.width=cv.height=Math.round(w*dpr); R=w*(w>600?.42:.36); C=w/2; }
   var cy, sy, ct, st;
   function proj(x,y,z,o){ var X=x*cy+z*sy, Z=-x*sy+z*cy, Y=y*ct-Z*st; Z=y*st+Z*ct; o[0]=C+X*R; o[1]=C-Y*R; o[2]=Z; return o; }
@@ -951,7 +951,7 @@ document.documentElement.classList.add('js');
   }
   var visible=true, raf=0, last=performance.now();
   function frame(now){ raf=0; var dt=Math.min(.05,(now-last)/1000); last=now; resize();
-    if(!reduce) rotY+=dt*.12;
+    if(!reduce){ swT+=dt; rotY=-1.28+.22*Math.sin(swT*.35); }
     draw(); if(visible&&!reduce) raf=requestAnimationFrame(frame); }
   function kick(){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(frame); } }
   kick();
