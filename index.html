@@ -1598,7 +1598,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 /* key-holds */ (function(){ var K0=stwK, KEYS=[-.62,0,1.2,5.8,6.42,7.3,7.74,8,9,10], A=2, W=.07, cache={};
   function table(N){ if(cache[N]) return cache[N]; var k=K0(N), F0=-1, F1=N-1, n=Math.round((F1-F0)/.004), d=(F1-F0)/n, S=[0], s=0;
     function slope(f){ for(var i=1;i<k.length;i++) if(f<=k[i][0]) return (k[i][1]-k[i-1][1])/Math.max(1e-9,k[i][0]-k[i-1][0]); return 1; }
-    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=(fm>6.12&&fm<6.7?2.8:0); /* gh-hq-slow */ for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
+    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=(fm>6.12&&fm<6.7?1:0); /* gh-hq-slow */ for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
     return cache[N]={F0:F0,d:d,S:S,T:s}; }
   stwP=function(F,N){ var t=table(N), x=(F-t.F0)/t.d; if(x<=0) return 0; if(x>=t.S.length-1) return 1; var i=Math.floor(x); return (t.S[i]+(t.S[i+1]-t.S[i])*(x-i))/t.T; };
   stwF=function(p,N){ var t=table(N), s=Math.min(1,Math.max(0,p))*t.T, lo=0, hi=t.S.length-1; while(hi-lo>1){ var m=(lo+hi)>>1; if(t.S[m]<s) lo=m; else hi=m; }
@@ -2386,20 +2386,22 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     /* 4b. the warehouse in Kloten: a glass hall with three loading gates under a canopy; the middle gate rolls up and the truck drives in */
     var wh=new THREE.Group(); wh.position.copy(WH.gate).setY(-3.7); wh.rotation.y=Math.atan2(-WH.e.z,WH.e.x); jg.add(wh); var whMats=[], whLines=[];
     (function(){ var L=WH.L, Wd=WH.Wd, H=WH.H, gw=5.6, gh=5.6, gm=glassMat({rim:.9,body:'vec3(.16,.1,.34)',a:'.2',side:THREE.DoubleSide}); whMats.push(gm);
-      function pl(w,h,x,y,z,ry){ var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),gm); m.position.set(x,y,z); m.rotation.y=ry||0; wh.add(m); return m; }
-      pl(Wd,H,L,H/2,0,Math.PI/2); pl(L,H,L/2,H/2,Wd/2); pl(L,H,L/2,H/2,-Wd/2); var rm=glassMat({rim:.3,body:'vec3(.13,.08,.28)',a:'.3',side:THREE.DoubleSide}); whMats.push(rm); var roof=new THREE.Mesh(new THREE.PlaneGeometry(L,Wd),rm); roof.position.set(L/2,H,0); roof.rotation.x=-Math.PI/2; wh.add(roof);
+      /* solid walls shaded by direction, like the truck: fewer lines, more colour */
+      function fm(c){ var m=new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:0,side:THREE.DoubleSide,fog:false,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}); whLines.push([m,.95]); return m; }
+      var mBack=fm(0x34297e), mSide=fm(0x4a3da6), mRoof=fm(0x6f62d2), mFront=fm(0x5546b8);
+      function pl(w,h,x,y,z,ry,m){ var me=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m); me.position.set(x,y,z); me.rotation.y=ry||0; wh.add(me); return me; }
+      pl(Wd,H,L,H/2,0,Math.PI/2,mBack); pl(L,H,L/2,H/2,Wd/2,0,mSide); pl(L,H,L/2,H/2,-Wd/2,0,mSide); var roof=pl(L,Wd,L/2,H,0,0,mRoof); roof.rotation.x=-Math.PI/2;
       var fs=new THREE.Shape(); fs.moveTo(-Wd/2,0); fs.lineTo(Wd/2,0); fs.lineTo(Wd/2,H); fs.lineTo(-Wd/2,H); fs.lineTo(-Wd/2,0); var hole=new THREE.Path(); hole.moveTo(-gw/2,0); hole.lineTo(-gw/2,gh); hole.lineTo(gw/2,gh); hole.lineTo(gw/2,0); hole.lineTo(-gw/2,0); fs.holes.push(hole);
-      var front=new THREE.Mesh(new THREE.ShapeGeometry(fs),gm); front.rotation.y=Math.PI/2; wh.add(front);
+      var front=new THREE.Mesh(new THREE.ShapeGeometry(fs),mFront); front.rotation.y=Math.PI/2; wh.add(front);
       var P=[]; function sg(a,b,c,d,e,f){ P.push(a,b,c,d,e,f); } function rect(x,y0,y1,z0,z1){ sg(x,y0,z0,x,y1,z0); sg(x,y1,z0,x,y1,z1); sg(x,y1,z1,x,y0,z1); }
       [[0,0],[L,0]].forEach(function(q){ sg(q[0],0,-Wd/2,q[0],0,Wd/2); sg(q[0],H,-Wd/2,q[0],H,Wd/2); }); [-Wd/2,Wd/2].forEach(function(z){ sg(0,0,z,L,0,z); sg(0,H,z,L,H,z); sg(0,0,z,0,H,z); sg(L,0,z,L,H,z); });
       sg(0,H+.6,-Wd/2,L,H+.6,-Wd/2); sg(0,H+.6,Wd/2,L,H+.6,Wd/2); sg(0,H+.6,-Wd/2,0,H+.6,Wd/2); sg(L,H+.6,-Wd/2,L,H+.6,Wd/2); [[0,-Wd/2],[0,Wd/2],[L,-Wd/2],[L,Wd/2]].forEach(function(q){ sg(q[0],H,q[1],q[0],H+.6,q[1]); });
-      for(var x=4;x<L;x+=4){ sg(x,0,Wd/2+.02,x,H,Wd/2+.02); sg(x,0,-Wd/2-.02,x,H,-Wd/2-.02); } sg(0,H*.72,-Wd/2,0,H*.72,-gw/2-2); sg(0,H*.72,gw/2+2,0,H*.72,Wd/2);
-      [-8,0,8].forEach(function(z){ rect(-.03,0,gh,z-gw/2,z+gw/2); if(z!==0) for(var y=.6;y<gh;y+=.6) sg(-.03,y,z-gw/2,-.03,y,z+gw/2); });
+      sg(0,H*.72,-Wd/2,0,H*.72,-gw/2-2); sg(0,H*.72,gw/2+2,0,H*.72,Wd/2);
+      [-8,0,8].forEach(function(z){ rect(-.03,0,gh,z-gw/2,z+gw/2); });
       sg(-3,6,-Wd/2+1,-3,6,Wd/2-1); sg(-3,6,-Wd/2+1,0,6.4,-Wd/2+1); sg(-3,6,Wd/2-1,0,6.4,Wd/2-1); sg(-3,6,-Wd/2+1,-3,5.8,-Wd/2+1); sg(-3,6,Wd/2-1,-3,5.8,Wd/2-1);
-      /* racks inside, seen through the glass */
-      [-10,-5.5,5.5,10].forEach(function(z){ for(var x=8;x<=L-3;x+=5){ sg(x,0,z-1,x,6,z-1); sg(x,0,z+1,x,6,z+1); } for(var y=1.5;y<=6;y+=1.5){ sg(8,y,z-1,L-3,y,z-1); sg(8,y,z+1,L-3,y,z+1); } });
-      var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(P,3)); var lm0=new THREE.LineBasicMaterial({color:0xd6ccff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}); wh.add(new THREE.LineSegments(g,lm0)); whLines.push([lm0,1]);
+      var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(P,3)); var lm0=new THREE.LineBasicMaterial({color:0xd6ccff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}); wh.add(new THREE.LineSegments(g,lm0)); whLines.push([lm0,.7]);
       /* a mint band along the front edge of the roof marks the building from far away */ var bm=new THREE.LineBasicMaterial({color:0x9fe8d2,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}), bg2=new THREE.BufferGeometry(); bg2.setAttribute('position',new THREE.Float32BufferAttribute([-.05,H+.3,-Wd/2,-.05,H+.3,Wd/2, -.05,H*.72+.1,-gw/2-2,-.05,H*.72+.1,gw/2+2, 0,H+.3,-Wd/2,L,H+.3,-Wd/2, 0,H+.3,Wd/2,L,H+.3,Wd/2],3)); wh.add(new THREE.LineSegments(bg2,bm)); whLines.push([bm,1]);
+      [-8,8].forEach(function(z){ var cd=new THREE.Mesh(new THREE.PlaneGeometry(gw,gh),fm(0x2a2160)); cd.rotation.y=Math.PI/2; cd.position.set(-.04,gh/2,z); wh.add(cd); });
       /* the roll-up door of the middle gate, and a mint glow on the floor inside */
       var dm=new THREE.MeshBasicMaterial({color:0x2a2160,transparent:true,opacity:0,side:THREE.DoubleSide,fog:false}), door=new THREE.Mesh(new THREE.PlaneGeometry(gw,gh),dm); door.geometry.translate(0,-gh/2,0); door.rotation.y=Math.PI/2; door.position.set(-.05,gh,0); wh.add(door); whLines.push([dm,.95]);
       var sl=[]; for(var y=.35;y<gh;y+=.35) sl.push(-gw/2,-y,.02,gw/2,-y,.02, -gw/2,-y,-.02,gw/2,-y,-.02); var sgm=new THREE.BufferGeometry(); sgm.setAttribute('position',new THREE.Float32BufferAttribute(sl,3)); var slm=new THREE.LineBasicMaterial({color:0xb9b0ff,transparent:true,opacity:0,fog:false}); door.add(new THREE.LineSegments(sgm,slm)); whLines.push([slm,.6]);
