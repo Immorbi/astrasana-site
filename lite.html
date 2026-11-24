@@ -308,7 +308,42 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 }
 .btn:active,.nav .cta:active{transform:scale(.97)}
 .lmenu{display:none}.lm-only{display:none}@media (max-width:560px){header.nav .cta{display:none}.vtog{margin-right:0}.nav.open #lnav .lm-only{display:block}}@media (max-width:920px){.lmenu{flex:0 0 44px;display:grid;place-items:center;width:44px;height:44px;margin-left:8px;border-radius:12px;border:1px solid rgba(196,176,255,.28);background:none;color:#f3eeeb;cursor:pointer}.lmenu svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}.nav.open #lnav{display:flex!important;position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;gap:0;padding:8px;border-radius:16px;background:#2a0d4a;box-shadow:0 20px 40px -12px rgba(0,0,0,.6),inset 0 0 0 1px rgba(196,176,255,.2)}.nav.open #lnav a{display:block;padding:14px 16px;font-size:17px}}@media (pointer:coarse){footer a,.foot a,.contact a{display:inline-block;padding-block:10px}}</style>
-<style>.vtog{display:inline-flex;align-items:center;gap:2px;padding:3px;margin-right:12px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(196,176,255,.28)}.vtog a{padding:6px 12px;border-radius:8px;font-size:14px;line-height:1;color:rgba(243,238,235,.7);text-decoration:none;transition:background .2s,color .2s}.vtog a:hover{color:#f3eeeb}.vtog a.on{background:rgba(196,176,255,.18);color:#f3eeeb}@media (max-width:1240px){.vtog{margin-left:auto}}@media (pointer:coarse){.vtog a{padding:14px 14px}}</style></head>
+<style>.vtog{display:inline-flex;align-items:center;gap:2px;padding:3px;margin-right:12px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(196,176,255,.28)}.vtog a{padding:6px 12px;border-radius:8px;font-size:14px;line-height:1;color:rgba(243,238,235,.7);text-decoration:none;transition:background .2s,color .2s}.vtog a:hover{color:#f3eeeb}.vtog a.on{background:rgba(196,176,255,.18);color:#f3eeeb}@media (max-width:1240px){.vtog{margin-left:auto}}@media (pointer:coarse){.vtog a{padding:14px 14px}}</style><style>
+/* closer to the client's reference: open sections on the page background, slanted photos, partner tiles and number chips, quiet dark tiles */
+.p-about,.p-patients{background:none;box-shadow:none;border-radius:0;overflow:visible;padding-inline:0}
+.p-about::before,.p-patients::before{display:none}
+.panel + .panel{margin-top:clamp(56px,8vw,120px)}
+.p-news{border-radius:24px}
+/* slanted photos: a parallelogram that leans like the logo */
+.photo{border-radius:0;box-shadow:none;overflow:visible;filter:drop-shadow(0 30px 50px rgba(0,0,0,.55))}
+.photo img{clip-path:polygon(16% 0,100% 0,84% 100%,0 100%);aspect-ratio:5/4}
+.photo::after{display:none}
+.p-about .photo{margin-right:calc(-1 * max(16px,(100vw - var(--wrap)) / 2))}
+.p-patients .photo{margin-left:calc(-1 * max(16px,(100vw - var(--wrap)) / 2))}
+/* group companies: plain columns, no tiles */
+.geo .card{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 0 0 0;border-radius:0}
+.geo .card::before{display:none}
+.geo{gap:28px}
+/* partners keep their framed grid of logos (the client likes it) */
+.p-partners{border-radius:24px}
+/* patient steps: no cards, a slanted number chip, then title and text */
+.steps{gap:clamp(20px,3vw,40px)}
+.steps .card,.steps li:first-child .card{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;border-radius:0}
+.steps .card::before{display:none}
+.steps .n{position:relative;isolation:isolate;display:inline-block;padding:5px 16px;color:#fff;font-weight:600}
+.steps .n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:5px;transform:skewX(-14deg);background:linear-gradient(135deg,#7a5cf0,#5a3a9a);box-shadow:0 8px 22px -8px rgba(122,92,240,.8)}
+.steps b{margin-top:18px}
+/* products keep their glass cards (the client likes them) */
+.p-port{border-radius:24px}
+/* contact: open and left-aligned */
+.p-contact{background:none;box-shadow:none;border-radius:0;overflow:visible;padding-inline:0;text-align:left}
+.p-contact::before{display:none}
+.p-contact .close-title{margin-left:0;font-size:clamp(40px,5vw,72px)}
+.p-contact .lede{margin-left:0}
+.p-contact .ctas{justify-content:flex-start}
+@media (min-width:1001px){ .p-patients .pat-grid{grid-template-columns:1.05fr .95fr} .p-patients .photo{order:-1} }
+@media (max-width:1000px){ .p-about .photo,.p-patients .photo{margin-inline:0} }
+</style></head>
 <body>
 <div class="cur" aria-hidden="true"></div><div class="cur-halo" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
