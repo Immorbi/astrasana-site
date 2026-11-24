@@ -2243,6 +2243,46 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       function lines(arr,col,key){ var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
         var l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:true})); room.add(l); room.userData[key]=l; }
       lines(ledPts,0x8ff5c8,'led'); lines(frame,0xa98cf0,'frame'); lines(det,0x9b86e0,'det'); lines(green,0x7df0bd,'green'); lines(net,0xc9c0f5,'net'); })();
+    /* greenhouse-detail */ (function(){ if(!room.userData.frame) return;
+      var X0=-64, X1=-3, C=.6, W=5.6, FL=-3.7, EV=4.4, RG=8.6, N=20, dx=(X1-X0)/N, UY=-.4;
+      var glaze=[], vent=[], wire=[], pipe=[], drain=[], door=[], fan=[];
+      function L(a,x1,y1,z1,x2,y2,z2){ a.push(x1,y1,z1,x2,y2,z2); }
+      [-1,1].forEach(function(sd){ var z=C+sd*W;
+        /* glazing: horizontal rails up the walls, purlins on the roof slopes, a mullion in the middle of every bay */
+        for(var y=FL+.95;y<EV-1.3;y+=.95) L(glaze,X0,y,z,X1,y,z);
+        for(var k=1;k<4;k++){ var q=k/4, y2=EV+.9+(RG-EV-.9)*q, z2=C+sd*(W-1.6)*(1-q); L(glaze,X0,y2,z2,X1,y2,z2); }
+        for(var i=0;i<N;i++){ var x=X0+i*dx+dx/2; L(glaze,x,FL,z,x,EV-1.4,z); L(glaze,x,EV+.9,C+sd*(W-1.6),x,RG,C); }
+        /* roof vents: every fourth bay a pane hinged at the ridge stands open */
+        for(var i=1;i<N;i+=4){ var xa=X0+i*dx+.25, xb=X0+(i+1)*dx-.25, ty=RG+.55, tz=C+sd*1.5;
+          L(vent,xa,RG,C,xa,ty,tz); L(vent,xb,RG,C,xb,ty,tz); L(vent,xa,ty,tz,xb,ty,tz); L(vent,xa,RG,C,xb,RG,C); L(vent,(xa+xb)/2,RG,C,(xa+xb)/2,ty,tz); }
+        /* drip irrigation: a pipe along the front of each tier with an emitter line down every 0.9 */
+        [[FL+.14,2.95],[UY+.14,3.0]].forEach(function(r){ var zp=C+sd*r[1]; L(pipe,X0,r[0],zp,X1,r[0],zp); for(var x=X0+.5;x<X1;x+=.9) L(pipe,x,r[0],zp,x,r[0]+.1,zp+sd*.35); });
+        /* drain channel with a grate along each side of the aisle */
+        var zd=C+sd*2.55; L(drain,X0,FL+.01,zd,X1,FL+.01,zd); L(drain,X0,FL+.01,zd+sd*.22,X1,FL+.01,zd+sd*.22); for(var x=X0;x<X1;x+=.3) L(drain,x,FL+.01,zd,x,FL+.01,zd+sd*.22);
+        /* hanging LED fixtures over the upper tier, on two wires each */
+        for(var i=0;i<N;i++){ var xm=X0+i*dx+dx/2, zl=C+sd*3.95, yl=2.6; [-1,1].forEach(function(e){ L(wire,xm+e*1.05,yl,zl,xm+e*1.05,EV+.55,zl); }); } });
+      /* entrance gable: door frame on the aisle and two round climate fans */
+      [X0].forEach(function(x){ L(door,x,FL,C-1.25,x,FL+3.2,C-1.25); L(door,x,FL,C+1.25,x,FL+3.2,C+1.25); L(door,x,FL+3.2,C-1.25,x,FL+3.2,C+1.25); L(door,x,FL+2.55,C-1.25,x,FL+2.55,C+1.25); L(door,x,FL,C,x,FL+2.55,C);
+        [-1,1].forEach(function(sd){ var cy=EV+1.75, cz=C+sd*1.7, r=.62, pv=null;
+          for(var k=0;k<=36;k++){ var a=k/36*6.283, pt=[x,cy+Math.sin(a)*r,cz+Math.cos(a)*r]; if(pv) L(fan,pv[0],pv[1],pv[2],pt[0],pt[1],pt[2]); pv=pt; }
+          for(var k=0;k<=36;k++){ var a=k/36*6.283, pt=[x,cy+Math.sin(a)*r*1.12,cz+Math.cos(a)*r*1.12]; if(k) L(fan,pv[0],pv[1],pv[2],pt[0],pt[1],pt[2]); pv=pt; }
+          for(var b=0;b<5;b++){ var a=b/5*6.283; L(fan,x,cy,cz,x,cy+Math.sin(a+.35)*r*.9,cz+Math.cos(a+.35)*r*.9); L(fan,x,cy+Math.sin(a+.35)*r*.9,cz+Math.cos(a+.35)*r*.9,x,cy+Math.sin(a+.75)*r*.55,cz+Math.cos(a+.75)*r*.55); } }); });
+      /* every added part fades with the room: its opacity follows the frame lines' opacity (0.35 at full) */
+      var parts=[];
+      function lines(arr,col,base){ var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
+        var m=new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:true}); var o=new THREE.LineSegments(g,m); room.add(o); parts.push([o,m,base]); }
+      lines(glaze,0x8f78e0,.55); lines(vent,0xc2b2ff,.8); lines(wire,0x9b86e0,.5); lines(pipe,0x7df0bd,.55); lines(drain,0x9b86e0,.55); lines(door,0xc2b2ff,.9); lines(fan,0xb6a6f5,.75);
+      /* LED fixtures: one merged set of thin glowing bars */
+      var bars=[]; [-1,1].forEach(function(sd){ for(var i=0;i<N;i++){ var b=new THREE.BoxGeometry(2.5,.04,.14); b.translate(X0+i*dx+dx/2,2.6,C+sd*3.95); bars.push(b); } });
+      var barM=new THREE.MeshBasicMaterial({color:0xe6dcff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:true});
+      var barO=new THREE.Mesh(THREE.BufferGeometryUtils.mergeBufferGeometries(bars),barM); room.add(barO); parts.push([barO,barM,.42]);
+      /* glass panes: walls and roof slopes, barely there */
+      var panes=[]; [-1,1].forEach(function(sd){ var w=new THREE.PlaneGeometry(X1-X0,EV-1.4-FL); w.translate((X0+X1)/2,(EV-1.4+FL)/2,C+sd*W); panes.push(w);
+        var rl=Math.hypot(RG-EV-.9,W-1.6), r=new THREE.PlaneGeometry(X1-X0,rl); r.rotateX(-Math.PI/2+sd*Math.atan2(RG-EV-.9,W-1.6)); r.translate((X0+X1)/2,(EV+.9+RG)/2,C+sd*(W-1.6)/2); panes.push(r); });
+      var paneM=new THREE.MeshBasicMaterial({color:0x8f7ad8,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:true});
+      var paneO=new THREE.Mesh(THREE.BufferGeometryUtils.mergeBufferGeometries(panes),paneM); room.add(paneO); parts.push([paneO,paneM,.05]);
+      var ref=room.userData.frame.material;
+      parts.forEach(function(q){ q[0].onBeforeRender=function(){ q[1].opacity=q[2]*Math.min(1,ref.opacity/.35); }; }); })();
     /* light at the far end of the greenhouse */
     var endGlow=pool(X1G+3,-1.2,.6,26,0x9fe8d2,0); pools.push(endGlow);
     /* violet grow light washing over the racks */
