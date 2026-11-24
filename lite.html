@@ -358,6 +358,15 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .steps .n{background:#1c0433}
 .geo li.rv:not(.in){transform:translateY(30px)}
 @media (prefers-reduced-motion:reduce){ .photo,.photo img,.steps::before,.steps .n::before{transition:none} .js .photo.rv:not(.in){clip-path:polygon(16% 0,100% 0,84% 100%,0 100%)} .steps::before{transform:none} }
+
+/* green accents like the earlier design: buttons, the top-bar Contact, link arrows and news labels */
+:root{--green:#9fe8d2;--green-2:#c8f5e7}
+.btn-mint,.nav .cta{background:var(--green);color:#14301f;box-shadow:0 0 26px rgba(159,232,210,.35)}
+@media (hover:hover) and (pointer:fine){ .btn-mint:hover,.nav .cta:hover{background:var(--green-2);box-shadow:0 0 40px rgba(159,232,210,.6)} .btn-glass:hover{box-shadow:inset 0 0 0 1px var(--green)} }
+.link svg{color:var(--green)}
+.news .tag-s{color:var(--green)}
+.steps li:first-child .n::before{background:linear-gradient(135deg,#9fe8d2,#5fc4a6);box-shadow:0 8px 22px -8px rgba(159,232,210,.8)}
+.steps li:first-child .n{color:#14301f}
 </style></head>
 <body>
 <div class="cur" aria-hidden="true"></div><div class="cur-halo" aria-hidden="true"></div>
