@@ -138,7 +138,8 @@ h2{font-weight:500;font-size:clamp(32px,3.8vw,56px);line-height:1.04;letter-spac
 .pat-grid .lede{margin-top:20px}
 .pat-grid .link{margin-top:16px}
 .steps{margin-top:clamp(40px,5vw,64px);list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.steps .card{padding:24px 22px 26px}
+.steps li{display:flex}
+.steps .card{flex:1;padding:24px 22px 26px}
 .steps .n{font-family:var(--sans);font-size:12px;color:var(--mint)}
 .steps b{display:block;margin-top:14px;font-weight:600;font-size:17px}
 .steps p{margin-top:8px;font-size:14px;line-height:1.6;color:var(--fg-2)}
@@ -240,7 +241,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .cur,.cur-halo{position:fixed;left:0;top:0;z-index:100;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .3s ease}
 .cur{width:10px;height:10px;margin:-5px 0 0 -5px;background:#f4f0ff;box-shadow:0 0 6px 2px rgba(196,176,255,.95),0 0 18px 6px rgba(196,176,255,.55)}
 .cur-halo{width:44px;height:44px;margin:-22px 0 0 -22px;background:radial-gradient(closest-side,rgba(196,176,255,.32),rgba(196,176,255,.08) 70%,transparent);box-shadow:inset 0 0 0 1px rgba(196,176,255,.35);transition:opacity .3s ease,width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background-color .3s ease}
-.cur-on .cur,.cur-on .cur-halo{opacity:1}
+.cur-on .cur{opacity:1}
+.cur-halo{display:none!important}
 .cur-hot .cur-halo{width:72px;height:72px;margin:-36px 0 0 -36px;box-shadow:inset 0 0 0 1px rgba(196,176,255,.6),0 0 30px rgba(196,176,255,.35)}
 @media (hover:hover) and (pointer:fine){ html.cur-ready, html.cur-ready a, html.cur-ready button{cursor:none} }
 
@@ -780,12 +782,12 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
         <p class="lede rv" style="--d:100ms">Rigorous quality control from prescription cannabinoids to consumer wellness products.</p>
       </div>
       <ul class="port">
-        <li class="card hov rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.2 9.2l5.6 5.6"/></svg></span><span class="code">Rx</span><b>Pharmaceuticals</b><p>Medical-grade products for pharmacies and clinics across our network.</p></li>
-        <li class="card dim hov rv" style="--d:70ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-8.3 5.2-14 14-14 0 8.8-5.7 14-14 14z"/><path d="M5 19l8.5-8.5"/></svg></span><span class="code">Cb</span><b>Cannabinoids</b><p>THC and CBD formulations for therapeutic applications.</p></li>
-        <li class="card dim hov rv" style="--d:140ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5s6 6.4 6 10.8a6 6 0 0 1-12 0C6 9.9 12 3.5 12 3.5z"/><path d="M9.3 14.6a2.8 2.8 0 0 0 2.4 2.6"/></svg></span><span class="code">Co</span><b>Cosmetics</b><p>CBD-infused skincare meeting Swiss quality standards.</p></li>
-        <li class="card dim hov rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.4 1.4 0 0 1 0 2l-6.3 6.3a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.4"/></svg></span><span class="code">Wl</span><b>White Label</b><p>Contract manufacturing and private-label solutions for B2B partners.</p></li>
-        <li class="card dim hov rv" style="--d:70ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.4-9.2-9.3A4.9 4.9 0 0 1 12 7.2a4.9 4.9 0 0 1 9.2 3.5C19.5 15.6 12 20 12 20z"/><path d="M6.5 12.5h2.8l1.5-2.6 2.6 5 1.5-2.4h2.6"/></svg></span><span class="code">We</span><b>Wellness</b><p>Bridging pharmaceutical science and everyday health.</p></li>
-        <li class="card hov rv" style="--d:140ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="10" r="1.7"/><circle cx="10" cy="6.2" r="1.7"/><circle cx="14" cy="6.2" r="1.7"/><circle cx="17.5" cy="10" r="1.7"/><path d="M12 11.5c-2.9 0-5.3 3-5.3 5.2 0 1.5 1.3 2.1 2.7 1.6.9-.3 1.7-.5 2.6-.5s1.7.2 2.6.5c1.4.5 2.7-.1 2.7-1.6 0-2.2-2.4-5.2-5.3-5.2z"/></svg></span><span class="code">Vt</span><b>Animal Health</b><p>ASTRAVET &amp; Cansuna - CBD products for animals from vet practice to everyday life.</p></li>
+        <li class="card hov rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.2 9.2l5.6 5.6"/></svg></span><b>Pharmaceuticals</b><p>Medical-grade products for pharmacies and clinics across our network.</p></li>
+        <li class="card dim hov rv" style="--d:70ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-8.3 5.2-14 14-14 0 8.8-5.7 14-14 14z"/><path d="M5 19l8.5-8.5"/></svg></span><b>Cannabinoids</b><p>THC and CBD formulations for therapeutic applications.</p></li>
+        <li class="card dim hov rv" style="--d:140ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5s6 6.4 6 10.8a6 6 0 0 1-12 0C6 9.9 12 3.5 12 3.5z"/><path d="M9.3 14.6a2.8 2.8 0 0 0 2.4 2.6"/></svg></span><b>Cosmetics</b><p>CBD-infused skincare meeting Swiss quality standards.</p></li>
+        <li class="card dim hov rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.4 1.4 0 0 1 0 2l-6.3 6.3a1.4 1.4 0 0 1-2 0z"/><circle cx="8" cy="8" r="1.4"/></svg></span><b>White Label</b><p>Contract manufacturing and private-label solutions for B2B partners.</p></li>
+        <li class="card dim hov rv" style="--d:70ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.4-9.2-9.3A4.9 4.9 0 0 1 12 7.2a4.9 4.9 0 0 1 9.2 3.5C19.5 15.6 12 20 12 20z"/><path d="M6.5 12.5h2.8l1.5-2.6 2.6 5 1.5-2.4h2.6"/></svg></span><b>Wellness</b><p>Bridging pharmaceutical science and everyday health.</p></li>
+        <li class="card hov rv" style="--d:140ms"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="10" r="1.7"/><circle cx="10" cy="6.2" r="1.7"/><circle cx="14" cy="6.2" r="1.7"/><circle cx="17.5" cy="10" r="1.7"/><path d="M12 11.5c-2.9 0-5.3 3-5.3 5.2 0 1.5 1.3 2.1 2.7 1.6.9-.3 1.7-.5 2.6-.5s1.7.2 2.6.5c1.4.5 2.7-.1 2.7-1.6 0-2.2-2.4-5.2-5.3-5.2z"/></svg></span><b>Animal Health</b><p>ASTRAVET &amp; Cansuna - CBD products for animals from vet practice to everyday life.</p></li>
       </ul>
     </section>
 

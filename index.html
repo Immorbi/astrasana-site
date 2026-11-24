@@ -2185,13 +2185,17 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
        long LED bars under each tier, a trellis net over the bushes, an air duct under the upper tier; drawn in the brand's glass style */
     (function(){ var lowLeaf=new THREE.ExtrudeGeometry(ls,{depth:.06,bevelEnabled:false,curveSegments:6}); lowLeaf.translate(0,0,-.03);
       var stemG=new THREE.CylinderGeometry(.06,.08,1,5,1,true); stemG.translate(0,.5,0);
-      var leaves=[], stems=[], M=new THREE.Matrix4(), Q=new THREE.Quaternion(), E=new THREE.Euler(), V=new THREE.Vector3(), Sc=new THREE.Vector3();
-      function sprout(x,y,z,s){ var h=(.9+Math.random()*.5)*s; V.set(x,y,z); Q.setFromEuler(E.set(0,Math.random()*6.28,0)); Sc.set(s,h,s); M.compose(V,Q,Sc); var g=stemG.clone(); g.applyMatrix4(M); stems.push(g);
+      var leaves=[], stems=[], pots=[], potG=new THREE.CylinderGeometry(.26,.19,.42,9,1,true), M=new THREE.Matrix4(), Q=new THREE.Quaternion(), E=new THREE.Euler(), V=new THREE.Vector3(), Sc=new THREE.Vector3();
+      function sprout(x,y,z,s){ var pg=potG.clone(); pg.translate(x,y+.21,z); pots.push(pg); y+=.36; var h=(.9+Math.random()*.5)*s; V.set(x,y,z); Q.setFromEuler(E.set(0,Math.random()*6.28,0)); Sc.set(s,h,s); M.compose(V,Q,Sc); var g=stemG.clone(); g.applyMatrix4(M); stems.push(g);
         [1,-1].forEach(function(d){ var lg=lowLeaf.clone(); var L=new THREE.Matrix4().makeRotationZ(.5); if(d<0){ L=new THREE.Matrix4().makeScale(-1,1,1).multiply(new THREE.Matrix4().makeRotationZ(.5)); } L.premultiply(new THREE.Matrix4().makeRotationX(.45)); lg.applyMatrix4(L); lg.applyMatrix4(new THREE.Matrix4().makeScale(.32*s,.32*s,.32*s)); lg.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.random()*6.28)); lg.applyMatrix4(new THREE.Matrix4().makeTranslation(x,y+h,z)); leaves.push(lg); }); }
       var shelfMat=glassMat({rim:.3,a:'.07'}); roomMats.push(shelfMat);
-      var ledPts=[], frame=[], X0=-64, X1=-3;
+      var ledPts=[], frame=[], det=[], X0=-64, X1=-3;
       function bed(y,z){ var plank=new THREE.Mesh(new THREE.BoxGeometry(X1-X0,.14,2.8),shelfMat); plank.position.set((X0+X1)/2,y,z); room.add(plank);
         for(var x=X0+1;x<=X1-1;x+=1.3) [-.6,.6].forEach(function(dz){ sprout(x+(Math.random()-.5)*.3,y+.07,z+dz+(Math.random()-.5)*.3,.9+Math.random()*.25); });
+        /* tray with a raised rim, a drip line along each row with a dripper into every pot */
+        [-1.4,1.4].forEach(function(dz){ det.push(X0,y+.07,z+dz,X1,y+.07,z+dz, X0,y+.42,z+dz,X1,y+.42,z+dz); });
+        for(var x=X0;x<=X1;x+=2.6) det.push(x,y+.07,z-1.4,x,y+.42,z-1.4, x,y+.07,z+1.4,x,y+.42,z+1.4);
+        [-.6,.6].forEach(function(dz){ det.push(X0,y+.62,z+dz+.28,X1,y+.62,z+dz+.28); for(var x=X0+1;x<=X1-1;x+=1.3) det.push(x,y+.62,z+dz+.28,x,y+.45,z+dz+.1); });
         var ny=y+1.55; [-1.2,-.4,.4,1.2].forEach(function(dz){ frame.push(X0,ny,z+dz,X1,ny,z+dz); }); for(var x=X0;x<=X1;x+=1.3) frame.push(x,ny,z-1.2,x,ny,z+1.2); }
       /* two racks of two tiers on both sides of the aisle; the camera flies down the aisle between them */
       var BZ=-2.7, FZ=3.9;
@@ -2201,9 +2205,22 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
         for(var x=X0;x<=X1+.01;x+=(X1-X0)/8){ frame.push(x,-3.7,z-1.4,x,6.8,z-1.4, x,-3.7,z+1.4,x,6.8,z+1.4);
           for(var yy=-3.2;yy<6.6;yy+=.55) frame.push(x,yy,z+1.42*sd,x,yy+.22,z+1.42*sd); }
         frame.push(X0,6.8,z-1.4,X1,6.8,z-1.4, X0,6.8,z+1.4,X1,6.8,z+1.4);
+        /* LED panels across each tier: a bar with its driver box, every few steps */
+        [1.95,6.6].forEach(function(ly){ for(var x=X0+1.3;x<X1;x+=2.6){ ledPts.push(x,ly,z-1.1,x,ly,z+1.1); det.push(x-.18,ly+.08,z-1.15,x+.18,ly+.08,z-1.15, x-.18,ly+.08,z+1.15,x+.18,ly+.08,z+1.15, x-.18,ly+.08,z-1.15,x-.18,ly+.08,z+1.15, x+.18,ly+.08,z-1.15,x+.18,ly+.08,z+1.15); } });
+        /* circulation fans clipped to the posts on the aisle side */
+        for(var x=X0+(X1-X0)/8;x<X1-1;x+=(X1-X0)/4){ var fz=z+1.5*sd, fy=4.9, fr2=.85, a0=0;
+          for(var k=0;k<24;k++){ var a=k/24*6.283, b=(k+1)/24*6.283; det.push(x+Math.cos(a)*fr2,fy+Math.sin(a)*fr2,fz,x+Math.cos(b)*fr2,fy+Math.sin(b)*fr2,fz, x+Math.cos(a)*fr2*.25,fy+Math.sin(a)*fr2*.25,fz,x+Math.cos(b)*fr2*.25,fy+Math.sin(b)*fr2*.25,fz); }
+          for(var k=0;k<5;k++){ a0=k/5*6.283; det.push(x+Math.cos(a0)*fr2*.25,fy+Math.sin(a0)*fr2*.25,fz,x+Math.cos(a0+.5)*fr2*.9,fy+Math.sin(a0+.5)*fr2*.9,fz); }
+          for(var k=-2;k<=2;k++) det.push(x+k*.35,fy-fr2,fz,x+k*.35,fy+fr2,fz); }
         });
+      /* floor of the aisle: tiles and a drain channel */
+      for(var x=X0;x<=X1;x+=1.3) det.push(x,-3.7,BZ+1.4,x,-3.7,FZ-1.4);
+      det.push(X0,-3.7,(BZ+FZ)/2-.25,X1,-3.7,(BZ+FZ)/2-.25, X0,-3.7,(BZ+FZ)/2+.25,X1,-3.7,(BZ+FZ)/2+.25);
       var BGU=THREE.BufferGeometryUtils, leafM=glassMat({rim:1.5,body:'vec3(.14,.36,.32)',a:'.34'}), stemM=glassMat({rim:1.3,body:'vec3(.14,.36,.32)',a:'.3'}); roomMats.push(leafM,stemM);
       room.add(new THREE.Mesh(BGU.mergeBufferGeometries(leaves),leafM)); room.add(new THREE.Mesh(BGU.mergeBufferGeometries(stems),stemM));
+      var potM=glassMat({rim:1.1,body:'vec3(.22,.16,.4)',a:'.22'}); roomMats.push(potM); room.add(new THREE.Mesh(BGU.mergeBufferGeometries(pots),potM));
+      var dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.Float32BufferAttribute(det,3));
+      var dl=new THREE.LineSegments(dg,new THREE.LineBasicMaterial({color:0xcfc6ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); room.add(dl); room.userData.det=dl;
       var lg=new THREE.BufferGeometry(); lg.setAttribute('position',new THREE.Float32BufferAttribute(ledPts,3));
       var led=new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0xeee6ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); room.add(led); room.userData.led=led;
       var fg=new THREE.BufferGeometry(); fg.setAttribute('position',new THREE.Float32BufferAttribute(frame,3));
@@ -2271,9 +2288,14 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var parcels=[], pinGeo=new THREE.CylinderGeometry(.06,.06,2.6,8), headGeo=new THREE.SphereGeometry(.48,18,12);
     var pinMat=new THREE.MeshBasicMaterial({color:0xe9fff8,transparent:true,opacity:0,fog:false}); mapMats.push([pinMat,.95]);
     var parcelGeo=new THREE.SphereGeometry(.62,24,16), parcelMat=glassMat({rim:1.8,body:'vec3(.42,.3,.72)',a:'.62'}); mapMats.push([parcelMat,1,true]);
+    /* a plain gabled house for a pharmacy whose building is missing from swissBUILDINGS3D, in the same units (dm, y up) */
+    function genHouse(){ var X=100,Z=70,W=140,R=200, v=[[-X,0,-Z],[X,0,-Z],[X,0,Z],[-X,0,Z],[-X,W,-Z],[X,W,-Z],[X,W,Z],[-X,W,Z],[-X,R,0],[X,R,0]],
+        f=[[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7],[4,5,9],[4,9,8],[7,6,9],[7,9,8],[4,8,7],[5,6,9]], ed=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7],[8,9],[4,8],[7,8],[5,9],[6,9]], t=[], e=[];
+      f.forEach(function(q){ q.forEach(function(k){ t.push.apply(t,v[k]); }); }); ed.forEach(function(q){ e.push.apply(e,v[q[0]]); e.push.apply(e,v[q[1]]); });
+      return {t:t,e:e,w:20}; }
     PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
       var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
-      var H=SITES&&SITES.ph&&SITES.ph[i];
+      var H=(SITES&&SITES.ph&&SITES.ph[i])||(SITES&&genHouse());
       if(H){ /* the pharmacy's own building from swissBUILDINGS3D, drawn at one common size so every pharmacy reads */
         var hk=1.9/Math.max(8,H.w)*.1, hs=new THREE.Group(); hs.rotation.x=Math.PI/2; hs.scale.setScalar(hk); pin.add(hs);
         var hg=new THREE.BufferGeometry(); hg.setAttribute('position',new THREE.Float32BufferAttribute(H.t,3)); hg.computeVertexNormals();
@@ -2295,7 +2317,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function apply(p){
       uProg.value=.002+1.098*ss(.06,.74,p); uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
-      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
+      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       if(tagSite){ var sv=1-ss(.03,.08,p), bv=(1-ss(.04,.08,p))*(1-.5*ss(.02,.05,p)); tagSite.g.visible=bv>.001; tagSite.body.material.uniforms.op.value=bv; tagSite.edge.material.opacity=.9*bv; tagSite.nb.material.opacity=.6*sv; tagSite.grid.material.opacity=.32*sv; }
       var bt=ss(.16,.74,p); batch.visible=p>.14&&p<.76; curve.getPointAt(Math.min(1,bt),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       uFade.value=.94*ss(.72,.86,p); var h=ss(.3,.42,p)*(1-ss(.76,.86,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.22*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.32*h; hq.userData.grid.material.opacity=.3*h; } hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;
