@@ -2201,7 +2201,8 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
         [[.34,.62,.32],[.6,.82,.55],[.84,.6,.85]].forEach(function(q,j){ var y=FL+h*q[0], yw=yaw+j*1.57; leaf(x+bx*q[0]*q[0],y,z,q[1]*s,q[2],yw,false); leaf(x+bx*q[0]*q[0],y,z,q[1]*s,q[2],yw,true); });
         leaf(x+bx,FL+h,z,.32*s,1.15,yaw+.8,false); leaf(x+bx,FL+h,z,.32*s,1.15,yaw+.8,true); }
       [-1,1].forEach(function(sd){ var z=C+sd*3.9;
-        for(var x=X0+.8;x<X1;x+=2.7) plant(x+(Math.random()-.5)*.4,z+(Math.random()-.5)*.3,.62+Math.random()*.14);
+        /* two rows per bed, staggered */
+        [[3.35,0],[4.55,1.35]].forEach(function(rw){ for(var x=X0+.8+rw[1];x<X1;x+=2.7) plant(x+(Math.random()-.5)*.4,C+sd*rw[0]+(Math.random()-.5)*.2,.62+Math.random()*.14); });
         /* bed: a glowing front edge, a dim back edge */
         green.push(X0,FL+.05,C+sd*2.9,X1,FL+.05,C+sd*2.9); det.push(X0,FL+.05,C+sd*4.9,X1,FL+.05,C+sd*4.9); });
       /* frames of the glass house: posts, curved knees, a gabled roof, purlins and crossed bracing between frames */
@@ -2218,8 +2219,11 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       for(var z=-2.9;z<=2.91;z+=1.45) det.push(X0,FL,C+z,X1,FL,C+z);
       /* the glowing path down the middle, gently winding */
       [-.05,0,.05].forEach(function(o){ var pp=null; for(var x=X0;x<=X1+.01;x+=.5){ var pt=new THREE.Vector3(x,FL+.03,C+o+Math.sin(x*.33)*.35+Math.sin(x*.11)*.2); if(pp) seg(ledPts,pp,pt); pp=pt; } });
-      var BGU=THREE.BufferGeometryUtils, leafM=glassMat({rim:.35,body:'vec3(.1,.38,.3)',a:'.07'}); roomMats.push(leafM);
-      room.add(new THREE.Mesh(BGU.mergeBufferGeometries(leaves),leafM));
+      /* filled leaves: solid green blades under their glowing outlines, shaded by height so the lower leaves sit darker */
+      var BGU=THREE.BufferGeometryUtils, lgm=BGU.mergeBufferGeometries(leaves), lp=lgm.attributes.position, lc=[];
+      for(var i=0;i<lp.count;i++){ var t=Math.min(1,Math.max(0,(lp.getY(i)-FL)/4)); lc.push(.07+.1*t,.3+.26*t,.24+.16*t); } lgm.setAttribute('color',new THREE.Float32BufferAttribute(lc,3));
+      var leafM=new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:0,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1,fog:true});
+      room.add(new THREE.Mesh(lgm,leafM)); room.userData.fill=leafM;
       function lines(arr,col,key){ var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
         var l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:true})); room.add(l); room.userData[key]=l; }
       lines(ledPts,0x8ff5c8,'led'); lines(frame,0xa98cf0,'frame'); lines(det,0x9b86e0,'det'); lines(green,0x7df0bd,'green'); })();
@@ -2317,7 +2321,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     function apply(p){
       uProg.value=.002+1.098*ss(.06,.74,p); uPulse.value=p<.74?uProg.value-.02:((p-.74)/.26*3)%1;
       curve.getPointAt(Math.min(1,uProg.value),tmp); tipLight.position.copy(tmp).add(new THREE.Vector3(0,1.2,2)); tipLight.intensity=.7*(1-ss(.8,.95,p));
-      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
+      var r=ss(0,.05,p)*(1-.9*ss(.26,.4,p))*(1-ss(.74,.82,p)); room.visible=r>.001; roomMats.forEach(function(m){ m.uniforms.op.value=r; }); room.userData.led.material.opacity=.7*r; room.userData.frame.material.opacity=.35*r; room.userData.det.material.opacity=.3*r; room.userData.green.material.opacity=.5*r; room.userData.fill.opacity=.95*r; endGlow.userData.o=.45*r; growGlow.userData.o=.3*r; pools[1].userData.o=.22*r;
       if(tagSite){ var sv=1-ss(.03,.08,p), bv=(1-ss(.04,.08,p))*(1-.5*ss(.02,.05,p)); tagSite.g.visible=bv>.001; tagSite.body.material.uniforms.op.value=bv; tagSite.edge.material.opacity=.9*bv; tagSite.nb.material.opacity=.6*sv; tagSite.grid.material.opacity=.32*sv; }
       var bt=ss(.16,.74,p); batch.visible=p>.14&&p<.76; curve.getPointAt(Math.min(1,bt),tmp); batch.position.copy(tmp); batch.scale.setScalar(.9*(1-ss(.72,.76,p))+.001); batch.rotation.y=p*9;
       uFade.value=.94*ss(.72,.86,p); var h=ss(.3,.42,p)*(1-ss(.76,.86,p)); hq.visible=h>.001; hqMats.forEach(function(m){ m.uniforms.op.value=h; m.uniforms.fl.value=.22*Math.max(0,1-Math.abs(batch.position.x-12.5)/4)*(batch.visible?1:0); }); hq.userData.lines.material.opacity=h; if(hq.userData.nb){ hq.userData.nb.material.opacity=.32*h; hq.userData.grid.material.opacity=.3*h; } hq.userData.door.material.opacity=.5*h*Math.max(0,1-Math.abs(batch.position.x-12.5)/3); pools[2].userData.o=.24*h;

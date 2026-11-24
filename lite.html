@@ -329,8 +329,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 .steps{gap:clamp(20px,3vw,40px)}
 .steps .card,.steps li:first-child .card{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;border-radius:0}
 .steps .card::before{display:none}
-.steps .n{position:relative;isolation:isolate;display:inline-block;padding:5px 16px;color:#fff;font-weight:600}
-.steps .n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:5px;transform:skewX(-14deg);background:linear-gradient(135deg,#7a5cf0,#5a3a9a);box-shadow:0 8px 22px -8px rgba(122,92,240,.8)}
+.steps .n{position:relative;display:inline-block;padding:5px 16px;border-radius:6px;transform:skewX(-14deg);background:linear-gradient(135deg,#7a5cf0,#5a3a9a);box-shadow:0 8px 22px -8px rgba(122,92,240,.8);color:#fff;font-weight:600}
+.steps .n i{display:inline-block;font-style:normal;transform:skewX(14deg)}
 .steps b{margin-top:18px}
 /* products keep their glass cards (the client likes them) */
 .p-port{border-radius:24px}
@@ -343,21 +343,21 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 @media (min-width:1001px){ .p-patients .pat-grid{grid-template-columns:1.05fr .95fr} .p-patients .photo{order:-1} }
 @media (max-width:1000px){ .p-about .photo,.p-patients .photo{margin-inline:0} }
 
-/* motion: the slanted frame opens along its slant; inside it the picture drifts on scroll, so the corners never move */
-.photo{clip-path:polygon(16% 0,100% 0,84% 100%,0 100%);overflow:hidden;filter:none;transition:clip-path 1.5s var(--ease) .15s,opacity .8s var(--ease)}
-.photo img{clip-path:none;translate:0 var(--py,0px);transform:scale(1.12);transition:transform 1.8s var(--ease);will-change:transform,translate}
-.js .photo.rv:not(.in){clip-path:polygon(16% 0,16% 0,0 100%,0 100%);transform:none;filter:none}
-.js .photo.rv:not(.in) img{transform:scale(1.25)}
-@media (hover:hover) and (pointer:fine){ .photo:hover img{transform:scale(1.17)} }
+/* slanted photos: the frame itself is skewed with softly rounded corners, the picture inside is skewed back and drifts on scroll;
+   the frame opens from left to right when it comes into view */
+.photo{width:94%;justify-self:center;transform:skewX(-11deg);border-radius:18px;overflow:hidden;filter:none;clip-path:inset(0 0 0 0 round 18px);transition:clip-path 1.5s var(--ease) .15s,opacity .8s var(--ease)}
+.photo img{clip-path:none;translate:0 var(--py,0px);transform:skewX(11deg) scale(1.3);transition:transform 1.8s var(--ease);will-change:transform,translate}
+.js .photo.rv:not(.in){clip-path:inset(0 100% 0 0 round 18px);transform:skewX(-11deg);filter:none}
+.js .photo.rv:not(.in) img{transform:skewX(11deg) scale(1.45)}
+@media (hover:hover) and (pointer:fine){ .photo:hover img{transform:skewX(11deg) scale(1.36)} }
 .p-patients .steps{margin-top:clamp(64px,8vw,112px)}
 .steps{position:relative}
 .steps::before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:linear-gradient(90deg,rgba(122,92,240,.9),rgba(196,176,255,.35) 70%,transparent);transform:scaleX(0);transform-origin:left;transition:transform 1.8s var(--ease) .3s;z-index:-1}
 .p-patients.in .steps::before{transform:scaleX(1)}
-.steps .n::before{transition:transform .9s var(--ease),opacity .9s var(--ease);transition-delay:calc(var(--d,0ms) + 450ms)}
-.js .steps li:not(.in) .n::before{transform:skewX(-14deg) translateX(-24px);opacity:0}
-.steps .n{background:#1c0433}
+.steps .n{transition:transform .9s var(--ease),opacity .9s var(--ease);transition-delay:calc(var(--d,0ms) + 450ms)}
+.js .steps li:not(.in) .n{transform:skewX(-14deg) translateX(-24px);opacity:0}
 .geo li.rv:not(.in){transform:translateY(30px)}
-@media (prefers-reduced-motion:reduce){ .photo,.photo img,.steps::before,.steps .n::before{transition:none} .js .photo.rv:not(.in){clip-path:polygon(16% 0,100% 0,84% 100%,0 100%)} .steps::before{transform:none} }
+@media (prefers-reduced-motion:reduce){ .photo,.photo img,.steps::before,.steps .n{transition:none} .js .photo.rv:not(.in){clip-path:inset(0 0 0 0 round 18px)} .steps::before{transform:none} }
 
 /* green accents like the earlier design: buttons, the top-bar Contact, link arrows and news labels */
 :root{--green:#9fe8d2;--green-2:#c8f5e7}
@@ -365,7 +365,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px;transition:color
 @media (hover:hover) and (pointer:fine){ .btn-mint:hover,.nav .cta:hover{background:var(--green-2);box-shadow:0 0 40px rgba(159,232,210,.6)} .btn-glass:hover{box-shadow:inset 0 0 0 1px var(--green)} }
 .link svg{color:var(--green)}
 .news .tag-s{color:var(--green)}
-.steps li:first-child .n::before{background:linear-gradient(135deg,#9fe8d2,#5fc4a6);box-shadow:0 8px 22px -8px rgba(159,232,210,.8)}
+.steps li:first-child .n{background:linear-gradient(135deg,#9fe8d2,#5fc4a6);box-shadow:0 8px 22px -8px rgba(159,232,210,.8)}
 .steps li:first-child .n{color:#14301f}
 </style></head>
 <body>
@@ -838,10 +838,10 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
         <figure class="photo rv" style="--d:120ms"><img src="land/site/doctor-medical-cannabis.webp" alt="Doctor consulting a patient on medical cannabis" width="1200" height="900" loading="lazy"></figure>
       </div>
       <ol class="steps">
-        <li class="rv"><div class="card"><span class="n">01</span><b>Doctor consultation</b><p>The treating physician evaluates whether medical cannabis is an appropriate treatment option based on the patient's condition and history.</p></div></li>
-        <li class="rv" style="--d:90ms"><div class="card dim"><span class="n">02</span><b>Prescription</b><p>The physician issues a narcotics prescription (Betäubungsmittelrezept) specifying the product, dosage, and treatment plan.</p></div></li>
-        <li class="rv" style="--d:180ms"><div class="card dim"><span class="n">03</span><b>Pharmacy dispensing</b><p>The patient fills their prescription at a licensed pharmacy that carries pharmaceutical-grade medical cannabis products.</p></div></li>
-        <li class="rv" style="--d:270ms"><div class="card dim"><span class="n">04</span><b>Ongoing treatment</b><p>Regular follow-ups with the prescribing physician ensure optimal dosing, monitor efficacy, and adjust the treatment plan as needed.</p></div></li>
+        <li class="rv"><div class="card"><span class="n"><i>01</i></span><b>Doctor consultation</b><p>The treating physician evaluates whether medical cannabis is an appropriate treatment option based on the patient's condition and history.</p></div></li>
+        <li class="rv" style="--d:90ms"><div class="card dim"><span class="n"><i>02</i></span><b>Prescription</b><p>The physician issues a narcotics prescription (Betäubungsmittelrezept) specifying the product, dosage, and treatment plan.</p></div></li>
+        <li class="rv" style="--d:180ms"><div class="card dim"><span class="n"><i>03</i></span><b>Pharmacy dispensing</b><p>The patient fills their prescription at a licensed pharmacy that carries pharmaceutical-grade medical cannabis products.</p></div></li>
+        <li class="rv" style="--d:270ms"><div class="card dim"><span class="n"><i>04</i></span><b>Ongoing treatment</b><p>Regular follow-ups with the prescribing physician ensure optimal dosing, monitor efficacy, and adjust the treatment plan as needed.</p></div></li>
       </ol>
     </section>
 
