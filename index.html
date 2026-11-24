@@ -2349,9 +2349,26 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var pinMat=new THREE.MeshBasicMaterial({color:0xe9fff8,transparent:true,opacity:0,fog:false}); mapMats.push([pinMat,.95]);
     var parcelGeo=new THREE.SphereGeometry(.62,24,16), parcelMat=glassMat({rim:1.8,body:'vec3(.42,.3,.72)',a:'.62'}); mapMats.push([parcelMat,1,true]);
     /* a plain gabled house for a pharmacy whose building is missing from swissBUILDINGS3D, in the same units (dm, y up) */
-    function genHouse(){ var X=100,Z=70,W=140,R=200, v=[[-X,0,-Z],[X,0,-Z],[X,0,Z],[-X,0,Z],[-X,W,-Z],[X,W,-Z],[X,W,Z],[-X,W,Z],[-X,R,0],[X,R,0]],
-        f=[[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7],[4,5,9],[4,9,8],[7,6,9],[7,9,8],[4,8,7],[5,6,9]], ed=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7],[8,9],[4,8],[7,8],[5,9],[6,9]], t=[], e=[];
-      f.forEach(function(q){ q.forEach(function(k){ t.push.apply(t,v[k]); }); }); ed.forEach(function(q){ e.push.apply(e,v[q[0]]); e.push.apply(e,v[q[1]]); });
+    /* pharm-types */ var genN=0;
+    function genHouse(){ var t=[], e=[], k=genN++%6;
+      function tri(a,b,c){ t.push(a[0],a[1],a[2],b[0],b[1],b[2],c[0],c[1],c[2]); } function quad(a,b,c,d){ tri(a,b,c); tri(a,c,d); } function ed(a,b){ e.push(a[0],a[1],a[2],b[0],b[1],b[2]); }
+      function box(x0,x1,z0,z1,y0,y1){ var q=[[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]];
+        quad(q[0],q[1],q[5],q[4]); quad(q[1],q[2],q[6],q[5]); quad(q[2],q[3],q[7],q[6]); quad(q[3],q[0],q[4],q[7]); quad(q[4],q[5],q[6],q[7]);
+        [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(function(s){ ed(q[s[0]],q[s[1]]); }); }
+      function gable(x0,x1,z0,z1,y0,h){ var zm=(z0+z1)/2, a=[x0,y0,z0],b=[x1,y0,z0],c=[x1,y0,z1],d=[x0,y0,z1],r0=[x0,y0+h,zm],r1=[x1,y0+h,zm];
+        quad(a,b,r1,r0); quad(d,c,r1,r0); tri(a,d,r0); tri(b,c,r1); ed(r0,r1); ed(a,r0); ed(d,r0); ed(b,r1); ed(c,r1); }
+      function gableZ(x0,x1,z0,z1,y0,h){ var xm=(x0+x1)/2, a=[x0,y0,z0],b=[x1,y0,z0],c=[x1,y0,z1],d=[x0,y0,z1],r0=[xm,y0+h,z0],r1=[xm,y0+h,z1];
+        quad(a,d,r1,r0); quad(b,c,r1,r0); tri(a,b,r0); tri(d,c,r1); ed(r0,r1); ed(a,r0); ed(b,r0); ed(d,r1); ed(c,r1); }
+      function hip(x0,x1,z0,z1,y0,h){ var mm=[(x0+x1)/2,y0+h,(z0+z1)/2], a=[x0,y0,z0],b=[x1,y0,z0],c=[x1,y0,z1],d=[x0,y0,z1]; tri(a,b,mm); tri(b,c,mm); tri(c,d,mm); tri(d,a,mm); [a,b,c,d].forEach(function(q){ ed(q,mm); }); }
+      /* pharmacy cross outline on the front facade */
+      function cross(x,y,z,s){ var a=s, b=s/3, P=[[-b,a],[b,a],[b,b],[a,b],[a,-b],[b,-b],[b,-a],[-b,-a],[-b,-b],[-a,-b],[-a,b],[-b,b]];
+        for(var i=0;i<P.length;i++){ var u=P[i], v=P[(i+1)%P.length]; ed([x+u[0],y+u[1],z],[x+v[0],y+v[1],z]); } }
+      if(k===0){ box(-100,100,-70,70,0,140); gable(-100,100,-70,70,140,60); cross(0,95,71,22); }
+      else if(k===1){ box(-110,110,-70,70,0,170); box(-35,35,-30,30,170,195); cross(-60,120,71,24); }
+      else if(k===2){ box(-110,-10,-70,70,0,240); box(-10,110,-60,60,0,130); cross(50,85,61,22); }
+      else if(k===3){ box(-90,90,-70,70,0,140); hip(-98,98,-78,78,140,80); cross(0,90,71,22); }
+      else if(k===4){ box(-110,110,-70,0,0,130); gable(-110,110,-70,0,130,50); box(30,110,0,90,0,130); gableZ(30,110,0,90,130,50); cross(70,80,91,20); }
+      else { box(-100,100,-60,60,0,150); var A=[-100,110,60],B=[100,110,60],Cc=[100,85,100],D=[-100,85,100]; quad(A,B,Cc,D); ed(A,D); ed(B,Cc); ed(D,Cc); for(var x=-60;x<=60;x+=40) ed([x,110,60],[x,85,100]); cross(0,128,61,16); }
       return {t:t,e:e,w:32}; }
     PH.forEach(function(ph,i){ var to=mapL(ph[1],ph[2],0);
       var pin=new THREE.Group(); pin.position.copy(to); map.add(pin);
@@ -2571,7 +2588,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
   function frame(t){ requestAnimationFrame(frame); if(!visible&&!first) return;
     var dt=Math.min(.05,(t-(frame.last||t))/1000); frame.last=t;
     var p=progress(); blurEl.style.opacity=Math.min(1,Math.abs(p-sp)*40*(gI<.5?1:0)).toFixed(2); sp+=(p-sp)*(first?1:.16); var F=stwF(sp,N), gL=Math.min(1,Math.max(0,-F-1)), f=Math.max(0,F), i=Math.min(N-2,Math.floor(f)), u=ease(Math.min(1,Math.max(0,(f-i-.2)/.6)));
-    gI=Math.min(1,Math.max(0,-F)); stageEl.classList.toggle('intro',gI>.5); stageEl.classList.toggle('logo',gL>.5); (function(){ function s01(a,b,x){ x=Math.min(1,Math.max(0,(x-a)/(b-a))); return x*x*(3-2*x); } var spl=innerWidth>1000?s01(-.55,-.1,F)*(1-s01(9.45,9.85,F)):0, cv=document.getElementById('hist-gl'), Wc=cv.clientWidth||innerWidth, Hc=cv.clientHeight||innerHeight, ox=-.22*Wc*spl, oy=-(gI*.07+spl*.08)*Hc+(Wc<Hc?(1-gI)*.15*Hc:0), key=Wc+'x'+Hc+':'+ox.toFixed(1)+','+oy.toFixed(1); if(stageEl._vo!==key){ stageEl._vo=key; if(Math.abs(ox)<.5&&Math.abs(oy)<.5) cam.clearViewOffset(); else cam.setViewOffset(Wc,Hc,ox,oy,Wc,Hc); } var was=stageEl.classList.contains('split'); stageEl.classList.toggle('split',spl>.5); if(was!==(spl>.5)) setTimeout(function(){ window.dispatchEvent(new Event('resize')); },60); })(); (function(){ var ph=F>-.74?'b':'a', st=stageEl; if(st.dataset.ph===ph) return; st.dataset.ph=ph; st.classList.toggle('ia',ph==='a'); var els=st.querySelectorAll('.hist-intro [data-a]'); els.forEach(function(e){ e.classList.add('sw'); }); clearTimeout(st._swt); st._swt=setTimeout(function(){ els.forEach(function(e){ e.innerHTML=e.getAttribute('data-'+ph); e.classList.remove('sw'); }); },380); })();
+    gI=Math.min(1,Math.max(0,-F)); stageEl.classList.toggle('intro',gI>.5); stageEl.classList.toggle('logo',gL>.5); (function(){ function s01(a,b,x){ x=Math.min(1,Math.max(0,(x-a)/(b-a))); return x*x*(3-2*x); } var spl=innerWidth>1000?s01(-.55,-.1,F)*(1-s01(9.45,9.85,F)):0, cv=document.getElementById('hist-gl'), Wc=cv.clientWidth||innerWidth, Hc=cv.clientHeight||innerHeight, ox=-.22*Wc*spl, oy=-(gI*.07+spl*.08)*Hc+(Wc<Hc?(1-gI)*.15*Hc:0), key=Wc+'x'+Hc+':'+ox.toFixed(1)+','+oy.toFixed(1); if(stageEl._vo!==key){ stageEl._vo=key; if(Math.abs(ox)<.5&&Math.abs(oy)<.5) cam.clearViewOffset(); else cam.setViewOffset(Wc,Hc,ox,oy,Wc,Hc); } /* split-by-chapter */ var spOn=innerWidth>1000&&F>-.5&&F<9.5; var was=stageEl.classList.contains('split'); stageEl.classList.toggle('split',spOn); if(was!==spOn) setTimeout(function(){ window.dispatchEvent(new Event('resize')); },60); })(); (function(){ var ph=F>-.74?'b':'a', st=stageEl; if(st.dataset.ph===ph) return; st.dataset.ph=ph; st.classList.toggle('ia',ph==='a'); var els=st.querySelectorAll('.hist-intro [data-a]'); els.forEach(function(e){ e.classList.add('sw'); }); clearTimeout(st._swt); st._swt=setTimeout(function(){ els.forEach(function(e){ e.innerHTML=e.getAttribute('data-'+ph); e.classList.remove('sw'); }); },380); })();
     var chap=Math.min(N-1,Math.round(f)); setChapter(gL>.5?-2:gI>.5?-1:chap);
     palette(sp*N); uScr.value=sp;
     if(!first&&gI<.2&&chap!==lastChap&&chap===0){ (CHIDS[chap]||[]).forEach(burst); } if(gI<.2) lastChap=chap; else lastChap=-2;
