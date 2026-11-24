@@ -2585,7 +2585,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     gSpin.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x8f86ec,transparent:true,opacity:.3,depthWrite:false})));
     var sp=[]; shell.forEach(function(v){ sp.push(v.x,v.y,v.z); }); gSpin.add(pts(sp,0xe9e5ff,2.6,.9)); })();
   globe.traverse(function(o){ if(o.material){ o.material.transparent=true; o.userData.base=o.material.opacity; } });
-  var gtags=[['Switzerland <b>HQ</b>',46.8,8.2,1,0,60],['<b>Czech Republic</b>',49.8,15.5,0,112,0],['<b>United Kingdom</b>',53.5,-2,0,-104,-24],['<b>Belgium</b>',50.6,4.6,0,-24,-56],['<b>Japan</b>',36.2,138.3,0,0,-56]].map(function(a){
+  var gtags=[['Switzerland <b>HQ</b>',46.8,8.2,1,0,60],['<b>Czech Republic</b>',49.8,15.5,0,112,0],['<b>United Kingdom</b>',53.5,-2,0,-104,-24],['<b>Belgium</b>',50.6,4.6,0,-24,-56],['<b>Japan</b>',36.2,138.3,0,0,-30]].map(function(a){
     var m=new THREE.Mesh(new THREE.SphereGeometry(a[3]?1.9:1.5,20,14),new THREE.MeshBasicMaterial({color:a[3]?0xffffff:0xa49cf0,transparent:true})); m.userData.base=1;
     m.position.copy(gv(a[1],a[2],GR*1.01)); gSpin.add(m);
     var el=document.createElement('div'); el.className='hlbl gtag'+(a[3]?' hq':''); el.innerHTML=a[0]; labelsEl.appendChild(el); return {m:m,el:el,dx:a[4]||0,dy:a[5]||0}; });
