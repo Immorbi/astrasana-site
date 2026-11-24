@@ -2308,6 +2308,11 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       part(2.4,1.3,1.3,-.55,.95); part(.95,1,1.2,1.25,.8);
       [[-1.25,.62],[-1.25,-.62],[.05,.62],[.05,-.62],[1.3,.62],[1.3,-.62]].forEach(function(q){ var g=new THREE.CylinderGeometry(.3,.3,.16,18); g.rotateX(Math.PI/2); var e=new THREE.LineSegments(new THREE.EdgesGeometry(g,30),mE); e.position.set(q[0],.3,q[1]); truck.add(e); });
       truck.scale.setScalar(1.5); truck.userData.mB=mB; truck.userData.mE=mE; truck.visible=false;
+      /* parcels: after the truck, the load becomes a small stack of boxes that rides the line onto the map */
+      var crate=new THREE.Group(); jg.add(crate); crate.visible=false; truck.userData.crate=crate;
+      [[0,.45,0,1.1,.9,1.1,.1],[1.05,.38,.15,.9,.76,.9,-.15],[.45,1.25,0,.85,.7,.85,.25]].forEach(function(b){ var g=new THREE.BoxGeometry(b[3],b[4],b[5]), m=new THREE.Mesh(g,mB), e=new THREE.LineSegments(new THREE.EdgesGeometry(g),mE), box=new THREE.Group(); box.add(m); box.add(e);
+        var t=[-b[3]/2,b[4]/2+.01,0,b[3]/2,b[4]/2+.01,0, b[3]/2+.01,b[4]/2,0,b[3]/2+.01,-b[4]/2,0, -b[3]/2-.01,b[4]/2,0,-b[3]/2-.01,-b[4]/2,0], tg=new THREE.BufferGeometry(); tg.setAttribute('position',new THREE.Float32BufferAttribute(t,3)); box.add(new THREE.LineSegments(tg,mE));
+        box.position.set(b[0]-.5,b[1],b[2]); box.rotation.y=b[6]; crate.add(box); });
       /* the road: two edges and a dashed centre line on the ground from the greenhouse to the HQ */
       var r=[]; for(var x=-21;x<12;x+=.5){ var x2=x+.5; [-1.1,1.1].forEach(function(o){ r.push(x,groundY(x)+.02,3.6+o,x2,groundY(x2)+.02,3.6+o); }); if(Math.round(x*2)%2===0) r.push(x,groundY(x)+.02,3.6,x+.3,groundY(x+.3)+.02,3.6); }
       var rg=new THREE.BufferGeometry(); rg.setAttribute('position',new THREE.Float32BufferAttribute(r,3)); var rl=new THREE.LineSegments(rg,new THREE.LineBasicMaterial({color:0xb9b2ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); jg.add(rl); truck.userData.road=rl.material; })(); var hqMats=[];
@@ -2424,9 +2429,10 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       /* it starts outside, facing the greenhouse's gable end with the whole house in view, then glides in through the door */
       var ai=1-ss(.3,.44,p); if(ai>0){ var gin=ss(0,.15,p), ax=-116+32*gin+58*ss(.13,.4,p), ay=.5+2.4*(1-gin); AP.set(ax,ay,.6); AL.set(ax+22,ay-1.4-.6*(1-gin),.6); pos.lerp(AP,ai); look.lerp(AL,ai); /* lift-out */ if(ai<1) pos.y+=Math.sin(Math.PI*Math.min(1,(1-ai)*1.25))*9; }
       /* truck-drive */ var TP=camLocal.TP||(camLocal.TP=new THREE.Vector3()), TQ=camLocal.TQ||(camLocal.TQ=new THREE.Vector3());
-      var mt=ss(.3,.335,p)*(1-ss(.59,.625,p)); truck.visible=mt>.01; truck.userData.road.opacity=0; batch.scale.setScalar((.9*ss(.08,.14,p)*(1-ss(.72,.76,p))+.001)*(1-mt)+.001);
+      var mt=ss(.3,.335,p)*(1-ss(.59,.625,p)), mc=ss(.59,.625,p)*(1-ss(.74,.78,p)), crate=truck.userData.crate; truck.visible=mt>.01; truck.userData.road.opacity=0; batch.scale.setScalar((.9*ss(.08,.14,p)+.001)*(1-ss(.3,.335,p))+.001); batch.visible=batch.visible&&p<.34;
+      crate.visible=mc>.01; if(crate.visible){ var uc=Math.min(1,uProg.value); curve.getPointAt(uc,TP); curve.getPointAt(Math.min(1,uc+.003),TQ); crate.position.copy(TP); crate.position.y-=.4; crate.rotation.y=Math.atan2(-(TQ.z-TP.z),TQ.x-TP.x); crate.scale.setScalar(1.5*mc+.001); }
       if(truck.visible){ var uu=Math.min(1,uProg.value); curve.getPointAt(uu,TP); curve.getPointAt(Math.min(1,uu+.003),TQ); truck.position.copy(TP); truck.position.y-=.4;
-        truck.rotation.y=Math.atan2(-(TQ.z-TP.z),TQ.x-TP.x); truck.scale.setScalar(1.3*mt+.001); truck.userData.mB.opacity=.2*mt; truck.userData.mE.opacity=.95*mt; }
+        truck.rotation.y=Math.atan2(-(TQ.z-TP.z),TQ.x-TP.x); truck.scale.setScalar(1.3*mt+.001); } truck.userData.mB.opacity=.2*Math.max(mt,mc); truck.userData.mE.opacity=.95*Math.max(mt,mc);
       /* chase-cam */ var CA=camLocal.CA||(camLocal.CA=new THREE.Vector3()), CB=camLocal.CB||(camLocal.CB=new THREE.Vector3()), CS=camLocal.CS||(camLocal.CS=new THREE.Vector3()), CD=camLocal.CD||(camLocal.CD=new THREE.Vector3()), CL=camLocal.L||(camLocal.L=curve.getLength());
       var u=Math.min(1,uProg.value), cw=ss(.26,.34,p)*(1-ss(.62,.7,p)); curve.getPointAt(u,CS);
       if(cw>0){ curve.getPointAt(Math.min(1,u+12/CL),CB); CD.subVectors(CB,CS); CD.y=0; if(CD.lengthSq()<1e-6) CD.set(1,0,0); CD.normalize();
