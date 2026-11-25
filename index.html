@@ -2714,7 +2714,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 
   /* the globe from v3: land dots from the land mask, a linked constellation shell and country plates.
      It opens the section, can be dragged, then turns to Switzerland and dives into the map. */
-  var bank=0, blurEl=document.querySelector('.speedblur'), LANDPTS=[], GR=70, GC=P3(8.2,46.8,170), globe=new THREE.Group(), gTilt=new THREE.Group(), gSpin=new THREE.Group(); scene.add(globe); globe.add(gTilt); gTilt.add(gSpin);
+  var gOcean=null, gBorders=null, bank=0, blurEl=document.querySelector('.speedblur'), LANDPTS=[], GR=70, GC=P3(8.2,46.8,170), globe=new THREE.Group(), gTilt=new THREE.Group(), gSpin=new THREE.Group(); scene.add(globe); globe.add(gTilt); gTilt.add(gSpin);
   gTilt.rotation.x=46.8*Math.PI/180; var LON0R=-8.2*Math.PI/180;
   function gv(lat,lon,r){ var la=lat*Math.PI/180, lo=lon*Math.PI/180; return new THREE.Vector3(r*Math.cos(la)*Math.sin(lo), r*Math.sin(la), r*Math.cos(la)*Math.cos(lo)); }
   (function(){ var M=window.LANDMASK, bits=null; if(M){ var b=atob(M.b64); bits=new Uint8Array(b.length); for(var i=0;i<b.length;i++) bits[i]=b.charCodeAt(i); }
@@ -2724,7 +2724,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       if(lat<-62) continue; (land(lat,lon)?lp:fp).push(x*GR,y*GR,z*GR); }
     function pts(a,col,size,op){ var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(a,3)); return new THREE.Points(g,new THREE.PointsMaterial({color:col,size:size,transparent:true,opacity:op,depthWrite:false})); }
     gSpin.add(new THREE.Mesh(new THREE.SphereGeometry(GR*.985,48,48),new THREE.MeshBasicMaterial({color:0x17121f,transparent:true,opacity:.96})));
-    LANDPTS=lp; gSpin.add(pts(lp,0xa99ff5,1.5,.95)); gSpin.add(pts(fp.filter(function(_,i){ return (Math.floor(i/3)%5)===0; }),0x6d64a8,.9,.35));
+    LANDPTS=lp; gSpin.add(pts(lp,0xa99ff5,1.5,.95)); gOcean=pts(fp.filter(function(_,i){ return (Math.floor(i/3)%5)===0; }),0x6d64a8,.9,.35); gSpin.add(gOcean);
     var seed=7; function rnd(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
     var shell=[], SR=GR*1.18; for(var j=0;j<64;j++){ var uu=rnd()*2-1, tt=rnd()*Math.PI*2, qq=Math.sqrt(1-uu*uu); shell.push(new THREE.Vector3(qq*Math.cos(tt)*SR,uu*SR,qq*Math.sin(tt)*SR)); }
     var ls=[]; shell.forEach(function(a,ai){ shell.map(function(b,bi){ return [a.distanceTo(b),bi]; }).filter(function(d){ return d[1]!==ai; }).sort(function(p,q){ return p[0]-q[0]; }).slice(0,3)
@@ -2733,6 +2733,11 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     gSpin.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x8f86ec,transparent:true,opacity:.3,depthWrite:false})));
     var sp=[]; shell.forEach(function(v){ sp.push(v.x,v.y,v.z); }); gSpin.add(pts(sp,0xe9e5ff,2.6,.9)); })();
   globe.traverse(function(o){ if(o.material){ o.material.transparent=true; o.userData.base=o.material.opacity; } });
+  /* the map drawn on the globe: country borders from the same data as the flat map; they come up as the camera zooms in and meet the flat map's borders */
+  (function(){ var P=[]; Object.keys(COUNTRIES).forEach(function(id){ COUNTRIES[id].p.forEach(function(poly){ var rg=poly[0], prev=null;
+      for(var k=0;k<=rg.length;k+=2){ var q=k%rg.length, v=gv(rg[q+1],rg[q],GR*1.002); if(prev) P.push(prev.x,prev.y,prev.z,v.x,v.y,v.z); prev=v; } }); });
+    var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));
+    gBorders=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0xc9c0ff,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false})); gSpin.add(gBorders); })();
   var gtags=[['Switzerland <b>HQ</b>',46.8,8.2,1,0,60],['<b>Czech Republic</b>',49.8,15.5,0,112,0],['<b>United Kingdom</b>',53.5,-2,0,-104,-24],['<b>Belgium</b>',50.6,4.6,0,-24,-56],['<b>Japan</b>',36.2,138.3,0,0,-30]].map(function(a){
     var m=new THREE.Mesh(new THREE.SphereGeometry(a[3]?1.9:1.5,20,14),new THREE.MeshBasicMaterial({color:a[3]?0xffffff:0xa49cf0,transparent:true})); m.userData.base=1;
     m.position.copy(gv(a[1],a[2],GR*1.01)); gSpin.add(m);
@@ -2840,7 +2845,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     globe.scale.setScalar(Math.max(.001,(.3+.7*sst(.2,.75,1-gL))*Math.exp(Math.log(11*180/Math.PI/GR)*ease(kz)))); globe.position.set(0,0,0); globe.updateMatrixWorld(true);
     var swp=gSpin.localToWorld(gv(46.8,8.2,GR)); globe.position.copy(GC).lerp(C('756',2.0).sub(swp),sst(0,1,kz));
     var MW=.97, MX=0, MY=.035, sS=1-gL; uShM.value=Math.min(1,Math.max(0,(sS-.3)/.6)); uShOp.value=0; if(logoBoxEl){ var lbR=logoBoxEl.getBoundingClientRect(), stR=stageEl.getBoundingClientRect(), bw=lbR.width*MW, bh=bw*280/310; uBox.value.set((lbR.left+lbR.width/2-stR.left)/stR.width*2-1+MX, -((lbR.top+lbR.height/2-stR.top)/stR.height*2-1)+MY, bw/stR.width*2, bh/stR.height*2); uAsp.value=stR.width/stR.height; } gTilt.updateMatrix(); gSpin.updateMatrix(); uRot.value.multiplyMatrices(gTilt.matrix,gSpin.matrix);
-    globe.traverse(function(o){ if(o.material&&o.userData.base!==undefined) o.material.opacity=o.userData.base*gFade; });
+    globe.traverse(function(o){ if(o.material&&o.userData.base!==undefined) o.material.opacity=o.userData.base*gFade; }); if(gOcean) gOcean.material.opacity*=1-sst(.03,.3,kz); if(gBorders) gBorders.material.opacity=(.12+.68*sst(.04,.35,kz))*gFade;
     canvas.style.cursor=gI>.3?(dragging?'grabbing':'grab'):'';
     /* arc the camera up between distant keyframes so long jumps read as a flight */
     tp.copy(A.p).lerp(B.p,u); tp.y+=Math.sin(u*Math.PI)*Math.min(900,A.p.distanceTo(B.p)*.25); tl.copy(A.l).lerp(B.l,u); var side=(i%2?1:-1)*(F<0?0:1); tp.x+=Math.sin(u*Math.PI)*Math.min(240,A.p.distanceTo(B.p)*.22)*side;
