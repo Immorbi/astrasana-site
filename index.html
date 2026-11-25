@@ -128,6 +128,9 @@ html{scroll-padding-top:96px}
 .no3d .hist-intro{display:none}
 .hlbl{position:absolute;left:0;top:0;padding:4px 8px;border-radius:8px;font-size:var(--t-xs);line-height:1.3;white-space:nowrap;color:var(--fg-2);background:rgba(18,16,21,.82);box-shadow:inset 0 0 0 1px rgba(164,156,240,.45);opacity:0;transition:opacity .4s ease;will-change:transform}
 .hlbl b{font-weight:500;color:var(--fg)}
+.mlbl{position:absolute;left:0;top:0;font-size:12px;line-height:1;letter-spacing:.02em;white-space:nowrap;color:rgba(214,208,250,.78);text-shadow:0 0 6px #0e0e11,0 0 12px #0e0e11;opacity:0;pointer-events:none;will-change:transform}
+.mlbl.big{font-size:14px;font-weight:500;color:rgba(243,238,235,.9)}
+.mlbl.lake{font-style:italic;color:rgba(185,176,255,.8)}
 .no3d .hist-labels{display:none}
 .hist-rail{position:absolute;z-index:3;left:var(--gut);top:50%;transform:translateY(-50%);display:grid;gap:2px}
 .hist-rail button{display:flex;align-items:center;gap:12px;min-height:36px;padding:0;background:none;border:0;font:inherit;font-size:var(--t-s);color:var(--fg-3);cursor:pointer;transition:color .25s ease}
@@ -1569,7 +1572,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
   <div class="wrap">
     <span>© 2026 Astrasana Holding AG. All rights reserved.</span>
     <nav aria-label="Legal"><a href="download.html">Licences</a><a href="https://www.astrasana.ch/en/privacy" target="_blank" rel="noopener">Privacy</a><a href="https://www.astrasana.ch/en/imprint" target="_blank" rel="noopener">Legal notice</a></nav>
-    <p class="credits">Content: astrasana.ch. Map: Natural Earth. Elevation: SRTM via AWS Terrain Tiles. Buildings and terrain in Tagelswangen and Kloten: ©swisstopo (swissBUILDINGS3D 3.0, swissALTI3D).</p>
+    <p class="credits">Content: astrasana.ch. Map: Natural Earth. Elevation: SRTM via AWS Terrain Tiles. Buildings and terrain in Tagelswangen and Kloten: ©swisstopo (swissBUILDINGS3D 3.0, swissALTI3D). Lakes and borders around Zurich: swisstopo / FSO generalised boundaries.</p>
   </div>
 </footer>
 
@@ -1581,6 +1584,7 @@ M14233 4172 c-13 -4 -32 -15 -43 -24 -20 -18 -20 -28 -20 -667 0 -650 0 -650
 <script src="land/vendor/relief.js?v=2"></script>
 <script src="land/sites.js?v=3"></script>
 <script src="land/vendor/local.js?v=1"></script>
+<script src="land/vendor/region.js?v=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -2712,6 +2716,52 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       var ls=new THREE.LineSegments(g,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:0,blending:ADD,depthWrite:false,depthTest:false,fog:true})); ls.renderOrder=4;
       ls.userData.w=id==='756'?.42:.5; pl.g.add(ls); reliefs.push({ls:ls,pl:pl}); }); })();
 
+  /* the regional map around Zurich for the Tagelswangen chapter: lakes, rivers, motorways, railways, towns and canton borders,
+     draped over the relief and fading out toward the edges like a web map around its centre (land/vendor/region.js) */
+  var region=null;
+  (function(){ var RM=window.REGIONMAP, pl=plates['756'], R0=window.RELIEF&&RELIEF['756']; if(!RM||!pl) return;
+    var H=null; if(R0){ var raw=atob(R0.d); H=new Uint8Array(raw.length); for(var q=0;q<raw.length;q++) H[q]=raw.charCodeAt(q); }
+    /* height of the relief lines at a point, so the map lies on the same terrain */
+    function hgt(lon,lat){ if(!H) return 2.55; var c=(lon-R0.lon0)/R0.st, r=(R0.lat0-lat)/R0.st, c0=Math.max(0,Math.min(R0.w-2,Math.floor(c))), r0=Math.max(0,Math.min(R0.h-2,Math.floor(r))), u=Math.min(1,Math.max(0,c-c0)), v=Math.min(1,Math.max(0,r-r0));
+      var a=H[r0*R0.w+c0], b=H[r0*R0.w+c0+1], d=H[(r0+1)*R0.w+c0], e=H[(r0+1)*R0.w+c0+1]; return 2.55+((a*(1-u)+b*u)*(1-v)+(d*(1-u)+e*u)*v)/255*1.6; }
+    function ll(x,y){ return [RM.o[0]+x/RM.q, RM.o[1]+y/RM.q]; }
+    /* decode count-prefixed lines into segments, split into short steps so they follow the terrain */
+    function segs(flat,lift){ var pos=[], ld=[]; for(var i=0;i<flat.length;){ var n=flat[i++], prev=null, acc=0;
+        for(var j=0;j<n;j++,i+=2){ var p=ll(flat[i],flat[i+1]); if(prev){ var st=Math.max(1,Math.ceil(Math.hypot(p[0]-prev[0],p[1]-prev[1])/.008));
+            for(var s=0;s<st;s++){ var a0=prev[0]+(p[0]-prev[0])*s/st, b0=prev[1]+(p[1]-prev[1])*s/st, a1=prev[0]+(p[0]-prev[0])*(s+1)/st, b1=prev[1]+(p[1]-prev[1])*(s+1)/st, A=P3(a0,b0,hgt(a0,b0)+lift), B=P3(a1,b1,hgt(a1,b1)+lift);
+              pos.push(A.x,A.y,A.z,B.x,B.y,B.z); ld.push(acc); acc+=A.distanceTo(B); ld.push(acc); } } prev=p; } }
+      var g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('ld',new THREE.Float32BufferAttribute(ld,1)); return g; }
+    var ctr={value:new THREE.Vector2()}, rad={value:new THREE.Vector2(2.2,5.2)}, mats=[], g=new THREE.Group(); pl.g.add(g); g.visible=false;
+    /* one material for every layer: a radial fade around the view's centre, and optional dashes along the line */
+    function mat(col,o,dash,add){ var m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,depthTest:false,fog:false,blending:add===false?THREE.NormalBlending:ADD,side:THREE.DoubleSide,
+        uniforms:{c:{value:new THREE.Color(col)},opacity:{value:0},ctr:ctr,rad:rad,dash:{value:dash||0}},
+        vertexShader:'attribute float ld; varying float vD; varying vec2 vP; void main(){ vD=ld; vP=position.xz; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+        fragmentShader:'uniform vec3 c; uniform float opacity,dash; uniform vec2 ctr,rad; varying float vD; varying vec2 vP; void main(){ if(dash>0.&&fract(vD/dash)>.55) discard; gl_FragColor=vec4(c,opacity*(1.-smoothstep(rad.x,rad.y,distance(vP,ctr)))); }'});
+      m.userData.o=o; mats.push(m); return m; }
+    function lines(flat,col,o,dash,lift,ro){ var gg=segs(flat,lift||.004); if(!gg.attributes.position.count) return; var l=new THREE.LineSegments(gg,mat(col,o,dash)); l.renderOrder=ro||5; l.frustumCulled=false; g.add(l); }
+    function fill(flat,col,o,lift,add,ro){ var shp=[], ys=0, n=0; for(var i=0;i<flat.length;){ var c=flat[i++], pts=[]; for(var j=0;j<c;j++,i+=2){ var p=ll(flat[i],flat[i+1]); pts.push(new THREE.Vector2(px(p[0]),-pz(p[1]))); ys+=hgt(p[0],p[1]); n++; } shp.push(new THREE.Shape(pts)); }
+      var gg=new THREE.ShapeGeometry(shp); gg.rotateX(-Math.PI/2); gg.translate(0,ys/n+(lift||0),0); gg.setAttribute('ld',new THREE.Float32BufferAttribute(new Float32Array(gg.attributes.position.count),1));
+      var m=new THREE.Mesh(gg,mat(col,o,0,add)); m.renderOrder=ro||4.5; m.frustumCulled=false; g.add(m); }
+    /* built-up areas as a soft lavender tint, municipal and canton borders, then water, rail and motorways on top */
+    RM.urban.forEach(function(u){ fill(u,0x7066db,.07,0,true,4.4); });
+    lines(RM.munis,0x6a62a8,.14,0,.002);
+    lines(RM.cantons,0xa498f0,.55,.035,.006);
+    /* lakes: dark water that hides the relief lines under it, with a light shore */
+    RM.lakes.forEach(function(lk){ fill(lk.p,0x120f1c,.94,.01,false,4.6); lines(lk.p,0xb9b0ff,.85,0,.012,5.2); });
+    lines(RM.rivers,0x8f86f0,.7,0,.008);
+    lines(RM.rail,0x9a94b8,.4,.02,.009);
+    lines(RM.roads,0xe9e5ff,.5,0,.01);
+    /* place names: towns from the map, lakes in italics */
+    var TOWNS=[['Zürich',8.5417,47.3769,1],['Winterthur',8.7241,47.4988,1],['Uster',8.7208,47.3471],['Dübendorf',8.6183,47.3972],['Bülach',8.5401,47.5197],['Wetzikon',8.7979,47.3263],['Baden',8.3064,47.4733],['Schaffhausen',8.6349,47.6973,1],['Frauenfeld',8.8988,47.5536],['Zug',8.5157,47.1662],['Rapperswil',8.8183,47.2266],['Dietikon',8.4005,47.4017],['Horgen',8.5978,47.2593],['Wil',9.0459,47.4615]];
+    var lbs=[]; function name(txt,lon,lat,cls){ var el=document.createElement('div'); el.className='mlbl'+(cls?' '+cls:''); el.textContent=txt; labelsEl.appendChild(el); lbs.push({el:el,v:P3(lon,lat,hgt(lon,lat)+.02),k:0}); }
+    TOWNS.forEach(function(t){ name(t[0],t[1],t[2],t[3]?'big':''); });
+    RM.lakes.forEach(function(lk){ if(/Bodensee|Walensee|Vierwaldst/.test(lk.n)) return; name(lk.n,lk.c[0],lk.c[1],'lake'); });
+    var wp=new THREE.Vector3();
+    region={ set:function(a,cx,cz){ g.visible=a>.005; ctr.value.set(cx,cz); mats.forEach(function(m){ m.uniforms.opacity.value=m.userData.o*a; }); this.a=a; },
+      labels:function(cam,W2,H2){ var a=this.a||0; lbs.forEach(function(l){ wp.copy(l.v); pl.g.localToWorld(wp); var d=Math.hypot(wp.x-ctr.value.x,wp.z-ctr.value.y); wp.project(cam);
+          var x=(wp.x*.5+.5)*W2, y=(-wp.y*.5+.5)*H2, on=a>.5&&wp.z<1&&d<rad.value.y*.8&&x>20&&x<W2-20&&y>90&&y<H2-20&&(innerWidth<=1000?y<H2*.56:x>W2*.44); /* clear of the chapter text */
+          l.k+=((on?1:0)-l.k)*.12; l.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) translate(-50%,-50%)'; l.el.style.opacity=(l.k*a*(1-.7*Math.min(1,Math.max(0,(d-rad.value.x)/(rad.value.y-rad.value.x))))).toFixed(3); }); } }; })();
+
   /* the globe from v3: land dots from the land mask, a linked constellation shell and country plates.
      It opens the section, can be dragged, then turns to Switzerland and dives into the map. */
   var gOcean=null, gBorders=null, bank=0, blurEl=document.querySelector('.speedblur'), LANDPTS=[], GR=70, GC=P3(8.2,46.8,170), globe=new THREE.Group(), gTilt=new THREE.Group(), gSpin=new THREE.Group(); scene.add(globe); globe.add(gTilt); gTilt.add(gSpin);
@@ -2856,7 +2906,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     /* international distribution: the camera pulls back from Switzerland over Europe as the planes take off, then follows the long flight east to Tokyo */
     if(oW>0){ var go=ease(sst(7.24,7.4,f))*(1-sst(7.8,7.9,f)), kB=sst(.5,.72,oT), dO=Math.exp(Math.log(300)+(Math.log(620)-Math.log(300))*kB), tO=P3(6.5,50.2,2).lerp(flightGround(2,oT),kB); tp.lerp(tmp.copy(tO).add(new THREE.Vector3(0,dO*.78,dO*.62)),go); tl.lerp(tO,go); }
     if(first){ cp.copy(tp); cl.copy(tl); } cp.lerp(tp,.14); cl.lerp(tl,.14); smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
-    var dd=cp.distanceTo(cl); var jw=jr.weight(f)*(f<5.72?sst(.32,.6,window.__dq||0):1); /* the relief stays until the roads of the local map have come in */ reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*mrv*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
+    var dd=cp.distanceTo(cl); var jw=jr.weight(f)*(f<5.72?sst(.32,.6,window.__dq||0):1); /* the relief stays until the roads of the local map have come in */ reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*mrv*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); if(region){ var rz=gI<.5?sst(1.02,1.2,f)*(1-sst(5.2,5.8,f)):0, Zc=window.__ZK&&window.__ZK.c; region.set(rz*(1-sst(.12,.3,window.__dq||0))*mrv,Zc?Zc.x:0,Zc?Zc.z:0); } /* the regional map around Zurich while the camera hangs over Tagelswangen and Kloten */ scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
     /* near and far follow the distance, so the camera can come down from Europe to a greenhouse door on the same map */ var nr=Math.min(1,Math.max(2e-6,dd*.03)), fr=Math.min(6000,Math.max(40,dd*2500)); if(Math.abs(cam.near-nr)>nr*.02||cam.far!==fr){ cam.near=nr; cam.far=fr; cam.updateProjectionMatrix(); }
     var d=Math.min(cp.y,14,dd*.25); /* calm-parallax */ cam.position.set(cp.x+smx*d*.06,cp.y,cp.z-smy*d*.04); cam.lookAt(cl); bank+=((Math.sin(u*Math.PI)*.08*side)-bank)*.08; cam.rotateZ(bank);
     /* countries: the active ones glow and rise, visited ones keep a soft tint */
@@ -2875,6 +2925,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       l.k=show?Math.min(1,(l.k||0)+dt*1.5):0; var e=1-Math.pow(1-l.k,3), x=(tmp.x*.5+.5)*W2, y=(-tmp.y*.5+.5)*H2;
       if(chap>=6){ y+=l.dy+(1-e)*24; } else { var ldy=l.dy*Math.min(1,W2/1000); x=ox+(x-ox)*e; y=oy+(y+ldy-oy)*e; }
       l.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) translate(-50%,-100%) scale('+(.55+.45*e).toFixed(3)+')'; l.el.style.opacity=show?Math.min(1,l.k*3):0; });
+    if(region) region.labels(cam,W2,H2);
     medias.forEach(function(Md){ var show=gI<.05&&chap>=Md.ch[0]&&chap<=Md.ch[1]&&Math.abs(f-chap)<.35; Md.k=show?Math.min(1,Md.k+dt*1.4):0;
       var e=Math.max(0,Math.min(1,(Md.k-Md.d)/(1-Md.d))); e=1-Math.pow(1-e,3);
       tmp.copy(Md.v); var c=tmp.clone().project(cam); tmp.x+=Md.w/2; tmp.project(cam); if(c.z>1) show=false;
