@@ -2841,7 +2841,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
        (radius x scale = the map's 11 units per degree), then it dissolves into the map */
     var kz=gL>0?0:1-gI;
     gSpin.rotation.y=LON0R+yaw; gTilt.rotation.x=46.8*Math.PI/180+pitch-Math.PI/2*sst(.08,.8,kz);
-    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=kz<.995; var gFade=sst(.2,.55,1-gL)*(1-sst(.82,.99,kz)), mrv=gI>0?sst(.8,.98,kz):1; uRev.value=mrv; /* the flat map, its lit countries and pins come in only once the globe lies on it */
+    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=kz<.995; var gFade=sst(.2,.55,1-gL)*(1-sst(.7,.85,kz)), mrv=gI>0?sst(.85,.99,kz):1; uRev.value=mrv; /* the flat map, its lit countries and pins come in only once the globe lies on it */
     globe.scale.setScalar(Math.max(.001,(.3+.7*sst(.2,.75,1-gL))*Math.exp(Math.log(11*180/Math.PI/GR)*ease(kz)))); globe.position.set(0,0,0); globe.updateMatrixWorld(true);
     var swp=gSpin.localToWorld(gv(46.8,8.2,GR)); globe.position.copy(GC).lerp(C('756',2.0).sub(swp),sst(0,1,kz));
     var MW=.97, MX=0, MY=.035, sS=1-gL; uShM.value=Math.min(1,Math.max(0,(sS-.3)/.6)); uShOp.value=0; if(logoBoxEl){ var lbR=logoBoxEl.getBoundingClientRect(), stR=stageEl.getBoundingClientRect(), bw=lbR.width*MW, bh=bw*280/310; uBox.value.set((lbR.left+lbR.width/2-stR.left)/stR.width*2-1+MX, -((lbR.top+lbR.height/2-stR.top)/stR.height*2-1)+MY, bw/stR.width*2, bh/stR.height*2); uAsp.value=stR.width/stR.height; } gTilt.updateMatrix(); gSpin.updateMatrix(); uRot.value.multiplyMatrices(gTilt.matrix,gSpin.matrix);
