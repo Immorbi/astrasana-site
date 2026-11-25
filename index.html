@@ -1877,9 +1877,9 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
   var uT={value:0}, uF={value:new THREE.Vector2(500,2600)}, uM={value:new THREE.Vector2(9,9)}, uStir={value:0}, uAsp={value:1}, mN=new THREE.Vector2(9,9), mPrev=new THREE.Vector2(9,9);
   /* borders shimmer: a faint base line with light glints running along each outline */
   var uTint={value:new THREE.Color(0x7066db)};
-  var edgeMat=new THREE.ShaderMaterial({uniforms:{t:uT,fz:uF,tint:uTint},transparent:true,depthWrite:false,blending:ADD,
+  var uRev={value:1}; var edgeMat=new THREE.ShaderMaterial({uniforms:{t:uT,fz:uF,tint:uTint,rv:uRev},transparent:true,depthWrite:false,blending:ADD,
     vertexShader:'attribute float ld; varying float vD; varying float vZ; void main(){ vD=ld; vec4 mv=modelViewMatrix*vec4(position,1.); vZ=-mv.z; gl_Position=projectionMatrix*mv; }',
-    fragmentShader:'uniform float t; uniform vec2 fz; uniform vec3 tint; varying float vD; varying float vZ; void main(){ float f=1.-smoothstep(fz.x,fz.y,vZ); gl_FragColor=vec4(mix(vec3(.42,.39,.7),tint,.45),.34*f); }'});
+    fragmentShader:'uniform float t,rv; uniform vec2 fz; uniform vec3 tint; varying float vD; varying float vZ; void main(){ float f=1.-smoothstep(fz.x,fz.y,vZ); gl_FragColor=vec4(mix(vec3(.42,.39,.7),tint,.45),.34*f*rv); }'});
   var world=new THREE.Group(); scene.add(world);
   Object.keys(COUNTRIES).forEach(function(id){ var c=COUNTRIES[id], shapes=[], grp=new THREE.Group(), cx=0,cy=0,n=0;
     c.p.forEach(function(poly){ var sh=null;
@@ -2841,7 +2841,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
        (radius x scale = the map's 11 units per degree), then it dissolves into the map */
     var kz=gL>0?0:1-gI;
     gSpin.rotation.y=LON0R+yaw; gTilt.rotation.x=46.8*Math.PI/180+pitch-Math.PI/2*sst(.08,.8,kz);
-    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=kz<.995; var gFade=sst(.2,.55,1-gL)*(1-sst(.6,.96,kz));
+    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=kz<.995; var gFade=sst(.2,.55,1-gL)*(1-sst(.82,.99,kz)), mrv=gI>0?sst(.8,.98,kz):1; uRev.value=mrv; /* the flat map, its lit countries and pins come in only once the globe lies on it */
     globe.scale.setScalar(Math.max(.001,(.3+.7*sst(.2,.75,1-gL))*Math.exp(Math.log(11*180/Math.PI/GR)*ease(kz)))); globe.position.set(0,0,0); globe.updateMatrixWorld(true);
     var swp=gSpin.localToWorld(gv(46.8,8.2,GR)); globe.position.copy(GC).lerp(C('756',2.0).sub(swp),sst(0,1,kz));
     var MW=.97, MX=0, MY=.035, sS=1-gL; uShM.value=Math.min(1,Math.max(0,(sS-.3)/.6)); uShOp.value=0; if(logoBoxEl){ var lbR=logoBoxEl.getBoundingClientRect(), stR=stageEl.getBoundingClientRect(), bw=lbR.width*MW, bh=bw*280/310; uBox.value.set((lbR.left+lbR.width/2-stR.left)/stR.width*2-1+MX, -((lbR.top+lbR.height/2-stR.top)/stR.height*2-1)+MY, bw/stR.width*2, bh/stR.height*2); uAsp.value=stR.width/stR.height; } gTilt.updateMatrix(); gSpin.updateMatrix(); uRot.value.multiplyMatrices(gTilt.matrix,gSpin.matrix);
@@ -2856,14 +2856,14 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     /* international distribution: the camera pulls back from Switzerland over Europe as the planes take off, then follows the long flight east to Tokyo */
     if(oW>0){ var go=ease(sst(7.24,7.4,f))*(1-sst(7.8,7.9,f)), kB=sst(.5,.72,oT), dO=Math.exp(Math.log(300)+(Math.log(620)-Math.log(300))*kB), tO=P3(6.5,50.2,2).lerp(flightGround(2,oT),kB); tp.lerp(tmp.copy(tO).add(new THREE.Vector3(0,dO*.78,dO*.62)),go); tl.lerp(tO,go); }
     if(first){ cp.copy(tp); cl.copy(tl); } cp.lerp(tp,.14); cl.lerp(tl,.14); smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
-    var dd=cp.distanceTo(cl); var jw=jr.weight(f)*(f<5.72?sst(.32,.6,window.__dq||0):1); /* the relief stays until the roads of the local map have come in */ reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*(1-gI)*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
+    var dd=cp.distanceTo(cl); var jw=jr.weight(f)*(f<5.72?sst(.32,.6,window.__dq||0):1); /* the relief stays until the roads of the local map have come in */ reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*mrv*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
     /* near and far follow the distance, so the camera can come down from Europe to a greenhouse door on the same map */ var nr=Math.min(1,Math.max(2e-6,dd*.03)), fr=Math.min(6000,Math.max(40,dd*2500)); if(Math.abs(cam.near-nr)>nr*.02||cam.far!==fr){ cam.near=nr; cam.far=fr; cam.updateProjectionMatrix(); }
     var d=Math.min(cp.y,14,dd*.25); /* calm-parallax */ cam.position.set(cp.x+smx*d*.06,cp.y,cp.z-smy*d*.04); cam.lookAt(cl); bank+=((Math.sin(u*Math.PI)*.08*side)-bank)*.08; cam.rotateZ(bank);
     /* countries: the active ones glow and rise, visited ones keep a soft tint */
     Object.keys(plates).forEach(function(id){ var pl=plates[id]; if(!pl.lm) return; var act=CHIDS[chap].indexOf(id)>=0||(id==='756')||(oW>.3&&(id==='203'||id==='826'||id==='392'));
       var seen=CHIDS.slice(0,chap+1).some(function(a){ return a.indexOf(id)>=0; }); var tgt=act?1:0;
-      pl.on+=(tgt-pl.on)*.08; pl.lm.opacity=.85*pl.on; pl.ls.opacity=0; pl.le.opacity=pl.on; pl.top.visible=pl.on>.01&&!(id==='756'&&jw>.01); /* the local map lies on this plate: its lifted highlight would cover the streets */ pl.g.scale.y=1; });
-    groups.forEach(function(g,k){ var a=Math.min(1,Math.max(0,(f-k+.55)/.55)), keep=k<chap?0:1; a*=keep*(1-gI); g.visible=a>.01;
+      pl.on+=(tgt-pl.on)*.08; pl.lm.opacity=.85*pl.on*mrv; pl.ls.opacity=0; pl.le.opacity=pl.on*mrv; pl.top.visible=pl.on>.01&&!(id==='756'&&jw>.01); /* the local map lies on this plate: its lifted highlight would cover the streets */ pl.g.scale.y=1; });
+    groups.forEach(function(g,k){ var a=Math.min(1,Math.max(0,(f-k+.55)/.55)), keep=k<chap?0:1; a*=keep*mrv; g.visible=a>.01;
       g.traverse(function(o){ if(o.material&&o.userData.base!==undefined) o.material.opacity=o.userData.base*a; }); });
     pulses.forEach(function(q){ var arr=q.pt.geometry.attributes.position.array; for(var j=0;j<q.m;j++){ var s=((t*.0001*q.sp*10)+j/q.m)%1; q.cv.getPoint(s,tmp); arr[j*3]=tmp.x; arr[j*3+1]=tmp.y; arr[j*3+2]=tmp.z; } q.pt.geometry.attributes.position.needsUpdate=true; });
     stepFx(dt); uT.value=t*.001; var mv=mN.distanceTo(mPrev); mPrev.copy(mN); uM.value.lerp(mN,.25); uStir.value+= (Math.min(1,mv*18)-uStir.value)*(mv>.002?.2:.035);
