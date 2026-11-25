@@ -1598,7 +1598,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
 /* key-holds */ (function(){ var K0=stwK, KEYS=[-.62,0,1.2,5.8,6.42,7.3,7.74,8,9,10], A=2, W=.07, cache={};
   function table(N){ if(cache[N]) return cache[N]; var k=K0(N), F0=-1, F1=N-1, n=Math.round((F1-F0)/.004), d=(F1-F0)/n, S=[0], s=0;
     function slope(f){ for(var i=1;i<k.length;i++) if(f<=k[i][0]) return (k[i][1]-k[i-1][1])/Math.max(1e-9,k[i][0]-k[i-1][0]); return 1; }
-    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=(fm>6.12&&fm<6.7?1:0); /* gh-hq-slow */ for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
+    for(var i=1;i<=n;i++){ var fm=F0+(i-.5)*d, g=0; /* gh-hq-slow */ for(var j=0;j<KEYS.length;j++){ var z=(fm-KEYS[j])/W; g+=Math.exp(-z*z); } s+=(slope(fm)+A*g)*d; S.push(s); }
     return cache[N]={F0:F0,d:d,S:S,T:s}; }
   stwP=function(F,N){ var t=table(N), x=(F-t.F0)/t.d; if(x<=0) return 0; if(x>=t.S.length-1) return 1; var i=Math.floor(x); return (t.S[i]+(t.S[i+1]-t.S[i])*(x-i))/t.T; };
   stwF=function(p,N){ var t=table(N), s=Math.min(1,Math.max(0,p))*t.T, lo=0, hi=t.S.length-1; while(hi-lo>1){ var m=(lo+hi)>>1; if(t.S[m]<s) lo=m; else hi=m; }
@@ -2567,7 +2567,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
       /* behind the truck as it leaves */
       var cw=ss(.27,.33,p); if(cw>0){ E1.copy(CS).addScaledVector(CD,-22); E1.y=CS.y+8; E2.copy(CS).addScaledVector(CD,24); E2.y=CS.y-1.5; mix(VA,setV(VB,E1,E2),cw); }
       /* the drive: the camera rises to a tilted view a few hundred metres up, buildings and streets around, and keeps the truck in the middle all the way to Kloten */
-      var fz=ss(.31,.37,p); if(fz>0){ E1.copy(CS).addScaledVector(SOUTH,430).add(new THREE.Vector3(0,560,0)); E2.copy(CS); E2.y=-3.7; mix(VA,setV(VB,E1,E2),fz,fz,fz); }
+      var fz=ss(.31,.38,p); if(fz>0){ E2.copy(RMID).lerp(CS,.12); E2.x+=250; E2.y=-3.7; E1.copy(E2).addScaledVector(SOUTH,9400).add(new THREE.Vector3(0,14400,0)); mix(VA,setV(VB,E1,E2),fz,fz*fz*fz,fz); } /* high above both towns: the truck is a light moving along the road */
       /* down at the warehouse, beside the gate */
       var ar=ss(.5,.54,p); if(ar>0){ E2.copy(CS).lerp(tmp.copy(WH.gate).addScaledVector(WH.e,2),.45+.4*ss(.58,.625,p)); E2.y=-1.5; E1.copy(WH.gate).addScaledVector(WH.e,-30).addScaledVector(WH.side,-12); E1.y=14; mix(VA,setV(VB,E1,E2),ar,ar,ar); }
       toW(VA);
@@ -2594,7 +2594,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
         uWd.value=Math.min(40,alt*.0012);
         truckGlow.visible=truck.visible; if(truck.visible){ truck.scale.setScalar((truck.userData.bs||1)*Math.min(45,Math.max(1,alt/150))); /* drawn larger, like a map marker, when seen from high up */ truckGlow.position.copy(truck.position); truckGlow.position.y+=2; var gs=Math.max(8,alt*.07); truckGlow.scale.set(gs,gs,1); truckGlow.material.opacity=.85*ss(60,500,alt)*w; } },
       labels:function(f,cam,W,H){ var q=this.dive(f); if(diveLbl){ tmp.set(-50,-3.7,.6); jg.localToWorld(tmp); tmp.project(cam); var dOn=this.weight(f)>.5&&q>.33&&q<.93&&tmp.z<1; diveLbl.style.transform='translate('+((tmp.x*.5+.5)*W).toFixed(1)+'px,'+((-tmp.y*.5+.5)*H-14).toFixed(1)+'px) translate(-50%,-100%)'; diveLbl.style.opacity=dOn?Math.min(1,(q-.33)*30,(.93-q)*14):0; var cd=cam.position.distanceTo(tmp.set(-50,-3.7,.6).applyMatrix4(jg.matrixWorld))/JS, pu=(uT.value*.5)%1; diveRing.visible=q>.02&&q<.55; diveRing.scale.setScalar(cd*(.05+.05*pu)); diveRing.material.opacity=.9*(1-pu)*Math.min(1,(q-.02)*10)*(1-ss(.45,.55,q)); /* off once the greenhouse shows */ }
-        var w=this.weight(f), p=this.prog(f), cur=p<.42?0:p<.62?1:2, ovk=0;
+        var w=this.weight(f), p=this.prog(f), cur=p<.42?0:p<.62?1:2, ovk=ss(.36,.4,p)*(1-ss(.49,.52,p));
         steps.forEach(function(li,i){ if(i>2) return; tmp.copy(anchors[i]); if(i<2) jg.localToWorld(tmp); tmp.project(cam); var x=(tmp.x*.5+.5)*W, y=(-tmp.y*.5+.5)*H, on=w>.6&&!((window.__gO||0)>.3)&&((i===cur&&p>=show[i])||(i<2&&ovk>.5))&&tmp.z<1&&(innerWidth<=1000||x>W*.44); /* lbl-clear */
           li.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) translate(-50%,-100%)'; li.classList.toggle('on',on); li.classList.toggle('cur',on&&i===cur&&p<.94); }); } };
   })();
@@ -2832,10 +2832,15 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     var gO=0, oT=gI<.5?Math.min(1,Math.max(0,(f-7.24)/.56)):0, oW=gI<.5?sst(7.22,7.34,f)*(1-sst(7.8,7.9,f)):0; window.__gO=gI<.5?sst(7.24,7.4,f):0; /* gO: the globe takes no part in the closing scene any more */
     /* globe: idle spin and drag inertia; as the story starts it turns back to Switzerland and sinks into it */
     if(!dragging){ yaw+=yawV; yawV*=.94; if(gI>.75) yaw+=dt*(.12+2.4*gL); else { var home=Math.round(yaw/(Math.PI*2))*Math.PI*2; yaw+=(home-1.0*sst(.3,.85,gO)-yaw)*.07; } pitch*=gI>.75?.98:.9; }
-    gSpin.rotation.y=LON0R+yaw; gTilt.rotation.x=46.8*Math.PI/180+pitch;
-    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=gV>.01; var gFade=sst(.2,.55,1-gL); globe.scale.setScalar(Math.max(.001,ge*(.3+.7*sst(.2,.75,1-gL)))); globe.position.copy(C('756')).lerp(GC,ge);
+    /* from the globe into the map: the camera zooms in on Switzerland while the globe grows and turns until its surface around Switzerland lies on the flat map
+       (radius x scale = the map's 11 units per degree), then it dissolves into the map */
+    var kz=gL>0?0:1-gI;
+    gSpin.rotation.y=LON0R+yaw; gTilt.rotation.x=46.8*Math.PI/180+pitch-Math.PI/2*sst(.08,.8,kz);
+    var gV=Math.max(gI,gO), ge=ease(gV); globe.visible=kz<.995; var gFade=sst(.2,.55,1-gL)*(1-sst(.6,.96,kz));
+    globe.scale.setScalar(Math.max(.001,(.3+.7*sst(.2,.75,1-gL))*Math.exp(Math.log(11*180/Math.PI/GR)*ease(kz)))); globe.position.set(0,0,0); globe.updateMatrixWorld(true);
+    var swp=gSpin.localToWorld(gv(46.8,8.2,GR)); globe.position.copy(GC).lerp(C('756',2.0).sub(swp),sst(0,1,kz));
     var MW=.97, MX=0, MY=.035, sS=1-gL; uShM.value=Math.min(1,Math.max(0,(sS-.3)/.6)); uShOp.value=0; if(logoBoxEl){ var lbR=logoBoxEl.getBoundingClientRect(), stR=stageEl.getBoundingClientRect(), bw=lbR.width*MW, bh=bw*280/310; uBox.value.set((lbR.left+lbR.width/2-stR.left)/stR.width*2-1+MX, -((lbR.top+lbR.height/2-stR.top)/stR.height*2-1)+MY, bw/stR.width*2, bh/stR.height*2); uAsp.value=stR.width/stR.height; } gTilt.updateMatrix(); gSpin.updateMatrix(); uRot.value.multiplyMatrices(gTilt.matrix,gSpin.matrix);
-    globe.traverse(function(o){ if(o.material&&o.userData.base!==undefined) o.material.opacity=o.userData.base*Math.min(1,ge*1.6)*gFade; });
+    globe.traverse(function(o){ if(o.material&&o.userData.base!==undefined) o.material.opacity=o.userData.base*gFade; });
     canvas.style.cursor=gI>.3?(dragging?'grabbing':'grab'):'';
     /* arc the camera up between distant keyframes so long jumps read as a flight */
     tp.copy(A.p).lerp(B.p,u); tp.y+=Math.sin(u*Math.PI)*Math.min(900,A.p.distanceTo(B.p)*.25); tl.copy(A.l).lerp(B.l,u); var side=(i%2?1:-1)*(F<0?0:1); tp.x+=Math.sin(u*Math.PI)*Math.min(240,A.p.distanceTo(B.p)*.22)*side;
@@ -2846,7 +2851,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     /* international distribution: the camera pulls back from Switzerland over Europe as the planes take off, then follows the long flight east to Tokyo */
     if(oW>0){ var go=ease(sst(7.24,7.4,f))*(1-sst(7.8,7.9,f)), kB=sst(.5,.72,oT), dO=Math.exp(Math.log(300)+(Math.log(620)-Math.log(300))*kB), tO=P3(6.5,50.2,2).lerp(flightGround(2,oT),kB); tp.lerp(tmp.copy(tO).add(new THREE.Vector3(0,dO*.78,dO*.62)),go); tl.lerp(tO,go); }
     if(first){ cp.copy(tp); cl.copy(tl); } cp.lerp(tp,.14); cl.lerp(tl,.14); smx+=(mx-smx)*.05; smy+=(my-smy)*.05;
-    var dd=cp.distanceTo(cl); var jw=jr.weight(f); reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*(1-gI)*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
+    var dd=cp.distanceTo(cl); var jw=jr.weight(f)*(f<5.72?sst(.32,.6,window.__dq||0):1); /* the relief stays until the roads of the local map have come in */ reliefs.forEach(function(rf){ var op=(rf.ls.userData.w||.5)*(rf.pl.on||0)*(1-gI)*(1-jw)*sst(1500,420,dd)*(1-.75*sst(420,640,dd)); rf.ls.material.opacity=op; rf.ls.visible=op>.01; }); scene.fog.near=dd*.75; scene.fog.far=dd*2.8; uF.value.set(dd*.75,dd*2.8);
     /* near and far follow the distance, so the camera can come down from Europe to a greenhouse door on the same map */ var nr=Math.min(1,Math.max(2e-6,dd*.03)), fr=Math.min(6000,Math.max(40,dd*2500)); if(Math.abs(cam.near-nr)>nr*.02||cam.far!==fr){ cam.near=nr; cam.far=fr; cam.updateProjectionMatrix(); }
     var d=Math.min(cp.y,14,dd*.25); /* calm-parallax */ cam.position.set(cp.x+smx*d*.06,cp.y,cp.z-smy*d*.04); cam.lookAt(cl); bank+=((Math.sin(u*Math.PI)*.08*side)-bank)*.08; cam.rotateZ(bank);
     /* countries: the active ones glow and rise, visited ones keep a soft tint */
@@ -2891,7 +2896,7 @@ function stwP(F,N){ var k=stwK(N); for(var i=1;i<k.length;i++) if(F<=k[i][0]) re
     cards.forEach(function(K){ var on=gI<.05&&chap>=K.ch[0]&&chap<=K.ch[1]&&Math.abs(f-chap)<.45; K.k=on?Math.min(1,K.k+dt*1.1):Math.max(0,K.k-dt*2.5); var e=Math.max(0,Math.min(1,(K.k-K.dl)/(1-K.dl))); e=1-Math.pow(1-e,3);
       K.o.visible=e>.005; K.o.scale.set(1,Math.max(.001,e),1); K.o.position.y=K.y-(1-e)*3+Math.sin(uT.value*.8+K.ph)*.7*e; K.o.quaternion.copy(cam.quaternion);
       if(K.ring){ var ra=K.ring.a0-(window.__pa||0)*Math.PI/3; K.o.position.x=K.ring.c.x+Math.sin(ra)*K.ring.r; K.o.position.z=K.ring.c.z+Math.cos(ra)*K.ring.rz; } });
-    gtags.forEach(function(g){ g.m.getWorldPosition(tmp); var n=tmp.clone().sub(globe.position).normalize(), toCam=cam.position.clone().sub(tmp).normalize(), face=n.dot(toCam);
+    gtags.forEach(function(g){ g.m.visible=kz<.12; g.m.getWorldPosition(tmp); var n=tmp.clone().sub(globe.position).normalize(), toCam=cam.position.clone().sub(tmp).normalize(), face=n.dot(toCam);
       tmp.project(cam); var intro=gI>.45&&gL<.3, outro=gO>.62&&g.out, show=(intro||outro)&&face>.2; g.el.style.transform='translate('+((tmp.x*.5+.5)*W2+g.dx).toFixed(1)+'px,'+((-tmp.y*.5+.5)*H2-12+g.dy).toFixed(1)+'px) translate(-50%,-100%)'; g.el.style.opacity=show?Math.min(1,intro?(gI-.45)*4:(gO-.62)*4):0; });
     (function(){ var li=document.querySelector('.jr-steps .intl'); if(!li) return; tmp.copy(cl).project(cam); var on=oW>.6&&oT>.14&&f<7.79&&tmp.z<1; li.style.transform='translate('+((tmp.x*.5+.5)*W2).toFixed(1)+'px,'+(H2*.16).toFixed(1)+'px) translate(-50%,-100%)'; li.classList.toggle('on',on); li.classList.toggle('cur',on); })();
     first=false; }
