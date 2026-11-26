@@ -151,21 +151,12 @@
     hd.classList.toggle('dark',on); }
   addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
 
-  /* 11. a soft light follows the cursor across the violet cards */
-  $('.pr .list li').forEach(function(card){
-    card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); });
-    card.addEventListener('pointerleave',function(){ card.style.removeProperty('--mx'); card.style.removeProperty('--my'); }); });
-
   /* 12. the bracket corners around the Companies statement open from the middle */
   $('.co .brk').forEach(function(b){ g.fromTo(b,{clipPath:'inset(50% 0% 50% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,ease:'power3.out',scrollTrigger:{trigger:b,start:'top 80%',once:true}}); });
 
   /* 13. photographs drift at their own pace while the page scrolls */
   [['.img-sec .ph',60,-60],['.tg .p1',70,-70],['.tg .p2',-20,110],].forEach(function(p){ $(p[0]).forEach(function(el){
     g.fromTo(el,{y:p[1]},{y:p[2],ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}); }); });
-
-  /* 14. the news cards: the same soft light under the cursor */
-  $('.nw li a').forEach(function(card){
-    card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); }); });
 
   /* 15. How we work: the step at the middle of the screen lights its number and sets the counter and bar on the right */
   var hwBig=document.querySelector('.hw-big'), hwName=document.querySelector('.hw-name'), hwBars=$('.hw-bar i'), hwSteps=$('.hw-step');
@@ -178,11 +169,22 @@
 
   /* 16. a thin progress line along the top of the page */
   var sp=document.querySelector('.sprog'); if(sp) g.to(sp,{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
-  /* 17. the pins on the figures map drop in one after another */
-  var pm=document.querySelector('.pmap'); if(pm){ var pins=$('.pin',pm), lbls=$('.lbl',pm);
-    g.from(pins,{y:-40,autoAlpha:0,duration:.8,stagger:.12,ease:'back.out(2.2)',scrollTrigger:{trigger:pm,start:'top 70%',once:true}});
-    g.from(lbls,{autoAlpha:0,y:8,duration:.6,stagger:.1,delay:.4,ease:'expo.out',scrollTrigger:{trigger:pm,start:'top 70%',once:true}});
-    g.from($('.on',pm),{autoAlpha:0,duration:.8,stagger:.1,scrollTrigger:{trigger:pm,start:'top 75%',once:true}}); }
+  /* 17. figures map: the land sweeps in from the west; then each of the group's countries drops onto the map from above
+         and lands with a soft shadow (headquarters first), its dot pops, the leader line draws and the plate slides in.
+         While the page scrolls, the lifted layer moves faster than the land beneath it (parallax depth). */
+  var pm=document.querySelector('.pmap'); if(pm){
+    var land=$('.pm-land path',pm).sort(function(a,b){ return a.getAttribute('data-x')-b.getAttribute('data-x'); });
+    var q=function(sel){ return pm.querySelector(sel); };
+    var tl=g.timeline({scrollTrigger:{trigger:pm,start:'top 72%',once:true}});
+    tl.from(land,{autoAlpha:0,duration:.5,stagger:{amount:.8},ease:'power1.out'},0)
+      .from(q('.jp .box'),{autoAlpha:0,y:16,duration:.6,ease:'expo.out'},.5).from(q('.jp .jt'),{autoAlpha:0,duration:.4},.7);
+    ['ch','uk','be','cz','jp'].forEach(function(c,i){ var at=.7+i*.26, hl=q('.hl[data-c="'+c+'"]'), dt=q('.dot[data-c="'+c+'"]'), ln=q('.ln[data-c="'+c+'"]'), lb=q('.lbl[data-c="'+c+'"]');
+      if(hl) tl.from(hl,{y:-34,scale:1.3,autoAlpha:0,transformOrigin:'50% 50%',duration:.9,ease:'back.out(1.5)'},at);
+      if(dt){ tl.from(dt,{autoAlpha:0,duration:.2},at+.45).from(dt.querySelector('.core'),{scale:0,transformOrigin:'50% 50%',duration:.5,ease:'back.out(3)'},at+.45); }
+      if(ln){ var L=ln.getTotalLength(); ln.style.strokeDasharray=L; tl.fromTo(ln,{strokeDashoffset:L},{strokeDashoffset:0,duration:.45,ease:'power2.out'},at+.55); }
+      if(lb) tl.from(lb,{autoAlpha:0,x:c==='uk'||c==='ch'?10:-10,duration:.6,ease:'expo.out'},at+.7); });
+    g.fromTo(q('.pm-top'),{y:18},{y:-18,ease:'none',scrollTrigger:{trigger:pm,start:'top bottom',end:'bottom top',scrub:true}});
+    g.fromTo(q('.pm-land'),{y:-6},{y:6,ease:'none',scrollTrigger:{trigger:pm,start:'top bottom',end:'bottom top',scrub:true}}); }
   /* 18. team cards rise one after another; partner dots on the pharmacy map are already staggered in CSS */
   var tml=document.querySelector('.tm-list'); if(tml){ own(tml); g.from($('li',tml),{y:40,autoAlpha:0,duration:.9,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:tml,start:'top 80%',once:true}}); }
 
