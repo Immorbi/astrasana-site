@@ -80,7 +80,7 @@ body.leaving .back,body.leaving .ret{opacity:0;transition:opacity .2s ease}
     <h1 id="ltitle">Loading the 3D story</h1>
     <div class="track"><i></i></div>
     <p id="lnote">An interactive journey across the map: our structure, production in Tagelswangen and the route to our partner pharmacies.</p>
-    <div class="alt"><button type="button" data-leave="back">Cancel and return</button><a href="../#companies" data-leave="home">Read about us without 3D</a></div>
+    <div class="alt"><button type="button" data-leave="back">Cancel and return</button><a href="../#about" data-leave="back">Read about us without 3D</a></div>
   </div>
 </div>
 
@@ -91,14 +91,11 @@ body.leaving .back,body.leaving .ret{opacity:0;transition:opacity .2s ease}
 
 <script>
 (function(){
-  var KEY='astrasana:return', HOME='../', SRC='../story.html';
+  var HOME='../', ABOUT='../#about', SRC='../story.html';
   var frame=document.getElementById('story'), ret=document.getElementById('ret'), body=document.body;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var startLen=history.length, leaving=false;
+  var leaving=false;
 
-  /* where the visitor came from: set by the corporate site right before it sends them here */
-  function origin(){ try{ var r=JSON.parse(sessionStorage.getItem(KEY)||'null'); if(r&&Date.now()-r.t<6*3600e3) return r; }catch(e){} return null; }
-  var from=origin(), sameSite=document.referrer.indexOf(location.origin)===0;
 
   /* a chapter can be opened directly: ?chapter=1 opens Tagelswangen */
   var ch=new URLSearchParams(location.search).get('chapter');
@@ -135,17 +132,11 @@ body.leaving .back,body.leaving .ret{opacity:0;transition:opacity .2s ease}
     w.addEventListener('scroll',check,{passive:true}); w.addEventListener('resize',check); check();
   }
 
-  /* leaving: back to where the visitor was (history keeps the corporate page and its scroll), home for direct visits */
+  /* leaving: Back to website, Cancel and Return always land on the About Us section of the website,
+     whether the visitor came from there or opened this page directly; the logo goes to the top */
   function leave(kind){
     if(leaving) return; leaving=true; ret.classList.remove('on');
-    var go=function(){
-      if(kind==='back'&&from&&sameSite&&history.length>1){
-        try{ sessionStorage.setItem('astrasana:restore','1'); }catch(e){}
-        var extra=Math.max(0,history.length-startLen); history.go(-(1+extra));
-        /* if the browser has nothing to go back to, fall back to the address the visitor came from */
-        setTimeout(function(){ location.href=from.url||HOME; },700);
-      } else location.href=kind==='home'?HOME:(from&&from.url)||HOME;
-    };
+    var go=function(){ location.href=kind==='home'?HOME:ABOUT; };
     if(reduce){ go(); return; }
     body.classList.add('leaving'); setTimeout(go,380);
   }

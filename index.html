@@ -35,6 +35,7 @@
 html{background:var(--paper);-webkit-text-size-adjust:100%}
 body{background:var(--paper);color:var(--ink-2);font:400 var(--t-m)/1.6 var(--text);-webkit-font-smoothing:antialiased;overflow-x:clip}
 img{display:block;max-width:100%}
+main [id]{scroll-margin-top:76px}
 ::selection{background:var(--lav-2);color:var(--ink)}
 input,textarea{caret-color:var(--purple)}
 a{text-underline-offset:.18em}
@@ -93,14 +94,14 @@ p+p{margin-top:1em}
 .ch .track{position:absolute;left:0;right:0;top:calc(clamp(60px,5vw,76px) + 28px);height:2px;background:var(--rule)}
 .ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
 .ch li{position:relative}
-.ch li .ic{display:block;width:clamp(60px,5vw,76px);height:auto;fill:none;stroke:var(--rule-2);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .5s ease}
+.ch li .ic{display:block;width:clamp(60px,5vw,76px);height:auto;fill:none;stroke:var(--rule-2);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .7s ease}
 .ch li .ic *{vector-effect:non-scaling-stroke}
-.ch li .dot{position:relative;display:block;width:15px;height:15px;margin-top:21px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--rule-2);transition:background-color .35s ease,box-shadow .35s ease}
-.ch li .num{display:block;margin-top:20px;font:300 clamp(44px,4.4vw,72px)/.9 var(--display);letter-spacing:-.04em;color:var(--rule-2);transition:color .5s ease}
+.ch li .dot{position:relative;display:block;width:15px;height:15px;margin-top:21px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--rule-2);transition:background-color .6s ease,box-shadow .6s ease}
+.ch li .num{display:block;margin-top:20px;font:300 clamp(44px,4.4vw,72px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .7s ease}
 .ch li b{display:block;margin-top:14px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
 .ch li.lit .ic{stroke:var(--purple)}
-.ch li.lit .dot{background:var(--purple);box-shadow:inset 0 0 0 2px var(--purple),0 0 0 6px rgba(67,18,145,.12)}
+.ch li.lit .dot{background:var(--purple);box-shadow:inset 0 0 0 2px var(--purple)}
 .ch li.lit .num{color:var(--ink)}
 @media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .ic,.ch li .dot,.ch li .num{transition:none} }
 @media (max-width:1100px){
@@ -129,7 +130,6 @@ p+p{margin-top:1em}
 .hd nav a:hover,.hd nav a.on{color:var(--ink)}
 .hd nav a::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
 .hd nav a:hover::after{transform:scaleX(1)}
-.hd nav .x3d sup{font:600 10px/1 var(--display);color:var(--purple);margin-left:5px;transform:translateY(-6px)}
 .hd nav .contact{color:var(--purple);font-weight:600}
 .hd nav .contact::after{background:var(--purple)}
 .menu-btn{display:none;grid-column:12/13;justify-self:end;width:44px;height:44px;border:0;background:none;cursor:pointer}
@@ -143,8 +143,7 @@ p+p{margin-top:1em}
   .hd.open nav{opacity:1;visibility:visible;transform:none;transition:opacity .3s ease,transform .3s var(--ease)}
   .hd nav a{width:100%;min-height:60px;font:600 26px/1 var(--display);color:var(--ink);letter-spacing:-.02em;border-bottom:1px solid var(--rule)}
   .hd nav a::after{display:none}
-  .hd nav .x3d sup{font-size:11px}
-}
+  }
 
 /* ---------- hero (brochure p.2: a large rectangular photo, a large black title, white space) ---------- */
 .hero{padding-top:clamp(24px,3vw,48px)}
@@ -185,7 +184,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 
 /* ---------- figures (brochure p.3-4: two planes, numbers on a quiet colour, a large photograph) ---------- */
 .fig .ph{grid-column:1/6;grid-row:1/3;aspect-ratio:4/5;align-self:start}
-.fig .ph figcaption{position:absolute;left:clamp(20px,2.4vw,36px);bottom:clamp(20px,2.4vw,36px);max-width:240px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
+.fig .ph figcaption{z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.45);position:absolute;left:clamp(20px,2.4vw,36px);bottom:clamp(20px,2.4vw,36px);max-width:240px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
 .fig h2{grid-column:7/13;grid-row:1;align-self:start}
 .fig dl{grid-column:7/13;grid-row:2;align-self:end;margin-top:clamp(40px,4vw,64px)}
 .fig dl>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:var(--gut);align-items:end;padding:clamp(18px,2vw,28px) 0;border-top:1px solid var(--ink)}
@@ -214,12 +213,17 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .tg .ttl .tlink{margin-top:24px}
 
 /* ---------- pharmacies (brochure p.7: large vertical photo, title, lede, columns) ---------- */
-.ph-sec .ph{grid-column:1/7;grid-row:1/4;aspect-ratio:3/4.2}
+.ph-sec .ph{grid-column:1/7;grid-row:1/5;aspect-ratio:4/4.6}
+.ph-sec h2,.ph-sec .lede,.ph-sec .body{align-self:start}
+.ph-sec .pat{grid-row:5}
 .ph-sec h2{grid-column:8/13;grid-row:1}
 .ph-sec .lede{grid-column:8/13;grid-row:2;margin-top:32px}
 .ph-sec .body{grid-column:8/13;grid-row:3;margin-top:40px}
 .ph-sec .body h3{font-size:clamp(20px,1.6vw,24px);margin-bottom:12px}
-.steps{list-style:none;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gut)}
+.ph-sec .pat{grid-column:1/13;margin-top:clamp(56px,6vw,96px);padding:clamp(28px,3.4vw,56px);background:var(--paper-2);border-radius:var(--r-photo);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut)}
+.ph-sec .pat h3{grid-column:1/6;font-size:clamp(22px,2vw,30px)}
+.ph-sec .pat .intro{grid-column:7/12;align-self:end}
+.steps{grid-column:1/13;list-style:none;margin-top:36px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gut)}
 .steps li{padding:18px 0 22px;border-top:1px solid var(--rule)}
 .steps b{display:block;font:600 16px/1.3 var(--display);color:var(--ink);margin:6px 0 6px}
 .steps p{font-size:var(--t-s)}
@@ -245,16 +249,11 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .x3d-sec .go{grid-column:1/6;grid-row:3;align-self:end;margin-top:40px}
 .x3d-sec .pv{grid-column:6/13;grid-row:1/4;position:relative;display:block;overflow:hidden;border-radius:var(--r-photo);aspect-ratio:16/10;background:#121116}
 .x3d-sec .pv img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease),opacity .6s ease}
-.x3d-sec .pv:hover img{transform:scale(1.03)}
 .x3d-sec .pv .tag{position:absolute;left:20px;bottom:18px;font:500 14px/1 var(--text);color:#fff}
 .btn3d{border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 22px;border:1px solid rgba(243,238,235,.5);color:#fff;font:600 15px/1 var(--display);transition:background-color .3s ease,color .3s ease,border-color .3s ease}
 .btn3d:hover,.btn3d:focus-visible{background:#fff;color:var(--night);border-color:#fff}
 .btn3d svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
 .x3d-sec .note{display:block;margin-top:14px;font-size:12px;color:rgba(243,238,235,.5)}
-.x3d-sec .chap{grid-column:1/6;grid-row:4;margin-top:56px;list-style:none;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gut)}
-.x3d-sec .chap a{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-top:1px solid rgba(243,238,235,.16);font-size:var(--t-s);color:rgba(243,238,235,.82);transition:color .2s ease}
-.x3d-sec .chap a:hover{color:#fff}
-.x3d-sec .chap a b{font:600 12px/1 var(--display);color:var(--night-acc)}
 
 /* ---------- partners: a hairline grid of marks ---------- */
 .pa .head h2{grid-column:1/6}
@@ -293,6 +292,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .ct label.wide{grid-column:1/3}
 .ct label i{font-style:normal;color:var(--purple)}
 .ct input,.ct select,.ct textarea{width:100%;min-height:48px;border:1px solid var(--rule-2);border-radius:var(--r-btn);background:#fff;padding:12px 14px;font:400 16px/1.4 var(--text);color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease}
+.ct select:invalid,.ct select option[value=""]{color:var(--ink-3)}
 .ct select{-webkit-appearance:none;appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23231f20' stroke-width='1.6'/%3E%3C/svg%3E") right 14px center/16px no-repeat}
 .ct ::placeholder{color:var(--ink-3)}
 .ct textarea{resize:vertical;min-height:132px}
@@ -301,7 +301,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .ct .send{border-radius:var(--r-btn);grid-column:1/3;justify-self:stretch;justify-content:center;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 24px;background:var(--ink);color:#fff;border:0;font:600 15px/1 var(--display);cursor:pointer;transition:background-color .25s ease}
 .ct .send:hover{background:var(--purple)}
 .ct .send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.ct .fnote{grid-column:1/3;font-size:13px;color:var(--ink-3);margin-top:-6px;text-align:center}
+.ct .fnote{grid-column:1/3;font-size:13px;color:var(--ink-2);margin-top:-6px;text-align:center}
 
 /* ---------- footer ---------- */
 .ft{margin-top:var(--sec);border-top:1px solid var(--ink);padding:56px 0 40px;font-size:var(--t-s)}
@@ -338,11 +338,12 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .img-sec .ph{grid-column:1/13} .img-sec .over{grid-column:1/13;grid-row:2;margin-top:40px}
   .tg .p1{grid-column:1/8;grid-row:1/3} .tg .p2{grid-column:8/13;grid-row:1} .tg .c2{grid-column:8/13;grid-row:2}
   .tg .ttl{grid-column:1/12;grid-row:auto;margin-top:72px}
-  .ph-sec .ph{grid-column:1/9;grid-row:1}
+  .ph-sec .ph{grid-column:1/9;grid-row:1} .ph-sec .pat{grid-row:auto}
   .ph-sec h2,.ph-sec .lede,.ph-sec .body{grid-column:1/12;grid-row:auto} .ph-sec h2{margin-top:56px}
+  .ph-sec .pat h3,.ph-sec .pat .intro{grid-column:1/13} .ph-sec .pat .intro{margin-top:12px} .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pr .head h2{grid-column:1/13} .pr .head .lede{grid-column:1/10;margin-top:24px}
   .pr .list{grid-template-columns:repeat(2,minmax(0,1fr))} .pr .band{aspect-ratio:16/8}
-  .x3d-sec .hd2,.x3d-sec .txt,.x3d-sec .go,.x3d-sec .chap{grid-column:1/13;grid-row:auto} .x3d-sec h2{grid-column:1/13}
+  .x3d-sec .hd2,.x3d-sec .txt,.x3d-sec .go{grid-column:1/13;grid-row:auto} .x3d-sec h2{grid-column:1/13}
   .x3d-sec .pv{grid-column:1/13;grid-row:2;margin:8px 0 32px}
   .pa .head h2,.pa .head p{grid-column:1/13} .pa .head p{margin-top:24px}
   .nw .head h2{grid-column:1/13} .nw .head .tlink{grid-column:1/13;justify-self:start;margin-top:12px}
@@ -365,9 +366,8 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .img-sec .over{grid-column:1/13;grid-row:2;margin-top:28px}
   .tg .p1{grid-column:1/10;grid-row:auto} .tg .p2{grid-column:6/13;grid-row:auto;margin-top:-64px;position:relative} .tg .c2{grid-column:6/13;grid-row:auto}
   .ph-sec .ph{grid-column:1/13;margin-left:calc(var(--pad) * -1)}
-  .steps{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr} .ph-sec .pat{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);border-radius:0;padding:40px var(--pad)}
   .pr .list{grid-template-columns:1fr} .pr .band{aspect-ratio:4/3;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1)}
-  .x3d-sec .chap{grid-template-columns:1fr}
   .nw li a{row-gap:10px} .nw li .cap,.nw li h3,.nw li p{grid-column:1/13}
   .ct form{grid-template-columns:1fr} .ct form h3,.ct form .sub,.ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
   .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
@@ -382,7 +382,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <div class="grid">
     <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img class="l-col" src="corporate/img/brand/logo-color.svg" alt="" width="128" height="24"><img class="l-white" src="corporate/img/brand/logo-white.svg" alt="" width="128" height="24"></a>
     <nav id="menu" aria-label="Main">
-      <a class="x3d" href="about-us/" data-3d>About Us<sup>3D</sup></a>
+      <a href="#about">About Us</a>
       <a href="#companies">Companies</a>
       <a href="#cultivation">Pharma</a>
       <a href="#pharmacies">Pharmacies</a>
@@ -404,7 +404,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     </div>
     <div class="intro up">
       <p class="lede">A vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the industry.</p>
-      <a class="tlink" href="#companies"><span>Discover our companies</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="tlink" href="#chain"><span>See the value chain</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
     <ol class="idx up" aria-label="On this page">
       <li><a href="#companies"><b>01</b>Our companies</a></li>
@@ -417,13 +417,12 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   <!-- company -->
   <section class="co grid sec rv" id="companies" aria-labelledby="t-co">
-    <figure class="ph cool"><img src="land/site/production-1.webp" alt="Cultivation room with rows of cannabis plants under grow lights" width="1600" height="1067" loading="lazy"></figure>
+    <figure class="ph"><img src="land/site/homepage-ueber-uns-2@2x.webp" alt="The Astrasana team in front of the office" width="1170" height="1528" loading="lazy" style="object-position:50% 72%"></figure>
     <div class="ttl">
       <h2 id="t-co" class="up">Vertically integrated, globally distributed</h2>
-      <p class="lede up">Headquartered in Switzerland with nine additional subsidiaries in the UK, Czech Republic, and Japan, Astrasana employs around 30 people and distributes its products in over 18 countries worldwide.</p>
+      <p class="lede up">Astrasana Holding brings its companies together under one roof: cultivation and research, pharmaceutical production, distribution to pharmacies and clinics, and animal health.</p>
     </div>
     <div class="text cols2 small up">
-      <p>Astrasana Holding is a vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the industry.</p>
       <p>As a pharmaceutical distribution specialist, Astrasana imports and distributes medical cannabis, supplying pharmacies and clinics in Switzerland and the Czech Republic. The company also cultivates cannabis for medical purposes in Switzerland.</p>
       <p>As the first Swiss company, Astrasana maintains an exclusive partnership with the publicly listed GSI Creos corporation and distributes CBD products for both human and veterinary use.</p>
     </div>
@@ -456,7 +455,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   <!-- cultivation, one photograph with text in its free area -->
   <!-- the chain: every step from cultivation to pharmacy inside one group -->
-  <section class="ch sec rv" aria-labelledby="t-ch">
+  <section class="ch sec rv" id="chain" aria-labelledby="t-ch">
     <div class="grid head">
       <h2 id="t-ch" class="up">One group, every step of the chain</h2>
       <p class="up">From cultivation in Switzerland to the pharmacy counter and markets abroad, each step sits with a company of the Astrasana group.</p>
@@ -484,14 +483,12 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <!-- Tagelswangen -->
   <section class="tg grid sec rv" aria-labelledby="t-tg">
     <figure class="ph cool p1"><img src="land/site/production-2.webp" alt="Specialist in protective clothing checking plants in the cultivation room" width="1600" height="1067" loading="lazy" style="object-position:62% 50%"></figure>
-    <figure class="ph cool p2"><img src="corporate/img/microscope.webp" alt="Laboratory microscope during quality control" width="1109" height="1607" loading="lazy"></figure>
-    <p class="c2 cap up">An in-house quality control laboratory and GDP-standard storage sit under one roof with cultivation, processing and packaging.</p>
+    <figure class="ph p2"><img src="land/site/AstraSana-10.webp" alt="Corridor of the Astrasana facility with the company sign" width="1600" height="1067" loading="lazy" style="object-position:80% 45%"></figure>
     <div class="ttl">
       <p class="label up">Tagelswangen, Canton Zurich</p>
       <h2 id="t-tg" class="up" style="margin-top:20px">Production facility in Tagelswangen complete</h2>
       <p class="lede up">Astrasana successfully completes the setup of its pharmaceutical production facility in Tagelswangen, Canton Zurich.</p>
       <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and packaging, an in-house quality control laboratory and GDP-standard storage sit under one roof.</p>
-      <a class="tlink acc up" href="about-us/?chapter=1" data-3d><span>See Tagelswangen in 3D</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
   </section>
 
@@ -502,8 +499,10 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     <p class="lede up">As part of the Astrasana Holding AG, Bogen Pharma AG works with carefully selected, specialised partner pharmacies in Switzerland.</p>
     <div class="body up">
       <p class="small">They receive THC flowers, standardised extracts and dronabinol for compounding, expert advice and reliable supply through Bogen Pharma’s distribution network.</p>
-      <h3 style="margin-top:48px">How patients in Switzerland access their medical cannabis</h3>
-      <p class="small">Since August 2022, physicians in Switzerland can prescribe medical cannabis directly. No special federal permit is required.</p>
+    </div>
+    <div class="pat up">
+      <h3>How patients in Switzerland access their medical cannabis</h3>
+      <p class="small intro">Since August 2022, physicians in Switzerland can prescribe medical cannabis directly. No special federal permit is required.</p>
       <ol class="steps">
         <li><span class="cap">01</span><b>Doctor consultation</b><p>The treating physician evaluates whether medical cannabis is an appropriate treatment option based on the patient's condition and history.</p></li>
         <li><span class="cap">02</span><b>Prescription</b><p>The physician issues a narcotics prescription (Betäubungsmittelrezept) specifying the product, dosage, and treatment plan.</p></li>
@@ -520,7 +519,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       <p class="lede up">Rigorous quality control from prescription cannabinoids to consumer wellness products.</p>
     </div>
     <div class="grid">
-      <figure class="ph band"><img src="corporate/img/lab-pipettes.webp" srcset="corporate/img/lab-pipettes-900.webp 900w, corporate/img/lab-pipettes.webp 1800w" sizes="100vw" alt="Automated pipettes over sample tubes in a quality control laboratory" width="1800" height="1268" loading="lazy"></figure>
+      <figure class="ph band"><img src="land/site/products-whitelabel.webp" alt="Filling line with product boxes and bottles" width="1184" height="864" loading="lazy" style="object-position:50% 60%"></figure>
       <ol class="list up">
         <li><b>Pharmaceuticals</b><span>Medical-grade products for pharmacies and clinics across our network.</span></li>
         <li><b>Cannabinoids</b><span>THC and CBD formulations for therapeutic applications.</span></li>
@@ -539,21 +538,15 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
         <p class="label up">About Us</p>
         <h2 id="t-3d" class="up">Discover our world</h2>
       </div>
-      <p class="txt up">Our structure across Europe and Japan, production in Tagelswangen, the warehouse in Kloten and the route to our partner pharmacies, told as an interactive journey across the map.</p>
-      <a class="pv" href="about-us/" data-3d aria-label="Explore Astrasana in 3D">
+      <p class="txt up">Astrasana Holding is a Swiss group with companies in Switzerland, the Czech Republic, Japan, the United Kingdom and Belgium. The interactive story follows our structure, production in Tagelswangen, the warehouse in Kloten and the route to our partner pharmacies across the map.</p>
+      <div class="pv">
         <img src="corporate/img/3d-europe.webp" srcset="corporate/img/3d-europe-800.webp 800w, corporate/img/3d-europe.webp 1600w" sizes="(min-width:1100px) 58vw, 100vw" alt="" width="1600" height="910" loading="lazy">
         <span class="tag">Interactive 3D</span>
-      </a>
-      <div class="go up">
-        <a class="btn3d" href="about-us/" data-3d>Explore in 3D<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
-        <span class="note">Best experienced on a desktop computer. You can return to this page at any time.</span>
       </div>
-      <ul class="chap up" aria-label="Chapters of the 3D story">
-        <li><a href="about-us/?chapter=0" data-3d>Our structure <b>01</b></a></li>
-        <li><a href="about-us/?chapter=1" data-3d>Tagelswangen <b>02</b></a></li>
-        <li><a href="about-us/?chapter=6" data-3d>Cultivation <b>03</b></a></li>
-        <li><a href="about-us/?chapter=7" data-3d>Pharmacies <b>04</b></a></li>
-      </ul>
+      <div class="go up">
+        <a class="btn3d" href="about-us/" data-3d>Explore Astrasana in 3D<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
+        <span class="note">Best viewed on desktop.</span>
+      </div>
     </div>
   </section>
 
@@ -596,9 +589,9 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     </div>
     <div class="grid">
       <ol>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom" target="_blank" rel="noopener"><span class="cap">3 August 2026</span><h3>Astrasana becomes exclusive distribution partner of Green Karat in Switzerland</h3><p>Astrasana has signed an exclusive distribution agreement with Canadian producer Green Karat for the Swiss market.</p><span class="vh"> (opens in a new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom" target="_blank" rel="noopener"><span class="cap">15 June 2026</span><h3>Partnership with Sanity Group: avaay Medical in Switzerland</h3><p>Bogen Pharma, a subsidiary of Astrasana Holding AG, partners with Berlin-based Sanity Group to bring the avaay Medical product line to Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom" target="_blank" rel="noopener"><span class="cap">16 March 2026</span><h3>GRAEUB distributes ASTRAVET in Switzerland</h3><p>GRAEUB, part of the LIVISTO Group, takes over exclusive distribution of the ASTRAVET veterinary product line in Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/green-karat-exclusive-distribution" target="_blank" rel="noopener"><span class="cap">3 August 2026</span><h3>Astrasana becomes exclusive distribution partner of Green Karat in Switzerland</h3><p>Astrasana has signed an exclusive distribution agreement with Canadian producer Green Karat for the Swiss market.</p><span class="vh"> (opens in a new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/sanity-group-avaay-partnership" target="_blank" rel="noopener"><span class="cap">15 June 2026</span><h3>Partnership with Sanity Group: avaay Medical in Switzerland</h3><p>Bogen Pharma, a subsidiary of Astrasana Holding AG, partners with Berlin-based Sanity Group to bring the avaay Medical product line to Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/graeub-astravet-vertrieb" target="_blank" rel="noopener"><span class="cap">16 March 2026</span><h3>GRAEUB distributes ASTRAVET in Switzerland</h3><p>GRAEUB, part of the LIVISTO Group, takes over exclusive distribution of the ASTRAVET veterinary product line in Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
       </ol>
     </div>
   </section>
@@ -622,10 +615,10 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       <p class="sub">Your message goes to our team in Kloten.</p>
       <label><span>Name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" placeholder="Your full name" required></label>
       <label><span>Email <i aria-hidden="true">*</i></span><input name="email" type="email" autocomplete="email" placeholder="name@company.com" required></label>
-      <label class="wide"><span>You are</span><select name="who"><option>A pharmacy</option><option>A clinic or doctor</option><option>A distributor</option><option>A potential partner</option><option>An investor</option><option>An authority</option><option>A patient or member of the public</option></select></label>
+      <label class="wide"><span>Your role</span><select name="who"><option value="" selected disabled>Select your role</option><option>A pharmacy</option><option>A clinic or doctor</option><option>A distributor</option><option>A potential partner</option><option>An investor</option><option>An authority</option><option>A patient or member of the public</option></select></label>
       <label class="wide"><span>Message <i aria-hidden="true">*</i></span><textarea name="msg" rows="4" placeholder="How can we help?" required></textarea></label>
-      <button class="send" type="submit">Send message<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-      <p class="fnote">* Required. Opens your email app, addressed to info@astrasana.com.</p>
+      <button class="send" type="submit">Open email draft<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+      <p class="fnote">* Required. The button opens a ready-made draft in your email app, addressed to info@astrasana.com; you send it from there.</p>
     </form>
   </section>
 </main>
@@ -634,7 +627,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <div class="grid">
     <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img src="corporate/img/brand/logo-color.svg" alt="" width="168" height="32"></a>
     <p class="about">A vertically integrated Swiss pharmaceutical and cannabis company. From cultivation to pharmacy.</p>
-    <div class="col"><h2 class="fh">Company</h2><ul><li><a href="about-us/" data-3d>About Us (3D)</a></li><li><a href="#companies">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
+    <div class="col"><h2 class="fh">Company</h2><ul><li><a href="#about">About Us</a></li><li><a href="#companies">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
     <div class="col"><h2 class="fh">Business</h2><ul><li><a href="#cultivation">Pharma</a></li><li><a href="#pharmacies">Pharmacies</a></li><li><a href="#products">Products</a></li></ul></div>
     <div class="col wide"><h2 class="fh">Contact</h2><ul><li><span>Gerbegasse 2, 8302 Kloten</span></li><li><a href="tel:+41445452850">+41 44 545 28 50</a></li><li><a href="mailto:info@astrasana.com">info@astrasana.com</a></li></ul></div>
     <div class="base">
@@ -690,31 +683,26 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   var chol=document.querySelector('.ch ol');
   if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), ticking=false;
     function chain(){ ticking=false; var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
-      var a=vh*.85, z=vh+24-r.height, f=reduce?1:Math.min(1,Math.max(0,(a-r.top)/Math.max(120,a-z)));
+      /* starts as the row comes up from the bottom of the screen, ends as its last line is fully in view: a long, even fill */
+      var a=vh+(vert?0:320), z=vh+24-r.height, f=reduce?1:Math.min(1,Math.max(0,(a-r.top)/Math.max(200,a-z)));
       chol.style.setProperty('--fill',f.toFixed(3));
       stops.forEach(function(li,i){ var dot=li.querySelector('.dot'), dr=dot.getBoundingClientRect(), at=vert?(dr.top+dr.height/2-r.top)/Math.max(1,r.height):(dr.left+dr.width/2-r.left)/Math.max(1,r.width); li.classList.toggle('lit',f>=at-.001); }); }
     addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(chain); } },{passive:true}); addEventListener('resize',chain); chain(); }
 
-  /* entering the 3D story: remember where the visitor was, settle into dark, then go */
-  var KEY='astrasana:return';
+  /* entering the 3D story from About Us: settle into dark, then go (same tab) */
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[data-3d]'); if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
     e.preventDefault();
-    try{ sessionStorage.setItem(KEY,JSON.stringify({url:location.pathname+location.search,y:Math.round(scrollY),t:Date.now()})); }catch(err){}
     var href=a.href;
     if(reduce){ location.href=href; return; }
     document.body.classList.add('leaving'); setTimeout(function(){ location.href=href; },380);
   });
-  /* coming back: the browser normally restores the page; if it was reloaded, scroll to where the visitor left */
-  addEventListener('pageshow',function(e){
-    document.body.classList.remove('leaving');
-    var r=null; try{ r=JSON.parse(sessionStorage.getItem(KEY)||'null'); }catch(err){}
-    if(!e.persisted&&r&&sessionStorage.getItem('astrasana:restore')==='1'){ sessionStorage.removeItem('astrasana:restore'); if('scrollRestoration' in history) history.scrollRestoration='manual'; scrollTo(0,r.y); }
-  });
+  /* back from the story (or the browser's back button): no veil left over */
+  addEventListener('pageshow',function(){ document.body.classList.remove('leaving'); });
 
   /* contact form: opens the email app, as on the current site */
   document.getElementById('cform').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target;
-    var body=f.msg.value+'\n\n'+f.name.value+' ('+f.who.value+')\n'+f.email.value;
+    var body=f.msg.value+'\n\n'+f.name.value+(f.who.value?' ('+f.who.value+')':'')+'\n'+f.email.value;
     location.href='mailto:info@astrasana.com?subject='+encodeURIComponent('Enquiry from '+f.name.value)+'&body='+encodeURIComponent(body); });
 })();
 </script>
