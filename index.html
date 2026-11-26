@@ -97,14 +97,14 @@ p,li,dd,figcaption{text-wrap:pretty}
 .ch ol.running .track b{opacity:1}
 .ch li{position:relative;z-index:1}
 .ch li .badge{display:grid;place-items:center;width:var(--b);height:var(--b);border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--rule-2);transition:background-color .45s var(--ease),box-shadow .45s var(--ease),transform .35s var(--ease)}
-.ch li .ic{display:block;width:58%;height:auto;fill:none;stroke:var(--purple);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
+.ch li .ic{display:block;width:58%;height:auto;fill:none;stroke:var(--ink-3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
 .ch li .num{display:block;margin-top:24px;font:300 clamp(40px,3.8vw,60px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .6s ease}
 .ch li b{display:block;margin-top:12px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
 .ch li:hover .badge{transform:translateY(-2px)}
-.ch li.lit .badge{background:var(--purple);box-shadow:inset 0 0 0 1.5px var(--purple);animation:reach .5s var(--ease)}
+.ch li.lit .badge{background:var(--paper);box-shadow:inset 0 0 0 2px var(--purple);animation:reach .5s var(--ease)}
 .ch li .ic .f{fill:none}
-.ch li.lit .ic{stroke:#fff}
+.ch li.lit .ic{stroke:var(--purple)}
 .ch li.lit .num{color:var(--purple)}
 @keyframes reach{0%{transform:scale(.92)}55%{transform:scale(1.07)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .badge,.ch li .ic,.ch li .num{transition:none} .ch li.lit .badge{animation:none} .ch .track b{display:none} }
