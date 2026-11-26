@@ -60,7 +60,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
 </head>
 <body>
 <div class="bar">
-  <a class="logo" href="../corporate/" data-leave="home" aria-label="Astrasana Holding AG, home"></a>
+  <a class="logo" href="../" data-leave="home" aria-label="Astrasana Holding AG, home"></a>
   <button class="back" type="button" data-leave="back"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to website</button>
 </div>
 
@@ -70,7 +70,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
     <h1 id="ltitle">Loading the 3D story</h1>
     <div class="track"><i></i></div>
     <p id="lnote">An interactive journey across the map: our structure, production in Tagelswangen and the route to our partner pharmacies.</p>
-    <div class="alt"><button type="button" data-leave="back">Cancel and return</button><a href="../corporate/#companies" data-leave="home">Read about us without 3D</a></div>
+    <div class="alt"><button type="button" data-leave="back">Cancel and return</button><a href="../#companies" data-leave="home">Read about us without 3D</a></div>
   </div>
 </div>
 
@@ -81,7 +81,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
 
 <script>
 (function(){
-  var KEY='astrasana:return', HOME='../corporate/', SRC='../index.html';
+  var KEY='astrasana:return', HOME='../', SRC='../story.html';
   var frame=document.getElementById('story'), ret=document.getElementById('ret'), body=document.body;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var startLen=history.length, leaving=false;

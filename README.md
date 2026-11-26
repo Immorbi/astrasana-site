@@ -1,8 +1,14 @@
 # Astrasana website
 
-A single-page scroll story for Astrasana Holding AG: a 3D intro from the globe to Europe, the production in Tagelswangen, the headquarters in Kloten and the partner pharmacies, then products, partners, news and contact. Static HTML, no build step.
+The corporate website of Astrasana Holding AG with an interactive 3D story as About Us. The story is a single-page scroll: a 3D intro from the globe to Europe, the production in Tagelswangen, the headquarters in Kloten and the partner pharmacies, then products, partners, news and contact. Static HTML, no build step.
 
-Open `index.html` in a browser, or serve the folder with any static server.
+Serve the folder with any static server (the About Us page needs the pages on one origin).
+
+- `index.html`: the corporate website, light editorial version.
+- `about-us/`: About Us, the interactive 3D story with a thin navigation layer (back to the website, loading, end of story). `about-us/?chapter=1` opens a chapter.
+- `story.html`: the 3D story itself, loaded by About Us.
+- `lite.html`, `download.html`: earlier lite version and the licences page.
+- `corporate/`: forwards to the homepage; its `img/` folder holds the homepage photographs.
 
 ## Credits
 
