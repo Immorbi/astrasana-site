@@ -832,6 +832,9 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .hero h1{color:#431291!important} .hero .meta p{color:#5A22B3!important} .hero .intro .lede{color:#280A58!important}
 .hero .pill{color:#431291;--bb:rgba(255,255,255,.55);--bs:inset 0 0 0 1.5px #A688E0} .hero .pill:hover{--bb:#fff;color:#431291}
 .hero .pill.solid{color:#fff;--bb:#431291;--bs:none} .hero .pill.solid:hover{--bb:#5A22B3;color:#fff}
+/* header pills on a light ground: a translucent white fill with a blur under the violet outline */
+.hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bb:rgba(255,255,255,.62);--bf:blur(14px) saturate(160%)}
+.hd:not(.dark):not(.tint) nav a:not(.contact):hover{--bb:rgba(255,255,255,.92)}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
