@@ -504,7 +504,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 /* the filled card: a gradient built from the brand's violet scale (styleguide: Violet 400 #7E52CC, Violet 600 #431291 brand,
    Violet 900 #1A063A) with a fine grain on top; it fades in over the white card when the step is reached */
 :root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");}
-.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--glow),var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
+.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
 .ch li::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grain);background-size:180px;mix-blend-mode:soft-light;opacity:0;transition:opacity .7s var(--ease)}
 .ch li.lit::before{opacity:1} .ch li.lit::after{opacity:.45}
 .ch li{isolation:isolate;overflow:hidden}
@@ -668,6 +668,54 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .ct .send{--bb:var(--deep)} .ct .send:hover{--bb:var(--ink)}
 .btn3d{padding:0 28px;--bs:inset 0 0 0 1px rgba(243,238,235,.5)} .btn3d:hover,.btn3d:focus-visible{--bb:#fff;--bs:none}
 @media (max-width:980px){ .hd nav a::before{display:none} .hd nav{gap:0} .hd nav a{padding:0} }
+
+/* ---------- V2 "How we work": a dark band; the left column stays in view while the steps scroll on the right ---------- */
+.hw{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px);color:#fff;align-items:start}
+.hw.sec{padding-top:clamp(80px,8vw,140px)}
+.hw::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:var(--grain-k) 0 0/180px,linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)}
+.hw-l{grid-column:1/6;position:sticky;top:96px}
+.hw-k{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--text);color:rgba(255,255,255,.8)}
+.hw-k i{width:8px;height:8px;border-radius:2px;background:#fff;transform:skewX(-19.6deg)}
+.hw h2{color:#fff;margin-top:22px;font-size:clamp(36px,4.2vw,64px)}
+.hw-t{margin-top:22px;color:rgba(255,255,255,.72);max-width:30em}
+.hw .hw-cta{margin-top:30px;margin-left:10px;--bb:#fff;color:var(--deep)} .hw .hw-cta:hover{--bb:var(--lav-2)}
+.hw .pill{position:relative;isolation:isolate;background:none!important;box-shadow:none!important}
+.hw .pill::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);background:var(--bb);transition:background-color .3s ease}
+.hw-fig{margin-top:clamp(32px,3.4vw,48px);width:min(100%,380px);aspect-ratio:1;border-radius:22px;display:grid;place-items:center;
+  background:radial-gradient(circle closest-side,rgba(255,255,255,.05) 0 88%,rgba(255,255,255,.5) 89.2% 90%,rgba(255,255,255,0) 91%),rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.hw-fig img{width:62%;height:auto;filter:drop-shadow(0 20px 40px rgba(26,6,58,.5))}
+.hw-r{grid-column:7/13;list-style:none}
+.hw-step{padding:clamp(22px,2vw,30px) 0 clamp(56px,6vw,96px);border-top:1px solid rgba(255,255,255,.22)}
+.hw-step h3{display:flex;align-items:center;gap:22px;font:400 clamp(24px,2.2vw,34px)/1.1 var(--display);letter-spacing:-.03em;color:#fff}
+.hw-n{position:relative;isolation:isolate;display:inline-grid;place-items:center;width:44px;height:40px;font:500 16px/1 var(--display)}
+.hw-n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);box-shadow:inset 0 0 0 1.5px #A688E0}
+.hw-sub{list-style:none;margin-top:clamp(28px,3vw,48px)}
+.hw-sub li{display:grid;grid-template-columns:clamp(56px,5vw,86px) 1fr;padding:18px 0;border-top:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.78);font-size:var(--t-s)}
+.hw-sub .sn{color:rgba(255,255,255,.5)}
+.hw-step.on .hw-n::before{background:#A688E0;box-shadow:none} .hw-step.on .hw-n{color:#1A063A}
+.hw-n::before,.hw-n{transition:background-color .4s ease,color .4s ease}
+@media (max-width:980px){ .hw-l{grid-column:1/13;position:static} .hw-r{grid-column:1/13;margin-top:48px} .hw-fig{display:none} }
+
+/* ---------- V2 value chain: a sideways row of large cards, each with its own gradient from the violet scale ---------- */
+.ch li:nth-child(1){--violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 55%,#7E52CC 100%)}
+.ch li:nth-child(2){--violet-grad:linear-gradient(160deg,#280A58 0%,#5A22B3 58%,#A688E0 100%)}
+.ch li:nth-child(3){--violet-grad:linear-gradient(200deg,#1A063A 0%,#36107A 45%,#7E52CC 100%)}
+.ch li:nth-child(4){--violet-grad:linear-gradient(135deg,#431291 0%,#280A58 60%,#1A063A 100%)}
+.ch li:nth-child(5){--violet-grad:linear-gradient(20deg,#1A063A 0%,#431291 45%,#A688E0 100%)}
+.gs .ch.hscroll{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:calc(64px + clamp(24px,3vw,48px));padding-bottom:clamp(24px,3vw,48px)}
+.gs .ch.hscroll ol{display:flex!important;gap:16px;width:max-content;padding:0!important;margin-top:clamp(28px,3vw,48px);will-change:transform}
+.gs .ch.hscroll li{flex:none;width:clamp(300px,34vw,520px);min-height:clamp(380px,56svh,560px);padding:clamp(28px,2.6vw,44px);display:flex;flex-direction:column}
+.gs .ch.hscroll li .badge{width:clamp(56px,4.6vw,72px);height:clamp(56px,4.6vw,72px)}
+.gs .ch.hscroll li .num{margin-top:auto;font-size:clamp(64px,7vw,112px)}
+.gs .ch.hscroll li b{font-size:clamp(24px,2.2vw,34px)} .gs .ch.hscroll li p{font-size:var(--t-m);max-width:22em}
+@media (max-width:760px){ .gs .ch.hscroll li{width:82vw;min-height:62svh} .gs .ch.hscroll .head p{display:none} }
+
+.gs .ch.hscroll{overflow:hidden} .hw{overflow-x:clip}
+/* news cards: no glass circle or square; the partner logo sits plainly at the bottom, "Read more" beside it */
+.nw li .lg{max-width:none!important;width:auto!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;padding:0!important;justify-self:start;place-items:end start}
+.nw li .lg img{max-height:34px!important;max-width:150px!important;filter:brightness(0) invert(1)!important;opacity:.92!important}
+.nw li a::after{content:"Read more \2192"!important;max-width:none!important;width:auto!important;aspect-ratio:auto!important;border-radius:0!important;background:none!important;box-shadow:none!important;justify-self:end!important;font:500 15px/1 var(--display)!important;color:#fff;opacity:.85}
+@media (hover:hover){ .nw li a:hover .lg{transform:none} .nw li a:hover::after{transform:translateX(4px);opacity:1} }
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -791,6 +839,23 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
         <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle class="f" cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-4.6 4.6-7 10.3-7 17s2.4 12.4 7 17c4.6-4.6 7-10.3 7-17S28.6 11.6 24 7z"/><path d="M9.5 15.5h29M9.5 32.5h29"/></svg></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18&nbsp;countries, with&nbsp;companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and&nbsp;Belgium.</p></li>
       </ol>
     </div>
+  </section>
+
+  <!-- how we work (V2): the left side stays, the steps scroll by on the right -->
+  <section class="hw grid sec rv" id="how" aria-labelledby="t-hw">
+    <div class="hw-l">
+      <p class="hw-k"><i aria-hidden="true"></i>How we work</p>
+      <h2 id="t-hw">From&nbsp;seed to&nbsp;pharmacy in&nbsp;one group</h2>
+      <p class="hw-t">Each step of&nbsp;the&nbsp;chain sits with&nbsp;a&nbsp;company of&nbsp;the&nbsp;Astrasana group, so&nbsp;quality and&nbsp;supply are controlled from&nbsp;cultivation to&nbsp;the&nbsp;pharmacy counter.</p>
+      <a class="pill solid hw-cta" href="#contact">Work with&nbsp;us</a>
+      <figure class="hw-fig"><img src="corporate/img/glass-mark-640.webp" alt="" width="640" height="592" loading="lazy"></figure>
+    </div>
+    <ol class="hw-r">
+        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">1</span>Cultivation</h3><ol class="hw-sub"><li><span class="sn">1.1</span><span>Around 1,000&nbsp;m² in&nbsp;Switzerland</span></li><li><span class="sn">1.2</span><span>Operating under a&nbsp;Swissmedic licence</span></li><li><span class="sn">1.3</span><span>Grown following GACP</span></li><li><span class="sn">1.4</span><span>Every batch traceable from&nbsp;seed to&nbsp;harvest</span></li><li><span class="sn">1.5</span><span>Accredited laboratories test cannabinoids, terpenes and&nbsp;contaminants</span></li></ol></li>
+        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">2</span>Production</h3><ol class="hw-sub"><li><span class="sn">2.1</span><span>Pharmaceutical processing and&nbsp;packaging</span></li><li><span class="sn">2.2</span><span>In&#8209;house quality control laboratory</span></li><li><span class="sn">2.3</span><span>GDP&#8209;standard storage</span></li><li><span class="sn">2.4</span><span>Under one roof in&nbsp;Tagelswangen, Canton Zurich</span></li></ol></li>
+        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">3</span>Distribution</h3><ol class="hw-sub"><li><span class="sn">3.1</span><span>Import and&nbsp;distribution through Bogen Pharma&nbsp;AG</span></li><li><span class="sn">3.2</span><span>Supply to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic</span></li><li><span class="sn">3.3</span><span>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding</span></li><li><span class="sn">3.4</span><span>Expert advice for&nbsp;partner pharmacies</span></li></ol></li>
+        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">4</span>International</h3><ol class="hw-sub"><li><span class="sn">4.1</span><span>Companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and&nbsp;Belgium</span></li><li><span class="sn">4.2</span><span>Products distributed in&nbsp;over 18&nbsp;countries</span></li><li><span class="sn">4.3</span><span>Exclusive partnership with&nbsp;GSI Creos for&nbsp;CBD products</span></li></ol></li>
+    </ol>
   </section>
 
   <section class="img-sec grid sec rv" id="cultivation" aria-labelledby="t-cu">

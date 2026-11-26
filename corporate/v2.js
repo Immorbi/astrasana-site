@@ -129,20 +129,20 @@
   var ft=document.querySelector('.ft .grid');
   if(ft) g.from(ft,{yPercent:-25,ease:'none',scrollTrigger:{trigger:'.ft',start:'top bottom',end:'top 30%',scrub:true}});
 
-  /* 9. the value chain is pinned on wide screens: the scroll walks through the five steps, each card filling in turn */
-  var chain=document.getElementById('chain');
-  if(chain&&window.__chainSet){ var mm=g.matchMedia();
-    mm.add('(min-width: 992px)',function(){ window.__chainScrub=true; window.__chainSet(0);
-      var st=ST.create({trigger:chain,start:'top top+=64',end:'+=110%',pin:true,pinSpacing:true,scrub:true,
-        onUpdate:function(self){ window.__chainSet(Math.min(1,self.progress*1.08)); }});
-      return function(){ st.kill(); window.__chainScrub=false; window.__chainSet(1); }; }); }
+  /* 9. the value chain: large cards wider than the screen; the section is pinned and the scroll moves the row sideways,
+        each card filling with its gradient as it is reached */
+  var chain=document.getElementById('chain'), crow=chain&&chain.querySelector('ol');
+  if(chain&&crow&&window.__chainSet){ window.__chainScrub=true; window.__chainSet(0); chain.classList.add('hscroll');
+    var dist=function(){ var l=crow.getBoundingClientRect().left-g.getProperty(crow,'x'); return Math.max(0,crow.scrollWidth-(innerWidth-2*l)); };
+    g.to(crow,{x:function(){ return -dist(); },ease:'none',scrollTrigger:{trigger:chain,start:'top top',end:function(){ return '+='+(dist()+innerHeight*.35); },pin:true,scrub:true,invalidateOnRefresh:true,
+      onUpdate:function(self){ window.__chainSet(Math.min(1,self.progress*1.12+.12)); }}}); }
 
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
-  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
+  $('.x3d-sec,.co,.hw').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
 
   /* 11. a soft light follows the cursor across the violet cards */
-  $('.ch li,.pr .list li').forEach(function(card){
+  $('.pr .list li').forEach(function(card){
     card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); });
     card.addEventListener('pointerleave',function(){ card.style.removeProperty('--mx'); card.style.removeProperty('--my'); }); });
 
@@ -156,6 +156,12 @@
   /* 14. the news cards: the same soft light under the cursor */
   $('.nw li a').forEach(function(card){
     card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); }); });
+
+  /* 15. How we work: the current step lights its number; sub-points arrive line by line */
+  $('.hw-step').forEach(function(st){
+    ST.create({trigger:st,start:'top 55%',end:'bottom 55%',toggleClass:{targets:st,className:'on'}});
+    g.from($('.hw-sub li',st),{autoAlpha:0,x:24,duration:.7,stagger:.06,ease:'expo.out',scrollTrigger:{trigger:st,start:'top 75%',once:true}}); });
+  $('.hw-fig img').forEach(function(im){ g.fromTo(im,{rotation:-6,y:20},{rotation:6,y:-20,ease:'none',scrollTrigger:{trigger:'.hw',start:'top bottom',end:'bottom top',scrub:true}}); });
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
