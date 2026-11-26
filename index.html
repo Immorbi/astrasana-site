@@ -112,8 +112,8 @@ p+p{margin-top:1em}
 .hero{padding-top:clamp(24px,3vw,48px)}
 .hero .meta{grid-column:1/4;grid-row:1;align-self:end}
 .hero .meta p+p{margin-top:12px}
-.hero .ph{grid-column:4/13;grid-row:1;aspect-ratio:16/8.4}
-.hero h1{grid-column:1/10;grid-row:2;margin-top:clamp(36px,4.6vw,72px)}
+.hero .ph{grid-column:4/13;grid-row:1;aspect-ratio:16/7}
+.hero h1{grid-column:1/12;grid-row:2;margin-top:clamp(32px,3.6vw,56px);font-size:clamp(46px,6.6vw,104px)}
 .hero .intro{grid-column:9/13;grid-row:3;margin-top:clamp(32px,3.5vw,56px)}
 .hero .intro .tlink{margin-top:20px}
 .hero .idx{grid-column:1/4;grid-row:3;align-self:end;margin-top:32px}
@@ -182,7 +182,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .pr .head h2{grid-column:1/8}
 .pr .head .lede{grid-column:9/13;align-self:end}
 .pr .list{grid-column:1/8;margin-top:clamp(48px,5vw,80px);list-style:none}
-.pr .list li{display:grid;grid-template-columns:3.5em 1fr 1.25fr;column-gap:var(--gut);align-items:baseline;padding:22px 0;border-top:1px solid var(--rule)}
+.pr .list li{display:grid;grid-template-columns:1fr 1.25fr;column-gap:var(--gut);align-items:baseline;padding:22px 0;border-top:1px solid var(--rule)}
 .pr .list li:last-child{border-bottom:1px solid var(--rule)}
 .pr .list i{font:600 13px/1 var(--display);font-style:normal;color:var(--purple)}
 .pr .list b{font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
@@ -245,7 +245,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .ct .send{grid-column:1/3;justify-self:start;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 24px;background:var(--ink);color:#fff;border:0;font:600 15px/1 var(--display);cursor:pointer;transition:background-color .25s ease}
 .ct .send:hover{background:var(--purple)}
 .ct .send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.ct .fnote{grid-column:1/3;font-size:13px;color:var(--ink-3);margin-top:-12px}
+.ct .fnote{grid-column:1/3;font-size:14px;color:var(--ink-2);margin-top:-12px}
 
 /* ---------- footer ---------- */
 .ft{margin-top:var(--sec);border-top:1px solid var(--ink);padding:56px 0 40px;font-size:var(--t-s)}
@@ -306,7 +306,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
   .tg .p1{grid-column:1/10} .tg .p2{grid-column:6/13;margin-top:-64px;position:relative} .tg .c2{grid-column:6/13}
   .ph-sec .ph{grid-column:1/13;margin-left:calc(var(--pad) * -1)}
   .steps{grid-template-columns:1fr}
-  .pr .list li{grid-template-columns:2.6em 1fr;row-gap:6px} .pr .list span{grid-column:2}
+  .pr .list li{grid-template-columns:1fr;row-gap:6px}
   .pr .pics{grid-template-columns:1fr} .pr .pics .b{width:62%}
   .x3d-sec .chap{grid-template-columns:1fr}
   .pa .logos{grid-template-columns:repeat(2,1fr)}
@@ -376,11 +376,11 @@ body.leaving .veil{opacity:1;pointer-events:auto}
       <table>
         <caption>Group companies</caption>
         <tbody>
-          <tr><th scope="row">Switzerland</th><td>Astrasana Holding AG, Bogen Pharma AG, Astrasana Pharma AG, Astrasana Research AG, Astrasana Animal Health AG</td><td class="n">5</td></tr>
-          <tr><th scope="row">Czech Republic</th><td>Astrasana Czech s.r.o., Astrasana Pharma s.r.o., Releaf s.r.o.</td><td class="n">3</td></tr>
-          <tr><th scope="row">Japan</th><td>Astrasana Japan</td><td class="n">1</td></tr>
-          <tr><th scope="row">United Kingdom</th><td>Astrasana UK Ltd.</td><td class="n">1</td></tr>
-          <tr><th scope="row">Belgium</th><td>NexGen DLH</td><td class="n">1</td></tr>
+          <tr><th scope="row">Switzerland</th><td>Astrasana Holding AG, Bogen Pharma AG, Astrasana Pharma AG, Astrasana Research AG, Astrasana Animal Health AG</td></tr>
+          <tr><th scope="row">Czech Republic</th><td>Astrasana Czech s.r.o., Astrasana Pharma s.r.o., Releaf s.r.o.</td></tr>
+          <tr><th scope="row">Japan</th><td>Astrasana Japan</td></tr>
+          <tr><th scope="row">United Kingdom</th><td>Astrasana UK Ltd.</td></tr>
+          <tr><th scope="row">Belgium</th><td>NexGen DLH</td></tr>
         </tbody>
       </table>
     </div>
@@ -405,7 +405,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
     <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="100vw" alt="Seedlings breaking through the soil" width="1800" height="2609" loading="lazy">
       <figcaption class="over">
         <p class="cap">Astrasana Pharma AG</p>
-        <h2 id="t-cu">Quality starts at the source</h2>
+        <h2 id="t-cu">Swiss cannabis cultivation</h2>
         <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on approximately 1,000&nbsp;m² in Switzerland, operating under a Swissmedic licence. Production follows GACP, every batch is traceable from seed to harvest, and accredited laboratories test cannabinoids, terpenes and contaminants.</p>
       </figcaption></figure>
   </section>
@@ -450,12 +450,12 @@ body.leaving .veil{opacity:1;pointer-events:auto}
     </div>
     <div class="grid">
       <ol class="list up">
-        <li><i>01</i><b>Pharmaceuticals</b><span>Medical-grade products for pharmacies and clinics across our network.</span></li>
-        <li><i>02</i><b>Cannabinoids</b><span>THC and CBD formulations for therapeutic applications.</span></li>
-        <li><i>03</i><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
-        <li><i>04</i><b>White Label</b><span>Contract manufacturing and private-label solutions for B2B partners.</span></li>
-        <li><i>05</i><b>Wellness</b><span>Bridging pharmaceutical science and everyday health.</span></li>
-        <li><i>06</i><b>Animal Health</b><span>ASTRAVET &amp; Cansuna: CBD products for animals, from vet practice to everyday life.</span></li>
+        <li><b>Pharmaceuticals</b><span>Medical-grade products for pharmacies and clinics across our network.</span></li>
+        <li><b>Cannabinoids</b><span>THC and CBD formulations for therapeutic applications.</span></li>
+        <li><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
+        <li><b>White Label</b><span>Contract manufacturing and private-label solutions for B2B partners.</span></li>
+        <li><b>Wellness</b><span>Bridging pharmaceutical science and everyday health.</span></li>
+        <li><b>Animal Health</b><span>ASTRAVET &amp; Cansuna: CBD products for animals, from vet practice to everyday life.</span></li>
       </ol>
       <div class="pics">
         <figure class="ph cool a"><img src="land/site/products-whitelabel.webp" alt="Filling line for white-label products" width="1184" height="864" loading="lazy"></figure>
@@ -534,7 +534,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
   <!-- contact -->
   <section class="ct grid sec rv" id="contact" aria-labelledby="t-ct">
     <h2 id="t-ct" class="up">Let's discuss what Astrasana can build together</h2>
-    <p class="lede up">Whether you're a pharmacy, clinic, distributor, or potential partner, arrange a non-binding consultation with our team.</p>
+    <p class="lede up">Pharmacies, clinics, distributors and partners can arrange a non-binding consultation with our team in Kloten.</p>
     <div class="addr up">
       <table>
         <tbody>
