@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Astrasana Holding AG · Swiss Medical Cannabis</title>
 <meta name="description" content="Astrasana Holding is a vertically integrated Swiss pharmaceutical and cannabis company, from cultivation to pharmacy.">
-<link rel="icon" href="corporate/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="corporate/img/brand/favicon-mark.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -86,27 +86,33 @@ p+p{margin-top:1em}
 .up{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .in .up,.up.in{opacity:1;transform:none}
 .rule{height:1px;background:var(--rule);transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease)}
-/* the chain: one line drawn once when the section arrives, the five stops light up along it */
+/* the chain: five stops with their picture; the line fills as the section scrolls past and each stop lights when the fill reaches it */
 .ch .head h2{grid-column:1/7}
 .ch .head p{grid-column:8/12;align-self:end}
-.ch ol{grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative}
-.ch ol::before{content:"";position:absolute;left:0;right:0;top:6px;height:1px;background:var(--ink);transform-origin:left;transform:scaleX(0);transition:transform 1.4s cubic-bezier(.65,0,.35,1)}
-.ch li{position:relative;padding-top:40px}
-.ch li::before{content:"";position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--ink);transition:background-color .4s ease,box-shadow .4s ease;transition-delay:calc(var(--i) * 220ms + 300ms)}
-.ch li .cap{display:block;margin-bottom:10px}
-.ch li b{display:block;font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
+.ch ol{grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative;--fill:0}
+.ch .track{position:absolute;left:0;right:0;top:calc(var(--imgh) + 28px);height:2px;background:var(--rule)}
+.ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
+.ch li{position:relative;--imgh:clamp(150px,13vw,210px)}
+.ch ol{--imgh:clamp(150px,13vw,210px)}
+.ch li .pic{height:var(--imgh);border-radius:var(--r-photo);overflow:hidden;position:relative;background:var(--paper-2)}
+.ch li .pic img{width:100%;height:100%;object-fit:cover;filter:saturate(.35) contrast(1.05);transition:filter .6s ease,transform 1.2s var(--ease);transform:scale(1.06)}
+.ch li .dot{position:relative;display:block;width:15px;height:15px;margin-top:21px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--rule-2);transition:background-color .35s ease,box-shadow .35s ease}
+.ch li .num{display:block;margin-top:20px;font:300 clamp(44px,4.4vw,72px)/.9 var(--display);letter-spacing:-.04em;color:var(--rule-2);transition:color .5s ease}
+.ch li b{display:block;margin-top:14px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ch li .co{display:block;margin-top:6px;font:500 14px/1.4 var(--text);color:var(--purple)}
-.ch li p{margin-top:14px;font-size:var(--t-s);max-width:24em}
-.ch li>*{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i) * 220ms + 380ms)}
-.ch.in ol::before{transform:none}
-.ch.in li::before{background:var(--purple);box-shadow:inset 0 0 0 1.5px var(--purple)}
-.ch.in li>*{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){ .ch ol::before,.ch li::before,.ch li>*{transition:none!important} .ch ol::before{transform:none} .ch li>*{opacity:1;transform:none} }
+.ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
+.ch li.lit .pic img{filter:saturate(.8) contrast(1.04);transform:none}
+.ch li.lit .dot{background:var(--purple);box-shadow:inset 0 0 0 2px var(--purple),0 0 0 6px rgba(67,18,145,.12)}
+.ch li.lit .num{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .pic img,.ch li .dot,.ch li .num{transition:none} }
 @media (max-width:1100px){
   .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
-  .ch ol{grid-template-columns:1fr;row-gap:36px;padding-left:36px}
-  .ch ol::before{left:6px;right:auto;top:6px;bottom:6px;width:1px;height:auto;transform-origin:top;transform:scaleY(0)}
-  .ch li{padding-top:0} .ch li::before{left:-36px;top:4px}
+  .ch ol{grid-template-columns:1fr;row-gap:40px;padding-left:40px}
+  .ch .track{left:6px;right:auto;top:0;bottom:0;width:2px;height:auto} .ch .track i{transform-origin:top;transform:scaleY(var(--fill))}
+  .ch li .dot{position:absolute;left:-40px;top:0;margin:0}
+  .ch li .num{margin-top:16px}
+  .ch li .pic{height:auto;aspect-ratio:16/9}
+}
 }
 .in .rule,.rule.in{transform:none}
 @media (prefers-reduced-motion:reduce){ .rv .ph,.ph.rv,.up,.rule{clip-path:none!important;opacity:1!important;transform:none!important;transition:none!important} .rv .ph img,.ph.rv img{transform:none!important;transition:none!important} }
@@ -180,23 +186,24 @@ td{color:var(--ink-2)}
 td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-right:0}
 
 /* ---------- figures (brochure p.3-4: two planes, numbers on a quiet colour, a large photograph) ---------- */
-.fig .plane{grid-column:1/7;background:var(--lav-1);border-radius:var(--r-photo);min-height:clamp(560px,52vw,860px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(28px,4vw,64px)}
-.fig .plane .label{margin-bottom:auto;color:var(--ink-2)}
-.fig dl{display:grid;gap:clamp(28px,3.4vw,52px);margin-left:clamp(0px,9vw,160px)}
-.fig dt{font:400 var(--t-l)/1.2 var(--display);color:var(--ink);letter-spacing:-.01em}
-.fig dd{font:300 var(--t-fig)/.9 var(--display);color:var(--ink);letter-spacing:-.045em;margin-top:6px}
+.fig .ph{grid-column:1/6;grid-row:1/3;aspect-ratio:4/5;align-self:start}
+.fig .ph figcaption{position:absolute;left:clamp(20px,2.4vw,36px);bottom:clamp(20px,2.4vw,36px);max-width:240px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
+.fig h2{grid-column:7/13;grid-row:1;align-self:start}
+.fig dl{grid-column:7/13;grid-row:2;align-self:end;margin-top:clamp(40px,4vw,64px)}
+.fig dl>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:var(--gut);align-items:end;padding:clamp(18px,2vw,28px) 0;border-top:1px solid var(--ink)}
+.fig dl>div:last-child{border-bottom:1px solid var(--ink)}
+.fig dd{grid-column:1;grid-row:1/3;font:300 clamp(64px,7.4vw,120px)/.86 var(--display);color:var(--ink);letter-spacing:-.045em}
 .fig dd .n{display:inline-block;text-align:left}
-.fig dd small{font:400 clamp(20px,1.7vw,28px)/1 var(--display);letter-spacing:-.01em;margin-left:.35em}
-.fig .ph{grid-column:7/13;min-height:100%}
-.fig .ph figcaption{position:absolute;left:clamp(24px,3vw,48px);bottom:clamp(24px,3vw,48px);max-width:250px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
-.fig .src{grid-column:1/7;margin-top:14px;font-size:12px;color:var(--ink-3)}
+.fig dd small{font:400 .3em/1 var(--display);letter-spacing:-.01em;margin-left:.2em;color:var(--purple)}
+.fig dt{grid-column:2;grid-row:1;font:600 clamp(17px,1.35vw,20px)/1.25 var(--display);color:var(--ink);letter-spacing:-.01em}
+.fig dl p{grid-column:2;grid-row:2;margin-top:6px;font-size:var(--t-s);color:var(--ink-2)}
 
 /* ---------- image section (brochure p.5: one large photo, text in its free area) ---------- */
-.img-sec .ph{grid-column:1/13;height:clamp(560px,62vw,1000px)}
-.img-sec .ph img{object-position:50% 6%}
-.img-sec .over{position:absolute;left:clamp(24px,6vw,110px);top:clamp(32px,5vw,80px);max-width:min(420px,38%)}
-.img-sec .over h2{font-size:clamp(32px,3.6vw,56px);margin:14px 0 22px}
-.img-sec .over p.small{color:var(--purple)}
+.img-sec .ph{grid-column:7/13;grid-row:1;aspect-ratio:4/5;overflow:hidden}
+.img-sec .ph img{object-position:50% 58%}
+.img-sec .over{grid-column:1/6;grid-row:1;align-self:end}
+.img-sec .over h2{font-size:var(--t-h2);margin:14px 0 28px}
+.img-sec .over p.small{font-size:var(--t-l);line-height:1.5;color:var(--ink)}
 
 /* ---------- Tagelswangen (brochure p.8: photos of different sizes, purple caption, large title, columns) ---------- */
 .tg{grid-template-rows:auto 1fr}
@@ -324,8 +331,8 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .co .ph{grid-column:5/13;grid-row:1}
   .co .ttl{grid-column:1/11;grid-row:2;margin-top:48px}
   .co .text{grid-column:1/13;grid-row:3} .co .tbl{grid-column:1/13;grid-row:4} .co .lab{display:none}
-  .fig .plane{grid-column:1/13;min-height:auto;padding-top:56px} .fig dl{margin-left:0;margin-top:72px}
-  .fig .ph{grid-column:1/13;aspect-ratio:4/3;min-height:0;margin-top:var(--gut)}
+  .fig .ph{grid-column:1/13;grid-row:auto;aspect-ratio:16/10} .fig h2{grid-column:1/13;grid-row:auto;margin-top:48px} .fig dl{grid-column:1/13;grid-row:auto;margin-top:32px}
+  .img-sec .ph{grid-column:1/13} .img-sec .over{grid-column:1/13;grid-row:2;margin-top:40px}
   .tg .p1{grid-column:1/8;grid-row:1/3} .tg .p2{grid-column:8/13;grid-row:1} .tg .c2{grid-column:8/13;grid-row:2}
   .tg .ttl{grid-column:1/12;grid-row:auto;margin-top:72px}
   .ph-sec .ph{grid-column:1/9;grid-row:1}
@@ -348,14 +355,11 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .hero .intro,.hero .idx{grid-column:1/13;grid-row:auto}
   .hero .idx{margin-top:40px}
   .co .ph{grid-column:3/13} .cols2{columns:1}
-  .fig .ph{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);aspect-ratio:4/5}
-  .fig .plane{margin:0 calc(var(--pad) * -1);padding:48px var(--pad);border-radius:0}
+  .fig .ph{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);aspect-ratio:4/3}
+  .fig dl>div{grid-template-columns:1fr;row-gap:8px} .fig dd{grid-row:auto} .fig dt,.fig dl p{grid-column:1;grid-row:auto}
   .hero .ph,.fig .ph,.pr .band{border-radius:0;clip-path:none!important}
   .ph-sec .ph{border-radius:0 var(--r-photo) var(--r-photo) 0;clip-path:none!important}
-  .img-sec .ph img{border-radius:var(--r-photo)}
-  .img-sec .ph{height:auto;aspect-ratio:auto;display:flex;flex-direction:column;background:var(--paper);overflow:visible;clip-path:none!important}
-  .img-sec .ph img{aspect-ratio:4/5;height:auto;transform:none!important}
-  .img-sec .over{position:static;max-width:none;order:2;padding-top:28px}
+  .img-sec .over{grid-column:1/13;grid-row:2;margin-top:28px}
   .tg .p1{grid-column:1/10;grid-row:auto} .tg .p2{grid-column:6/13;grid-row:auto;margin-top:-64px;position:relative} .tg .c2{grid-column:6/13;grid-row:auto}
   .ph-sec .ph{grid-column:1/13;margin-left:calc(var(--pad) * -1)}
   .steps{grid-template-columns:1fr}
@@ -438,16 +442,14 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   <!-- key figures -->
   <section class="fig grid sec rv" aria-labelledby="t-fig">
-    <div class="plane">
-      <h2 id="t-fig" class="label">Astrasana in figures</h2>
-      <dl>
-        <div class="up"><dt>Employees</dt><dd>~30</dd></div>
-        <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd></div>
-        <div class="up"><dt>Countries worldwide</dt><dd>18<small>and more</small></dd></div>
-      </dl>
-    </div>
-    <figure class="ph"><img src="corporate/img/leaf-dark.webp" srcset="corporate/img/leaf-dark-900.webp 900w, corporate/img/leaf-dark.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="A cannabis leaf in low light" width="1800" height="2400" loading="lazy">
-      <figcaption>Headquartered in Kloten, Switzerland. Products distributed in over 18 countries worldwide.</figcaption></figure>
+    <figure class="ph"><img src="corporate/img/leaf-dark.webp" srcset="corporate/img/leaf-dark-900.webp 900w, corporate/img/leaf-dark.webp 1800w" sizes="(min-width:1100px) 42vw, 100vw" alt="A cannabis leaf in low light" width="1800" height="2400" loading="lazy">
+      <figcaption>Headquartered in Kloten, Switzerland.</figcaption></figure>
+    <h2 id="t-fig" class="up">Astrasana in figures</h2>
+    <dl>
+      <div class="up"><dt>Employees</dt><dd>~30</dd><p>Around 30 people, with headquarters in Kloten, Switzerland.</p></div>
+      <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd><p>In Switzerland, the Czech Republic, Japan, the United Kingdom and Belgium.</p></div>
+      <div class="up"><dt>Countries worldwide</dt><dd>18<small>+</small></dd><p>Markets where Astrasana products are distributed.</p></div>
+    </dl>
   </section>
 
   <!-- cultivation, one photograph with text in its free area -->
@@ -459,22 +461,23 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     </div>
     <div class="grid">
       <ol aria-label="From cultivation to pharmacy">
-        <li style="--i:0"><span class="cap">01</span><b>Cultivation</b><span class="co">Astrasana Pharma AG</span><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
-        <li style="--i:1"><span class="cap">02</span><b>Production</b><span class="co">Tagelswangen, Canton Zurich</span><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
-        <li style="--i:2"><span class="cap">03</span><b>Distribution</b><span class="co">Bogen Pharma AG</span><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
-        <li style="--i:3"><span class="cap">04</span><b>Pharmacies</b><span class="co">Partner pharmacies</span><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
-        <li style="--i:4"><span class="cap">05</span><b>International</b><span class="co">Group companies abroad</span><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
+        <span class="track" aria-hidden="true"><i></i></span>
+        <li><div class="pic"><img src="corporate/img/seedlings-900.webp" alt="Seedlings breaking through the soil" loading="lazy" style="object-position:50% 70%"></div><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><span class="co">Astrasana Pharma AG</span><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
+        <li><div class="pic"><img src="land/site/production-2.webp" alt="Cultivation room in Tagelswangen" loading="lazy" style="object-position:60% 50%"></div><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">02</span><b>Production</b><span class="co">Tagelswangen, Canton Zurich</span><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
+        <li><div class="pic"><img src="corporate/img/lab-pipettes-900.webp" alt="Quality control before release" loading="lazy" style="object-position:50% 40%"></div><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><span class="co">Bogen Pharma AG</span><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
+        <li><div class="pic"><img src="corporate/img/hands-900.webp" alt="Advice at the pharmacy" loading="lazy" style="object-position:50% 45%"></div><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><span class="co">Partner pharmacies</span><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
+        <li><div class="pic"><img src="corporate/img/3d-europe-800.webp" alt="Map of the group's locations in Europe" loading="lazy" style="object-position:62% 45%"></div><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">05</span><b>International</b><span class="co">Group companies abroad</span><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
       </ol>
     </div>
   </section>
 
   <section class="img-sec grid sec rv" id="cultivation" aria-labelledby="t-cu">
-    <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="100vw" alt="Seedlings breaking through the soil" width="1800" height="2609" loading="lazy">
-      <figcaption class="over">
+    <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="A cannabis seedling breaking through the soil" width="1800" height="2609" loading="lazy"></figure>
+      <div class="over">
         <p class="cap">Astrasana Pharma AG</p>
         <h2 id="t-cu">Swiss cannabis cultivation</h2>
         <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on approximately 1,000&nbsp;m² in Switzerland, operating under a Swissmedic licence. Production follows GACP, every batch is traceable from seed to harvest, and accredited laboratories test cannabinoids, terpenes and contaminants.</p>
-      </figcaption></figure>
+      </div>
   </section>
 
   <!-- Tagelswangen -->
@@ -679,6 +682,15 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   /* partners: a second copy makes the band seamless */
   var mq=document.getElementById('mq');
   if(mq){ var ul=mq.querySelector('.logos'), dup=ul.cloneNode(true); dup.setAttribute('aria-hidden','true'); dup.removeAttribute('aria-label'); dup.querySelectorAll('img').forEach(function(i){ i.alt=''; }); ul.parentNode.appendChild(dup); }
+
+  /* the chain: the line fills while the section crosses the screen; a stop lights when the fill reaches it */
+  var chol=document.querySelector('.ch ol');
+  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), ticking=false;
+    function chain(){ ticking=false; var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
+      var f=reduce?1:Math.min(1,Math.max(0,(vh*.82-r.top)/(r.height*(vert?1:.6)+vh*.35)));
+      chol.style.setProperty('--fill',f.toFixed(3));
+      stops.forEach(function(li,i){ var at=vert?(li.offsetTop/Math.max(1,chol.offsetHeight)):(i/(stops.length-1))*.92; li.classList.toggle('lit',f>=at-.001); }); }
+    addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(chain); } },{passive:true}); addEventListener('resize',chain); chain(); }
 
   /* entering the 3D story: remember where the visitor was, settle into dark, then go */
   var KEY='astrasana:return';
