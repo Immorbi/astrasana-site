@@ -127,8 +127,8 @@ p+p{margin-top:1em}
 .logo .l-white{position:absolute;inset:0;opacity:0}
 .logo img{transition:opacity .42s cubic-bezier(.4,0,.2,1)}
 .hd .logo{grid-column:1/4;height:24px}
-.hd nav{grid-column:4/13;display:flex;align-items:center;justify-content:flex-end;gap:clamp(18px,2.2vw,36px)}
-.hd nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 15px/1 var(--text);color:var(--ink-2);transition:color .2s ease}
+.hd nav{grid-column:4/13;display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,1.45vw,24px)}
+.hd nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 14px/1 var(--text);color:var(--ink-2);transition:color .2s ease}
 .hd nav a:hover,.hd nav a.on{color:var(--ink)}
 .hd nav a::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
 .hd nav a:hover::after{transform:scaleX(1)}
@@ -289,17 +289,22 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .ct h2{grid-column:1/9}
 .ct .lede{grid-column:1/6;margin-top:28px}
 .ct .addr{grid-column:1/6;margin-top:56px}
-.ct form{grid-column:7/13;grid-row:2/4;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gut);row-gap:28px;align-content:start}
-.ct label{display:grid;gap:6px;font:500 14px/1.3 var(--text);color:var(--ink-3)}
+.ct form{grid-column:7/13;grid-row:2/4;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:16px;row-gap:20px;align-content:start;padding:clamp(24px,2.6vw,40px);background:var(--paper-2);border-radius:var(--r-photo)}
+.ct form h3{grid-column:1/3;font-size:clamp(20px,1.6vw,24px)}
+.ct form .sub{grid-column:1/3;margin-top:-12px;font-size:var(--t-s);color:var(--ink-2)}
+.ct label{display:grid;gap:8px;font:600 14px/1.3 var(--text);color:var(--ink)}
 .ct label.wide{grid-column:1/3}
 .ct label i{font-style:normal;color:var(--purple)}
-.ct input,.ct select,.ct textarea{border:0;border-bottom:1px solid var(--rule-2);background:transparent;padding:10px 0;font:400 var(--t-m)/1.4 var(--text);color:var(--ink);text-transform:none;letter-spacing:0;border-radius:0;min-height:44px}
-.ct textarea{resize:vertical;min-height:110px}
-.ct input:focus,.ct select:focus,.ct textarea:focus{outline:none;border-bottom-color:var(--purple)}
-.ct .send{border-radius:var(--r-btn);grid-column:1/3;justify-self:start;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 24px;background:var(--ink);color:#fff;border:0;font:600 15px/1 var(--display);cursor:pointer;transition:background-color .25s ease}
+.ct input,.ct select,.ct textarea{width:100%;min-height:48px;border:1px solid var(--rule-2);border-radius:var(--r-btn);background:#fff;padding:12px 14px;font:400 16px/1.4 var(--text);color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease}
+.ct select{-webkit-appearance:none;appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23231f20' stroke-width='1.6'/%3E%3C/svg%3E") right 14px center/16px no-repeat}
+.ct ::placeholder{color:var(--ink-3)}
+.ct textarea{resize:vertical;min-height:132px}
+.ct input:hover,.ct select:hover,.ct textarea:hover{border-color:var(--ink-3)}
+.ct input:focus,.ct select:focus,.ct textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(67,18,145,.14)}
+.ct .send{border-radius:var(--r-btn);grid-column:1/3;justify-self:stretch;justify-content:center;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 24px;background:var(--ink);color:#fff;border:0;font:600 15px/1 var(--display);cursor:pointer;transition:background-color .25s ease}
 .ct .send:hover{background:var(--purple)}
 .ct .send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.ct .fnote{grid-column:1/3;font-size:14px;color:var(--ink-2);margin-top:-12px}
+.ct .fnote{grid-column:1/3;font-size:13px;color:var(--ink-3);margin-top:-6px;text-align:center}
 
 /* ---------- footer ---------- */
 .ft{margin-top:var(--sec);border-top:1px solid var(--ink);padding:56px 0 40px;font-size:var(--t-s)}
@@ -367,7 +372,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .pr .list{grid-template-columns:1fr} .pr .band{aspect-ratio:4/3;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1)}
   .x3d-sec .chap{grid-template-columns:1fr}
   .nw li a{row-gap:10px} .nw li .cap,.nw li h3,.nw li p{grid-column:1/13}
-  .ct form{grid-template-columns:1fr} .ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
+  .ct form{grid-template-columns:1fr} .ct form h3,.ct form .sub,.ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
   .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
 }
 </style>
@@ -618,12 +623,14 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       </table>
     </div>
     <form id="cform" class="up">
-      <label><span>Name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" required></label>
-      <label><span>Email <i aria-hidden="true">*</i></span><input name="email" type="email" autocomplete="email" required></label>
-      <label class="wide"><span>I am</span><select name="who"><option>A pharmacy</option><option>A clinic or doctor</option><option>A distributor</option><option>A potential partner</option><option>An investor</option><option>An authority</option><option>A patient or member of the public</option></select></label>
-      <label class="wide"><span>Message <i aria-hidden="true">*</i></span><textarea name="msg" rows="4" required></textarea></label>
+      <h3>Send us a message</h3>
+      <p class="sub">Your message goes to our team in Kloten.</p>
+      <label><span>Name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" placeholder="Your full name" required></label>
+      <label><span>Email <i aria-hidden="true">*</i></span><input name="email" type="email" autocomplete="email" placeholder="name@company.com" required></label>
+      <label class="wide"><span>You are</span><select name="who"><option>A pharmacy</option><option>A clinic or doctor</option><option>A distributor</option><option>A potential partner</option><option>An investor</option><option>An authority</option><option>A patient or member of the public</option></select></label>
+      <label class="wide"><span>Message <i aria-hidden="true">*</i></span><textarea name="msg" rows="4" placeholder="How can we help?" required></textarea></label>
       <button class="send" type="submit">Send message<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-      <p class="fnote">Fields marked * are required. Sending opens your email app with the message addressed to info@astrasana.com.</p>
+      <p class="fnote">* Required. Opens your email app, addressed to info@astrasana.com.</p>
     </form>
   </section>
 </main>
