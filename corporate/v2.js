@@ -144,8 +144,11 @@
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
   /* the header is dark exactly while a dark band is under it */
-  var darkEls=$('.hero .stage,.co,.x3d-sec,.ct');
-  function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; }); hd.classList.toggle('dark',on); }
+  /* the hero video is light: over the hero the header turns dark only once the dark map panel has opened over it */
+  var darkEls=$('.co,.x3d-sec,.ct'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
+  function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; });
+    if(!on&&hst&&hrv&&hrv.classList.contains('open')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
+    hd.classList.toggle('dark',on); }
   addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
 
   /* 11. a soft light follows the cursor across the violet cards */
