@@ -38,7 +38,9 @@ The corporate website of Astrasana Holding AG, a vertically integrated Swiss pha
 
 ## Brand Commitments
 
-- Name and identity: Astrasana Holding AG, with the existing Astrasana logo (`corporate/img/astrasana-logo.svg`). No new logo.
+- Brand styleguide: https://styleguide.astrasana.io/ (corporate identity of the group). It is the authority for logos, company colours and typefaces.
+- Name and identity: Astrasana Holding AG, with the horizontal holding logo from the styleguide (`corporate/img/brand/logo-color.svg` on light grounds, `logo-white.svg` on dark grounds or imagery; `favicon.svg`). Logos are never recoloured, stretched, outlined or given effects; clear space at least the height of the signifier. No new logo.
+- Holding colour: #431291 (RGB 67/18/145). Each group company keeps its own signifier colour; colours are never swapped between companies.
 - Typefaces: the existing families, Montserrat (display) and DM Sans (text). No new families.
 - Direction set by the client for the corporate site: editorial, tasteful, sophisticated, light mode, subtle use of purple; the investor brochure is the visual reference, not a source of figures. The brand purple is used sparingly (captions, links, small details), never as large saturated fields.
 - The 3D story keeps its scenes, materials, animations and dark background.

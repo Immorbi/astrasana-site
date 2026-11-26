@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About Us · Astrasana Holding AG</title>
 <meta name="description" content="Discover Astrasana Holding as an interactive 3D journey: our structure, production in Tagelswangen and the route to partner pharmacies.">
-<link rel="icon" href="../land/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../corporate/img/brand/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="../corporate/img/astrasana-logo.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="../corporate/img/brand/logo-white.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* The About Us route: the existing 3D story runs unchanged in a frame; this page adds only a thin layer on top of it:
@@ -26,7 +26,10 @@ body.ready #story{opacity:1}
 /* the same header geometry as the website: 84px tall, the grid's side margin, content centred above 1680px, so the logo does not move between the two */
 .bar{position:fixed;z-index:20;top:0;left:0;right:0;height:84px;display:flex;justify-content:space-between;align-items:center;padding:0 calc(max(0px,(100% - 1680px) / 2) + clamp(20px,5.2vw,80px));pointer-events:none}
 .bar>*{pointer-events:auto}
-.logo{display:block;width:74px;height:46px;background:var(--fg);-webkit-mask:url(../corporate/img/astrasana-logo.svg) left center/contain no-repeat;mask:url(../corporate/img/astrasana-logo.svg) left center/contain no-repeat;filter:drop-shadow(0 0 1px rgba(0,0,0,.4))}
+/* the brand files, never recoloured: white on the dark story, the colour version as the page leaves for the white website */
+.logo{position:relative;display:block;height:24px;width:max-content;line-height:0}
+.logo img{display:block;height:100%;width:auto;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
+.logo .l-col{position:absolute;inset:0;opacity:0}
 .back{border-radius:8px;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px 0 14px;font:600 14px/1 var(--display);letter-spacing:-.005em;color:var(--fg);
   background:rgba(14,14,17,.62);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--line);transition:background-color .25s ease,color .25s ease,box-shadow .25s ease}
 .back:hover,.back:focus-visible{background:var(--fg);color:var(--night);box-shadow:inset 0 0 0 1px var(--fg)}
@@ -56,19 +59,18 @@ body.nogl .track{display:none}
 /* leaving: the same short veil as on the way in, now settling into the white of the website */
 .veil{position:fixed;inset:0;z-index:50;background:var(--paper);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
 body.leaving .veil{opacity:1;pointer-events:auto}
-/* the logo stays through the veil and turns dark, as it stands on the website */
-.logo{transition:background-color .4s cubic-bezier(.4,0,.2,1)}
+/* the logo stays through the veil and crossfades to the colour version, as it stands on the website */
 body.leaving .bar{z-index:60}
-body.leaving .logo{background-color:#231f20;filter:none}
+body.leaving .logo .l-white{opacity:0} body.leaving .logo .l-col{opacity:1}
 body.leaving .back,body.leaving .ret{opacity:0;transition:opacity .2s ease}
 @media (prefers-reduced-motion:reduce){ #story,.load,.veil,.ret{transition:none} .load .track i{animation:none;width:100%;opacity:.4} }
-@media (max-width:980px){ .bar{height:68px} .logo{width:68px;height:44px} }
+@media (max-width:980px){ .bar{height:68px} .logo{height:20px} }
 @media (max-width:760px){ .back{min-height:44px;padding:0 14px 0 12px;font-size:13px} }
 </style>
 </head>
 <body>
 <div class="bar">
-  <a class="logo" href="../" data-leave="home" aria-label="Astrasana Holding AG, home"></a>
+  <a class="logo" href="../" data-leave="home" aria-label="Astrasana Holding AG, home"><img class="l-white" src="../corporate/img/brand/logo-white.svg" alt="" width="128" height="24"><img class="l-col" src="../corporate/img/brand/logo-color.svg" alt="" width="128" height="24"></a>
   <button class="back" type="button" data-leave="back"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to website</button>
 </div>
 

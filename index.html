@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Astrasana Holding AG · Swiss Medical Cannabis</title>
 <meta name="description" content="Astrasana Holding is a vertically integrated Swiss pharmaceutical and cannabis company, from cultivation to pharmacy.">
-<link rel="icon" href="land/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="corporate/img/brand/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="corporate/img/astrasana-logo.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="corporate/img/brand/logo-color.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="corporate/img/leaf-lavender.webp" imagesrcset="corporate/img/leaf-lavender-900.webp 900w, corporate/img/leaf-lavender.webp 1800w" imagesizes="(min-width:900px) 75vw, 100vw">
 <style>
 /* Astrasana corporate, light editorial version.
@@ -19,7 +19,7 @@
   --paper:#fff; --paper-2:#f7f6f8;
   --ink:#231f20; --ink-2:#47423f; --ink-3:#77716e;
   --rule:#e4e0e7; --rule-2:#cdc6d4;
-  --purple:#402f91; --purple-h:#2f2270;
+  --purple:#431291; --purple-h:#330e6f; /* Astrasana Holding colour, styleguide.astrasana.io */
   --lav-1:#eee9f4; --lav-2:#ddd4e9; --lav-3:#bdaed5;
   --night:#0e0e11; --night-fg:#f3eeeb; --night-acc:#a49cf0;
   --display:'Montserrat',ui-sans-serif,system-ui,sans-serif;
@@ -89,8 +89,11 @@ p+p{margin-top:1em}
 .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);-webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);transition:box-shadow .3s ease}
 .hd.scrolled{box-shadow:0 1px 0 var(--rule)}
 .hd .grid{height:84px;align-items:center}
-.logo{display:block;width:118px;height:75px;background:currentColor;color:var(--ink);-webkit-mask:url(corporate/img/astrasana-logo.svg) left center/contain no-repeat;mask:url(corporate/img/astrasana-logo.svg) left center/contain no-repeat}
-.hd .logo{grid-column:1/3;height:46px;width:74px}
+.logo{position:relative;display:block;width:max-content;line-height:0}
+.logo img{display:block;height:100%;width:auto}
+.logo .l-white{position:absolute;inset:0;opacity:0}
+.logo img{transition:opacity .42s cubic-bezier(.4,0,.2,1)}
+.hd .logo{grid-column:1/4;height:24px}
 .hd nav{grid-column:4/13;display:flex;align-items:center;justify-content:flex-end;gap:clamp(18px,2.2vw,36px)}
 .hd nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 15px/1 var(--text);color:var(--ink-2);transition:color .2s ease}
 .hd nav a:hover,.hd nav a.on{color:var(--ink)}
@@ -103,7 +106,7 @@ p+p{margin-top:1em}
 .menu-btn i{display:block;width:22px;height:1.5px;background:var(--ink);margin:6px auto;transition:transform .3s var(--ease)}
 .hd.open .menu-btn i:first-child{transform:translateY(3.75px) rotate(45deg)} .hd.open .menu-btn i:last-child{transform:translateY(-3.75px) rotate(-45deg)}
 @media (max-width:980px){
-  .hd .grid{height:68px} .hd .logo{grid-column:1/5;height:44px;width:68px}
+  .hd .grid{height:68px} .hd .logo{grid-column:1/7;height:20px}
   .menu-btn{display:block}
   .hd nav{position:fixed;inset:68px 0 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:0;padding:24px var(--pad) 40px;background:var(--paper);
     opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s ease,transform .3s var(--ease),visibility 0s .3s}
@@ -115,13 +118,14 @@ p+p{margin-top:1em}
 
 /* ---------- hero (brochure p.2: a large rectangular photo, a large black title, white space) ---------- */
 .hero{padding-top:clamp(24px,3vw,48px)}
-.hero .meta{grid-column:1/4;grid-row:1;align-self:end}
+.hero h1{grid-column:1/12;grid-row:1;margin-top:clamp(16px,2.4vw,40px);font-size:clamp(46px,6.6vw,104px)}
+.hero .meta{grid-column:1/4;grid-row:2;margin-top:clamp(28px,3vw,48px)}
 .hero .meta p+p{margin-top:12px}
-.hero .ph{grid-column:4/13;grid-row:1;aspect-ratio:16/7}
-.hero h1{grid-column:1/12;grid-row:2;margin-top:clamp(32px,3.6vw,56px);font-size:clamp(46px,6.6vw,104px)}
-.hero .intro{grid-column:9/13;grid-row:3;margin-top:clamp(32px,3.5vw,56px)}
+.hero .ph{grid-column:1/13;grid-row:3;aspect-ratio:16/6.2;margin-top:clamp(40px,4vw,64px)}
+.hero .ph img{object-position:60% 30%}
+.hero .intro{grid-column:5/10;grid-row:2;margin-top:clamp(28px,3vw,48px)}
 .hero .intro .tlink{margin-top:20px}
-.hero .idx{grid-column:1/4;grid-row:3;align-self:end;margin-top:32px}
+.hero .idx{grid-column:10/13;grid-row:2;align-self:start;margin-top:clamp(28px,3vw,48px)}
 .hero .idx li{list-style:none;border-top:1px solid var(--rule);font-size:var(--t-s)}
 .hero .idx a{display:flex;align-items:center;gap:14px;min-height:44px}
 .hero .idx li:last-child{border-bottom:1px solid var(--rule)}
@@ -253,7 +257,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 
 /* ---------- footer ---------- */
 .ft{margin-top:var(--sec);border-top:1px solid var(--ink);padding:56px 0 40px;font-size:var(--t-s)}
-.ft .logo{grid-column:1/3;width:96px;height:62px}
+.ft .logo{grid-column:1/3;height:32px;align-self:start}
 .ft .about{grid-column:3/6;color:var(--ink-3)}
 .ft .col{grid-column:span 2}
 .ft .col.wide{grid-column:span 3}
@@ -267,19 +271,18 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .veil{position:fixed;inset:0;z-index:200;background:var(--night);opacity:0;pointer-events:none;transition:opacity .42s cubic-bezier(.4,0,.2,1)}
 .veil::after{content:"";position:absolute;inset:0;background:var(--lav-2);opacity:.0;transition:opacity .2s ease}
 body.leaving .veil{opacity:1;pointer-events:auto}
-/* the logo stays where it is through the veil and turns light, as it stands on the About Us page */
-.hd .logo{transition:color .42s cubic-bezier(.4,0,.2,1)}
+/* the logo stays where it is through the veil and crossfades to the white version, as it stands on the About Us page */
 body.leaving .hd{z-index:210;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-body.leaving .hd .logo{color:#f3eeeb}
+body.leaving .hd .logo .l-col{opacity:0} body.leaving .hd .logo .l-white{opacity:1}
 body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s ease}
 @media (prefers-reduced-motion:reduce){ .veil{transition:none} }
 
 /* ---------- tablet ---------- */
 @media (max-width:1100px){
-  .hero .meta{grid-column:1/13;grid-row:1;margin-bottom:20px;display:flex;gap:32px} .hero .meta p+p{margin-top:0}
-  .hero .ph{grid-column:1/13;grid-row:2;aspect-ratio:16/10}
-  .hero h1{grid-row:3;grid-column:1/13}
-  .hero .intro{grid-row:4;grid-column:6/13} .hero .idx{grid-row:4;grid-column:1/5}
+  .hero h1{grid-column:1/13}
+  .hero .meta{grid-column:1/13;grid-row:2;display:flex;gap:32px} .hero .meta p+p{margin-top:0}
+  .hero .intro{grid-row:3;grid-column:1/8;margin-top:28px} .hero .idx{grid-row:3;grid-column:9/13;margin-top:28px}
+  .hero .ph{grid-row:4;aspect-ratio:16/9}
   .co .ph{grid-column:5/13;grid-row:1}
   .co .ttl{grid-column:1/11;grid-row:2;margin-top:48px}
   .co .text{grid-column:1/13;grid-row:3} .co .tbl{grid-column:1/13;grid-row:4} .co .lab{display:none}
@@ -303,7 +306,8 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 @media (max-width:640px){
   body{font-size:16px}
   .hero .meta{flex-direction:column;gap:6px}
-  .hero .ph{aspect-ratio:4/5;margin:0 calc(var(--pad) * -1)}
+  .hero .ph{grid-row:auto;aspect-ratio:4/3;margin:40px calc(var(--pad) * -1) 0}
+  .hero .meta{margin-top:24px}
   .hero .intro,.hero .idx{grid-column:1/13;grid-row:auto}
   .hero .idx{margin-top:40px}
   .co .ph{grid-column:3/13} .cols2{columns:1}
@@ -333,7 +337,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <a class="skip" href="#main">Skip to content</a>
 <header class="hd" id="hd">
   <div class="grid">
-    <a class="logo" href="./" aria-label="Astrasana Holding AG, home"></a>
+    <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img class="l-col" src="corporate/img/brand/logo-color.svg" alt="" width="128" height="24"><img class="l-white" src="corporate/img/brand/logo-white.svg" alt="" width="128" height="24"></a>
     <nav id="menu" aria-label="Main">
       <a class="x3d" href="about-us/" data-3d>About Us<sup>3D</sup></a>
       <a href="#companies">Companies</a>
@@ -351,22 +355,22 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <main id="main">
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
+    <h1 id="t-hero" class="up">Swiss medical cannabis. From cultivation to pharmacy.</h1>
     <div class="meta up">
       <p class="cap">Astrasana Holding AG</p>
       <p class="small">Kloten, Switzerland<br>Europe and Japan</p>
     </div>
-    <figure class="ph tint"><img src="corporate/img/leaf-lavender.webp" srcset="corporate/img/leaf-lavender-900.webp 900w, corporate/img/leaf-lavender.webp 1800w" sizes="(min-width:1100px) 75vw, 100vw" alt="A cannabis leaf against a pale lavender background" width="1800" height="1251" fetchpriority="high"></figure>
-    <h1 id="t-hero" class="up">Swiss medical cannabis. From cultivation to pharmacy.</h1>
+    <div class="intro up">
+      <p class="lede">A vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the industry.</p>
+      <a class="tlink" href="#companies"><span>Discover our companies</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
     <ol class="idx up" aria-label="On this page">
       <li><a href="#companies"><b>01</b>Our companies</a></li>
       <li><a href="#cultivation"><b>02</b>Cultivation and production</a></li>
       <li><a href="#pharmacies"><b>03</b>Partner pharmacies</a></li>
       <li><a href="#products"><b>04</b>Product portfolio</a></li>
     </ol>
-    <div class="intro up">
-      <p class="lede">A vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the industry.</p>
-      <a class="tlink" href="#companies"><span>Discover our companies</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-    </div>
+    <figure class="ph tint"><img src="corporate/img/leaf-lavender.webp" srcset="corporate/img/leaf-lavender-900.webp 900w, corporate/img/leaf-lavender.webp 1800w" sizes="(min-width:1100px) 75vw, 100vw" alt="A cannabis leaf against a pale lavender background" width="1800" height="1251" fetchpriority="high"></figure>
   </section>
 
   <!-- company -->
@@ -565,7 +569,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
 <footer class="ft">
   <div class="grid">
-    <a class="logo" href="./" aria-label="Astrasana Holding AG, home"></a>
+    <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img src="corporate/img/brand/logo-color.svg" alt="" width="168" height="32"></a>
     <p class="about">A vertically integrated Swiss pharmaceutical and cannabis company. From cultivation to pharmacy.</p>
     <div class="col"><h2 class="fh">Company</h2><ul><li><a href="about-us/" data-3d>About Us (3D)</a></li><li><a href="#companies">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
     <div class="col"><h2 class="fh">Business</h2><ul><li><a href="#cultivation">Pharma</a></li><li><a href="#pharmacies">Pharmacies</a></li><li><a href="#products">Products</a></li></ul></div>
