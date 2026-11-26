@@ -689,13 +689,17 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   /* the chain: the line fills while the section crosses the screen; a stop lights when the fill reaches it */
   var chol=document.querySelector('.ch ol');
-  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), ticking=false;
-    function chain(){ ticking=false; var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
-      /* starts as the row comes up from the bottom of the screen, ends as its last line is fully in view: a long, even fill */
-      var a=vh+(vert?0:320), z=vh+24-r.height, f=reduce?1:Math.min(1,Math.max(0,(a-r.top)/Math.max(200,a-z)));
-      chol.style.setProperty('--fill',f.toFixed(3));
-      stops.forEach(function(li,i){ var dot=li.querySelector('.dot'), dr=dot.getBoundingClientRect(), at=vert?(dr.top+dr.height/2-r.top)/Math.max(1,r.height):(dr.left+dr.width/2-r.left)/Math.max(1,r.width); li.classList.toggle('lit',f>=at-.001); }); }
-    addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(chain); } },{passive:true}); addEventListener('resize',chain); chain(); }
+  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), played=false;
+    /* the line runs once on its own when the row reaches the middle of the screen; each stop lights as the line passes it */
+    function setFill(f){ var r=chol.getBoundingClientRect(), vert=innerWidth<=1100; chol.style.setProperty('--fill',f.toFixed(3));
+      stops.forEach(function(li){ var d=li.querySelector('.dot').getBoundingClientRect(), at=vert?(d.top+d.height/2-r.top)/Math.max(1,r.height):(d.left+d.width/2-r.left)/Math.max(1,r.width); li.classList.toggle('lit',f>=at-.001); }); }
+    function play(){ if(played) return; played=true; removeEventListener('scroll',check);
+      if(reduce){ setFill(1); return; }
+      var t0=null, dur=innerWidth<=1100?2200:1400;
+      (function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; setFill(e); if(p<1) requestAnimationFrame(step); })(performance.now()); requestAnimationFrame(function(){}); }
+    function check(){ var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
+      if(vert?r.top<=vh*.55:r.top+r.height/2<=vh*.55) play(); }
+    setFill(0); addEventListener('scroll',check,{passive:true}); check(); }
 
   /* entering the 3D story from About Us: settle into dark, then go (same tab) */
   document.addEventListener('click',function(e){
