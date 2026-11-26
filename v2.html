@@ -867,6 +867,12 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .fig .pmap .lbl text{font:700 11px var(--display);fill:#fff;letter-spacing:-.01em} .fig .pmap .lbl text.s{font:400 8.5px var(--text);fill:rgba(255,255,255,.72)}
 @media (max-width:980px){ .fig .pmap .lbl text,.pmap .jp .jt{font-size:13px} .fig .pmap .lbl text.s{font-size:10px} }
 @media (prefers-reduced-motion:reduce){ .pmap .dot .pulse{animation:none;opacity:0} }
+/* hero video: the flask sits nearer the centre in this cut, so on desktop the frame moves right; the strip it leaves
+   takes the video's own white, so no edge shows */
+.hero .stage{background:#FEFCFF}
+@media (min-width:981px){ .hero .hv{transform:translateX(12%)} }
+/* calm map: no pulsing rings, no shadow under the lifted countries */
+.pmap .dot .pulse{display:none} .pmap .hl{filter:none}
 /* coloured bands sit flush: no white margin above them (their own padding keeps the content spaced) */
 .tm,.ch,.hw,.x3d-sec,.ct{margin-top:0!important}
 .hero .chm,.gs .hero .reveal .chm{background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)!important}
@@ -910,7 +916,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
     <div class="stage">
-      <video class="hv" poster="corporate/img/hero-flask-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-flask.mp4" type="video/mp4"><source src="corporate/video/hero-flask.webm" type="video/webm"></video>
+      <video class="hv" poster="corporate/img/hero-drop-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-drop.mp4" type="video/mp4"><source src="corporate/video/hero-drop.webm" type="video/webm"></video>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
     <div class="meta up">
       <p class="small">Kloten, Switzerland<br>Europe and&nbsp;Japan</p>
