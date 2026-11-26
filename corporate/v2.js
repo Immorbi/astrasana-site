@@ -42,7 +42,7 @@
   if(h1){ own(h1);
     Split.create(keep(h1),{type:'lines',mask:'lines',autoSplit:true,onSplit:function(s){ var tw=g.from(s.lines,{yPercent:110,stagger:.15,duration:1.25,ease:'expo.out',paused:true}); intro.add(tw.play(),.15); return tw; }}); }
   /* the panel spans the screen width; on load it opens to the grid width, then the scroll takes it to the edges */
-  var panel=document.querySelector('.hero .chm');
+  var panel=document.querySelector('.hero > .chm:not(.revealed)'); /* moved into the hero stage below (1c) */
   var bl=function(){ return panel?Math.max(0,(innerWidth-panel.parentNode.getBoundingClientRect().width)/2):0; };
   var gridClip=function(){ return 'inset(0px '+bl()+'px 0px '+bl()+'px round 10px)'; };
   if(panel){ panel.classList.add('bleed');
@@ -54,23 +54,37 @@
       scrollTrigger:{trigger:panel,start:'top 70%',end:'top 8%',scrub:true,invalidateOnRefresh:true}}); });
   if(!pre) start();
 
-  /* 1c. the hero stage is pinned while the scroll plays the video, then the signifier sweeps in from the right,
-         turns and grows until it covers the screen in white, and the page continues below it */
-  var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), sweep=stage&&stage.querySelector('.sweep');
-  if(stage&&hv&&sweep){
+  /* 1c. the hero stage is pinned while the scroll plays the video. Then, as on the reference, a flat signifier shape rises
+         from the bottom as a window onto the next block (the map of Switzerland) and grows until that block fills the screen;
+         the page continues from there. The window is a CSS mask in the signifier's shape over the map panel. */
+  var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), chm=document.querySelector('.hero .chm');
+  if(stage&&hv&&chm){
+    var sw=stage.querySelector('.sweep'); if(sw) sw.remove();
+    var rv=document.createElement('div'); rv.className='reveal'; chm.classList.add('revealed'); rv.appendChild(chm); stage.appendChild(rv);
     hv.pause(); hv.muted=true;
     var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
     if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
     var vt={t:0}, want=0, seeking=false;
     function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }
     hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
+    /* the window: size S, and the point (AX,AY) of the shape (inside its right stroke) placed at screen point P */
+    var AR=53.6/60.1, AX=.727, AY=.616, m={a:0,b:0};
+    function place(){ var W=stage.clientWidth, H=stage.clientHeight, S0=Math.min(W*.46,H*.62,640), S1=Math.hypot(W,H)*5.2;
+      var ra=m.a, rb=m.b, S, px, py;
+      /* a: rises from below the screen to just under the headline */
+      var yA=H+S0*AY*AR*1.05, yB=H*.62+AY*S0*AR; /* its top settles at about 62% of the screen, under the headline */
+      if(rb<=0){ S=S0; px=W/2; py=yA+(yB-yA)*ra; }
+      /* b: grows around the screen centre until it covers the screen */
+      else { S=S0*Math.exp(Math.log(S1/S0)*rb); px=W/2; py=yB+(H/2-yB)*Math.min(1,rb*1.4); }
+      rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
+      rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0); }
+    place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
-    g.set(sweep,{xPercent:-50,yPercent:-50,transformOrigin:'70% 50%'});
-    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=230%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
-    tl.to(vt,{t:1,duration:.62,onUpdate:seek},0)
-      .to(words,{yPercent:-10,autoAlpha:0,duration:.16,ease:'power1.in'},.6)
-      .fromTo(sweep,{x:function(){ return innerWidth*.62; },rotation:28,scale:.42,autoAlpha:0},{x:0,rotation:0,scale:.9,autoAlpha:1,duration:.18,ease:'power2.out'},.6)
-      .to(sweep,{scale:function(){ return Math.max(innerWidth,innerHeight)/sweep.getBoundingClientRect().width*9; },duration:.22,ease:'power2.in'},.78);
+    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
+    tl.to(vt,{t:1,duration:.56,onUpdate:seek},0)
+      .to(m,{a:1,duration:.2,ease:'power2.out',onUpdate:place},.5)
+      .to(words,{autoAlpha:0,yPercent:-8,duration:.12,ease:'power1.in'},.7)
+      .to(m,{b:1,duration:.28,ease:'power2.in',onUpdate:place},.72);
   }
 
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
