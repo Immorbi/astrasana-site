@@ -849,7 +849,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 @media (min-width:981px){ .hero h1{font-size:clamp(44px,5.6vw,108px)!important;max-width:52vw}
   .hero .meta{grid-column:1/13;grid-row:2;display:flex;gap:32px} .hero .meta p+p{margin-top:0}
   .hero .intro{grid-column:1/13;grid-row:3;max-width:46vw} }
-.hero h1>div{padding:.08em 0 .16em;margin:-.08em 0 -.16em}
+main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
 /* ---------- figures map: a dark violet card (no grid), muted land, the group's countries lifted in light lilac
    with dark plates and leader lines; Japan in an inset ---------- */
 .fig .pm{background:linear-gradient(160deg,#1A063A 0%,#280A58 50%,#431291 100%)!important;box-shadow:none!important;border-radius:var(--r-photo)}
@@ -870,7 +870,10 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 /* hero video: the flask sits nearer the centre in this cut, so on desktop the frame moves right; the strip it leaves
    takes the video's own white, so no edge shows */
 .hero .stage{background:#FEFCFF}
-@media (min-width:981px){ .hero .hv{transform:translateX(12%)} }
+@media (min-width:981px){ .hero .hv{transform:translateX(4%)} }
+/* where the headline crosses the flask it turns to its negative: the text colour is the inverse of the violet, blended by difference,
+   so it reads violet on the white ground and inverts over the glass */
+.hero h1{mix-blend-mode:difference;color:#BCED6E!important}
 /* calm map: no pulsing rings, no shadow under the lifted countries */
 .pmap .dot .pulse{display:none} .pmap .hl{filter:none}
 /* coloured bands sit flush: no white margin above them (their own padding keeps the content spaced) */

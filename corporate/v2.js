@@ -78,6 +78,8 @@
       else { S=S0*Math.exp(Math.log(S1/S0)*rb); px=W/2; py=yB+(H/2-yB)*Math.min(1,rb*1.4); }
       rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
       rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0);
+      /* the dark map covers the header once it has grown past about half way: the header (logo included) turns white */
+      rv.classList.toggle('cover',rb>=.5); if(window.__hdTone) window.__hdTone();
       /* the header is dark over the video and light once the white map has taken most of the screen */
       
       /* the map builds up as the window opens */
@@ -147,9 +149,9 @@
   /* the hero video is light: over the hero the header turns dark only once the dark map panel has opened over it */
   var darkEls=$('.co,.x3d-sec,.ct'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
   function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; });
-    if(!on&&hst&&hrv&&hrv.classList.contains('open')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
+    if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
     hd.classList.toggle('dark',on); }
-  addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
+  window.__hdTone=hdTone;   addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
 
   /* 12. the bracket corners around the Companies statement open from the middle */
   $('.co .brk').forEach(function(b){ g.fromTo(b,{clipPath:'inset(50% 0% 50% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,ease:'power3.out',scrollTrigger:{trigger:b,start:'top 80%',once:true}}); });
