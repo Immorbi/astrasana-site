@@ -549,7 +549,42 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   border:1px solid rgba(255,255,255,.55);background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.02) 0%,rgba(255,255,255,.07) 62%,rgba(255,255,255,.16) 100%);
   box-shadow:inset 0 0 18px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transition:transform .6s var(--ease)}
 @media (hover:hover){ .pr .list li:hover{transform:translateY(-4px)} .pr .list li:hover::before{opacity:1} .pr .list li:hover::after{transform:scale(1.08)} }
-@media (max-width:760px){ .hero .cta .pill{flex:1 1 auto;justify-content:center} .hero h1{font-size:clamp(34px,11.4vw,52px)} }
+/* ---------- V2 hero: a full-screen video stage, scrubbed by the scroll, closed by a sweep of the signifier ---------- */
+.hero{padding-top:0}
+.hero::before{display:none}
+.hero .stage{grid-column:1/13;grid-row:1/3;position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-content:center;
+  min-height:calc(100svh - 64px);padding-top:clamp(40px,5vw,80px);padding-bottom:clamp(40px,5vw,80px);
+  margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);padding-left:calc((100vw - 100%) / 2);padding-right:calc((100vw - 100%) / 2);background:#EDE6F8}
+.hero .hv{position:absolute;z-index:-1;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 50%}
+.hero h1{color:#1A063A} .hero .meta p{color:rgba(26,6,58,.66)} .hero .intro .lede{color:#280A58}
+.hero .pill{color:var(--deep);background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)} .hero .pill:hover{background:#fff;color:var(--deep);box-shadow:inset 0 0 0 1px #fff}
+.hero .pill.solid{background:var(--deep);color:#fff;box-shadow:none} .hero .pill.solid:hover{background:#5A22B3}
+.hero .sweep{position:absolute;z-index:3;left:50%;top:50%;width:min(56vw,680px);height:auto;pointer-events:none;opacity:0;overflow:visible;filter:drop-shadow(0 18px 40px rgba(67,18,145,.28))}
+.hero .sweep .sw-fill{fill:url(#sw-g)} .hero .sweep .sw-edge{fill:none;stroke:#fff;stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:.9}
+.hero .chm{margin-top:clamp(56px,6vw,96px)}
+@media (max-width:980px){ .hero .hv{object-position:78% 50%} }
+/* ---------- V2 header: no bar, as on the reference; the logo and pill buttons float over the page on a translucent blur ---------- */
+.hd{position:fixed;left:0;right:0;top:0;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+.hero .stage{min-height:100svh;padding-top:calc(64px + clamp(40px,5vw,80px))}
+.hd nav{gap:6px}
+.hd nav a,.hd .vtog,.menu-btn{-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)}
+.hd nav a{min-height:40px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);color:var(--ink);transition:background-color .3s ease,color .3s ease}
+.hd nav a::after{display:none}
+.hd nav a:hover{background:#fff;color:var(--ink)}
+.hd nav .contact{background:var(--deep);color:#fff;box-shadow:none} .hd nav .contact:hover{background:#5A22B3;color:#fff}
+.hd .vtog{background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.hd.dark nav a,.hd.tint nav a{background:rgba(26,6,58,.4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);color:#fff}
+.hd.dark nav a:hover,.hd.tint nav a:hover{background:rgba(255,255,255,.22)}
+.hd.dark nav .contact,.hd.tint nav .contact{background:#fff;color:var(--deep)}
+.hd.dark .vtog,.hd.tint .vtog{background:rgba(26,6,58,.4)}
+@media (max-width:980px){
+  .menu-btn{border-radius:999px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+  .hd.dark .menu-btn,.hd.tint .menu-btn{background:rgba(26,6,58,.4)}
+  .hd.open{background:var(--paper)!important}
+  .hd nav a,.hd.dark nav a,.hd.tint nav a{min-height:60px;padding:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--ink)}
+  .hd nav .contact{background:none;color:var(--purple)}
+  .hero .stage{padding-top:calc(56px + 40px)} }
+@media (max-width:760px){ .hero .cta .pill{flex:1 1 auto;justify-content:center} .hero h1{font-size:clamp(32px,10.2vw,48px)} }
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -586,6 +621,8 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 <main id="main">
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
+    <div class="stage">
+      <video class="hv" poster="corporate/img/hero-leaf-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-leaf.mp4" type="video/mp4"><source src="corporate/video/hero-leaf.webm" type="video/webm"></video>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
     <div class="meta up">
       <p class="small">Kloten, Switzerland<br>Europe and&nbsp;Japan</p>
@@ -593,6 +630,8 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
     <div class="intro up">
       <p class="lede">A&nbsp;vertically integrated Swiss pharmaceutical and&nbsp;cannabis company covering all market segments within the&nbsp;industry.</p>
       <div class="cta"><a class="pill solid" href="#contact">Get in&nbsp;touch</a><a class="pill" href="#chain">See the&nbsp;value chain<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+    </div>
+      <svg class="sweep" viewBox="0 0.3 60.1 53.6" aria-hidden="true"><defs><linearGradient id="sw-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6DDF6"/><stop offset=".55" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs><path class="sw-fill" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/><path class="sw-edge" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/></svg>
     </div>
     <figure class="chm">
       <figcaption class="mapt"><h2>Swiss at&nbsp;every step</h2><p>Headquartered in&nbsp;Kloten, with&nbsp;our&nbsp;pharmaceutical production facility in&nbsp;Tagelswangen, Canton Zurich. From&nbsp;there we&nbsp;supply partner pharmacies across Switzerland and&nbsp;markets in&nbsp;over 18&nbsp;countries.</p></figcaption>
@@ -942,7 +981,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   function size(){ hero.style.setProperty('--stage',(chm.offsetTop+chm.offsetHeight*.42)+'px'); }
   var ct=document.getElementById('contact');
   function tint(){ var r=hero.getBoundingClientRect(), stage=parseFloat(getComputedStyle(hero).getPropertyValue('--stage'))||0, c=ct?ct.getBoundingClientRect():null;
-    hd.classList.toggle('tint',(r.top+stage>64||(c&&c.top<=64&&c.bottom>64))&&!hd.classList.contains('open')); }
+    hd.classList.toggle('tint',!!(c&&c.top<=64&&c.bottom>64)&&!hd.classList.contains('open')); }
   size(); tint(); addEventListener('resize',function(){ size(); tint(); }); addEventListener('scroll',tint,{passive:true}); addEventListener('load',function(){ size(); tint(); });
   if('ResizeObserver' in window) new ResizeObserver(function(){ size(); tint(); }).observe(chm); })();
 </script>

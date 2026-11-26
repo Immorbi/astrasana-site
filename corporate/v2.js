@@ -54,6 +54,25 @@
       scrollTrigger:{trigger:panel,start:'top 70%',end:'top 8%',scrub:true,invalidateOnRefresh:true}}); });
   if(!pre) start();
 
+  /* 1c. the hero stage is pinned while the scroll plays the video, then the signifier sweeps in from the right,
+         turns and grows until it covers the screen in white, and the page continues below it */
+  var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), sweep=stage&&stage.querySelector('.sweep');
+  if(stage&&hv&&sweep){
+    hv.pause(); hv.muted=true;
+    var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
+    if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
+    var vt={t:0}, want=0, seeking=false;
+    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }
+    hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
+    var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
+    g.set(sweep,{xPercent:-50,yPercent:-50,transformOrigin:'70% 50%'});
+    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=230%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
+    tl.to(vt,{t:1,duration:.62,onUpdate:seek},0)
+      .to(words,{yPercent:-10,autoAlpha:0,duration:.16,ease:'power1.in'},.6)
+      .fromTo(sweep,{x:function(){ return innerWidth*.62; },rotation:28,scale:.42,autoAlpha:0},{x:0,rotation:0,scale:.9,autoAlpha:1,duration:.18,ease:'power2.out'},.6)
+      .to(sweep,{scale:function(){ return Math.max(innerWidth,innerHeight)/sweep.getBoundingClientRect().width*9; },duration:.22,ease:'power2.in'},.78);
+  }
+
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
   $('main h2').forEach(function(h){ if(h.closest('.hero')) return; own(h);
     Split.create(keep(h),{type:'lines',mask:'lines',autoSplit:true,onSplit:function(s){
