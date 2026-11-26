@@ -746,6 +746,13 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .hd.dark nav .contact,.hd.tint nav .contact{--bb:#fff!important;color:var(--deep)!important}
 .hd .vtog a[aria-current]{--bb:var(--deep);color:#fff} .hd.dark .vtog a[aria-current],.hd.tint .vtog a[aria-current]{--bb:#fff;color:var(--deep)}
 .hd.dark .vtog a:not([aria-current]),.hd.tint .vtog a:not([aria-current]){color:rgba(255,255,255,.75)}
+.hd .vtog a{--bs:none!important} .hd .vtog a:not([aria-current]){--bb:transparent!important}
+
+/* hero: bold title, a darker gradient behind the text */
+.hero h1{font-weight:700!important;letter-spacing:-.04em!important}
+.hero .intro .lede{font-weight:500}
+.hero .stage::after{background:linear-gradient(90deg,rgba(26,6,58,.82) 0%,rgba(26,6,58,.6) 38%,rgba(26,6,58,.18) 68%,rgba(26,6,58,0) 85%)!important}
+@media (max-width:760px){ .hero .stage::after{background:linear-gradient(180deg,rgba(26,6,58,.55) 0%,rgba(26,6,58,.78) 55%,rgba(26,6,58,.55) 100%)!important} }
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>

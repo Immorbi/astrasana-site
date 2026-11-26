@@ -77,7 +77,9 @@
       /* b: grows around the screen centre until it covers the screen */
       else { S=S0*Math.exp(Math.log(S1/S0)*rb); px=W/2; py=yB+(H/2-yB)*Math.min(1,rb*1.4); }
       rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
-      rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0); }
+      rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0);
+      /* the header is dark over the video and light once the white map has taken most of the screen */
+      var hdr=document.getElementById('hd'); if(hdr&&stage.getBoundingClientRect().bottom>64) hdr.classList.toggle('dark',rb<.35); }
     place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
     var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
@@ -139,7 +141,7 @@
 
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
-  $('.x3d-sec,.co,.hero').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
+  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
 
   /* 11. a soft light follows the cursor across the violet cards */
   $('.pr .list li').forEach(function(card){
