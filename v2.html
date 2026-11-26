@@ -835,6 +835,11 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 /* header pills on a light ground: a translucent white fill with a blur under the violet outline */
 .hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bb:rgba(255,255,255,.62);--bf:blur(14px) saturate(160%)}
 .hd:not(.dark):not(.tint) nav a:not(.contact):hover{--bb:rgba(255,255,255,.92)}
+/* one clean violet, no grain: the noise is switched off everywhere; the hero map ends in the colour the Companies band starts with */
+:root{--grain:none;--grain-k:none;--grain-l:none}
+.hero .chm,.gs .hero .reveal .chm{background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)!important}
+.co::before{background:linear-gradient(180deg,#36107A 0%,#280A58 45%,#1A063A 100%)}
+.ct::before{background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
