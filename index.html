@@ -90,22 +90,19 @@ p+p{margin-top:1em}
 .ch .head h2{grid-column:1/7}
 .ch .head p{grid-column:8/12;align-self:end}
 .ch ol{grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative;--fill:0}
-.ch .track{position:absolute;left:0;right:0;top:calc(clamp(52px,4.4vw,64px) + 28px);height:2px;background:var(--rule)}
+.ch .track{position:absolute;left:0;right:0;top:calc(clamp(60px,5vw,76px) + 28px);height:2px;background:var(--rule)}
 .ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
 .ch li{position:relative}
-.ch li .ic{display:block;width:clamp(52px,4.4vw,64px);height:auto;fill:none;stroke:var(--rule-2);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .5s ease}
-.ch li .ic *{stroke-dasharray:var(--len,0) 0}
+.ch li .ic{display:block;width:clamp(60px,5vw,76px);height:auto;fill:none;stroke:var(--rule-2);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .5s ease}
+.ch li .ic *{vector-effect:non-scaling-stroke}
 .ch li .dot{position:relative;display:block;width:15px;height:15px;margin-top:21px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--rule-2);transition:background-color .35s ease,box-shadow .35s ease}
 .ch li .num{display:block;margin-top:20px;font:300 clamp(44px,4.4vw,72px)/.9 var(--display);letter-spacing:-.04em;color:var(--rule-2);transition:color .5s ease}
 .ch li b{display:block;margin-top:14px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
-.ch li .co{display:block;margin-top:6px;font:500 14px/1.4 var(--text);color:var(--purple)}
 .ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
 .ch li.lit .ic{stroke:var(--purple)}
-.ch li.lit .ic *{animation:draw .9s var(--ease) both}
-@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
 .ch li.lit .dot{background:var(--purple);box-shadow:inset 0 0 0 2px var(--purple),0 0 0 6px rgba(67,18,145,.12)}
 .ch li.lit .num{color:var(--ink)}
-@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .ic,.ch li .dot,.ch li .num{transition:none} .ch li.lit .ic *{animation:none} }
+@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .ic,.ch li .dot,.ch li .num{transition:none} }
 @media (max-width:1100px){
   .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
   .ch ol{grid-template-columns:1fr;row-gap:40px;padding-left:40px}
@@ -403,7 +400,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <section class="hero grid rv" aria-labelledby="t-hero">
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From cultivation to pharmacy.</h1>
     <div class="meta up">
-      <p class="cap">Astrasana Holding AG</p>
       <p class="small">Kloten, Switzerland<br>Europe and Japan</p>
     </div>
     <div class="intro up">
@@ -468,11 +464,11 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     <div class="grid">
       <ol aria-label="From cultivation to pharmacy">
         <span class="track" aria-hidden="true"><i></i></span>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42V24"/><path d="M24 26c0-7 5-12 13-12 0 8-5 12-13 12z"/><path d="M24 31c0-6-4-10-11-10 0 6 4 10 11 10z"/><path d="M14 42h20"/></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><span class="co">Astrasana Pharma AG</span><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 42V22l10 6v-6l10 6V10h8v32"/><path d="M4 42h40"/><path d="M38 42V30"/><path d="M35 30h6"/><path d="M36 30l-3 8a2 2 0 0 0 2 3h6a2 2 0 0 0 2-3l-3-8"/><path d="M12 34h4M20 34h4"/></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">02</span><b>Production</b><span class="co">Tagelswangen, Canton Zurich</span><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 14h24v20H4z"/><path d="M28 20h8l6 7v7h-14"/><circle cx="12" cy="36" r="3.5"/><circle cx="35" cy="36" r="3.5"/><path d="M10 22h10M15 17v10"/></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><span class="co">Bogen Pharma AG</span><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 42V18l18-10 18 10v24"/><path d="M4 42h40"/><path d="M20 42V32h8v10"/><path d="M21 21h6M24 18v6"/></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><span class="co">Partner pharmacies</span><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M7 24h34"/><path d="M24 7c-5 5-7 11-7 17s2 12 7 17c5-5 7-11 7-17s-2-12-7-17z"/><path d="M33 11c4 1 7 4 8 7" stroke-dasharray="2 3"/></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">05</span><b>International</b><span class="co">Group companies abroad</span><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(1.14) translate(-24 -26.5)"><path d="M24 40V22"/><path d="M24 24c0-6.6 4.6-11 11-11 0 6.6-4.6 11-11 11z"/><path d="M24 29c0-5.5-3.9-9-9-9 0 5.5 3.9 9 9 9z"/><path d="M12 40h24"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.94) translate(-24 -24)"><path d="M19 8h10"/><path d="M20.5 8v11L11 36.5c-.9 1.7.3 3.5 2.2 3.5h21.6c1.9 0 3.1-1.8 2.2-3.5L27.5 19V8"/><path d="M15 31h18"/><path d="M24 31c0-3.3 2.2-5.5 5.5-5.5 0 3.3-2.2 5.5-5.5 5.5z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.92) translate(-24 -25)"><path d="M6 31V15.5c0-.8.7-1.5 1.5-1.5h19c.8 0 1.5.7 1.5 1.5V31"/><path d="M28 19h7.2c.5 0 1 .2 1.3.6l4.9 5.6c.4.4.6.9.6 1.4V31"/><path d="M6 31h4.5M17.5 31h14M38.5 31H42"/><circle cx="14" cy="32" r="3.5"/><circle cx="35" cy="32" r="3.5"/><path d="M12 19h10v7H12zM17 19v3"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.9) translate(-24 -24)"><path d="M19.5 8.5h9c.6 0 1 .4 1 1v9h9c.6 0 1 .4 1 1v9c0 .6-.4 1-1 1h-9v9c0 .6-.4 1-1 1h-9c-.6 0-1-.4-1-1v-9h-9c-.6 0-1-.4-1-1v-9c0-.6.4-1 1-1h9v-9c0-.6.4-1 1-1z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.86) translate(-24 -24)"><circle cx="24" cy="24" r="16"/><path d="M8 24h32M10.5 15.5h27M10.5 32.5h27"/><path d="M24 8c-4.4 4.3-6.6 9.6-6.6 16s2.2 11.7 6.6 16c4.4-4.3 6.6-9.6 6.6-16S28.4 12.3 24 8z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
       </ol>
     </div>
   </section>
@@ -480,7 +476,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <section class="img-sec grid sec rv" id="cultivation" aria-labelledby="t-cu">
     <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="A cannabis seedling breaking through the soil" width="1800" height="2609" loading="lazy"></figure>
       <div class="over">
-        <p class="cap">Astrasana Pharma AG</p>
         <h2 id="t-cu">Swiss cannabis cultivation</h2>
         <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on approximately 1,000&nbsp;m² in Switzerland, operating under a Swissmedic licence. Production follows GACP, every batch is traceable from seed to harvest, and accredited laboratories test cannabinoids, terpenes and contaminants.</p>
       </div>
@@ -693,10 +688,9 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   /* the chain: the line fills while the section crosses the screen; a stop lights when the fill reaches it */
   var chol=document.querySelector('.ch ol');
-  if(chol) chol.querySelectorAll('.ic *').forEach(function(el){ try{ var l=el.getTotalLength(); el.style.setProperty('--len',l.toFixed(1)); el.style.strokeDasharray=el.getAttribute('stroke-dasharray')?'':l.toFixed(1)+' '+l.toFixed(1); }catch(e){} });
   if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), ticking=false;
     function chain(){ ticking=false; var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
-      var f=reduce?1:Math.min(1,Math.max(0,(vh*.82-r.top)/(r.height*(vert?1:.6)+vh*.35)));
+      var a=vh*.85, z=vh+24-r.height, f=reduce?1:Math.min(1,Math.max(0,(a-r.top)/Math.max(120,a-z)));
       chol.style.setProperty('--fill',f.toFixed(3));
       stops.forEach(function(li,i){ var dot=li.querySelector('.dot'), dr=dot.getBoundingClientRect(), at=vert?(dr.top+dr.height/2-r.top)/Math.max(1,r.height):(dr.left+dr.width/2-r.left)/Math.max(1,r.width); li.classList.toggle('lit',f>=at-.001); }); }
     addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(chain); } },{passive:true}); addEventListener('resize',chain); chain(); }
