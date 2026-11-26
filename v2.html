@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lenis>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -438,6 +438,12 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .ct form{grid-template-columns:1fr} .ct form h3,.ct form .sub,.ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
   .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
 }
+/* ---------- V2 motion (corporate/v2.js) ---------- */
+.has-ln{position:relative;border-top-color:transparent!important}
+.ln{position:absolute;left:0;right:0;transform-origin:left center;pointer-events:none}
+.gs .rise .w>span{transform:none;transition:none}
+.gs #t-hero{text-wrap:wrap} /* same line breaks as V1 once SplitText takes the title over */
+.pr .band.bleed{margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);border-radius:0;clip-path:none}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -743,7 +749,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   /* hero title: split into words that rise once */
   var h1=document.getElementById('t-hero');
-  if(h1&&!reduce){ var k=0; (function wrap(node){ [].slice.call(node.childNodes).forEach(function(c){
+  if(h1&&!reduce&&!document.documentElement.hasAttribute('data-lenis')){ /* V2 animates the title with SplitText (corporate/v2.js) */ var k=0; (function wrap(node){ [].slice.call(node.childNodes).forEach(function(c){
       if(c.nodeType===3){ var frag=document.createDocumentFragment(); c.textContent.split(/([ \t\n\r]+)/).forEach(function(t){ if(!t) return; if(/^[ \t\n\r]+$/.test(t)){ frag.appendChild(document.createTextNode(t)); return; }
           var w=document.createElement('span'); w.className='w'; var i=document.createElement('span'); i.textContent=t; i.style.setProperty('--k',k++); w.appendChild(i); frag.appendChild(w); }); c.parentNode.replaceChild(frag,c); }
       else if(c.nodeType===1) wrap(c); }); })(h1);
@@ -825,5 +831,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <script src="land/vendor/motion/Flip.min.js" defer></script>
 <script src="land/vendor/motion/lenis.min.js" defer></script>
 <script src="corporate/motion.js" defer></script>
+<script src="corporate/v2.js" defer></script>
 </body>
 </html>
