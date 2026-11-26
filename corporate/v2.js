@@ -139,7 +139,7 @@
 
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
-  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
+  $('.x3d-sec,.co,.hero').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
 
   /* 11. a soft light follows the cursor across the violet cards */
   $('.pr .list li').forEach(function(card){

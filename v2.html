@@ -721,6 +721,15 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .nw li .lg img{max-height:34px!important;max-width:150px!important;filter:brightness(0) invert(1)!important;opacity:.92!important}
 .nw li a::after{content:"Read more \2192"!important;max-width:none!important;width:auto!important;aspect-ratio:auto!important;border-radius:0!important;background:none!important;box-shadow:none!important;justify-self:end!important;font:500 15px/1 var(--display)!important;color:#fff;opacity:.85}
 @media (hover:hover){ .nw li a:hover .lg{transform:none} .nw li a:hover::after{transform:translateX(4px);opacity:1} }
+
+/* hero on the dark drops video: light type, white buttons */
+.hero .stage{background:#1A063A}
+.hero .hv{object-position:70% 50%}
+.hero .stage::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(26,6,58,.62) 0%,rgba(26,6,58,.3) 45%,rgba(26,6,58,0) 75%)}
+@media (max-width:760px){ .hero .stage::after{background:linear-gradient(180deg,rgba(26,6,58,.35) 0%,rgba(26,6,58,.6) 55%,rgba(26,6,58,.35) 100%)} }
+.hero h1{color:#fff} .hero .meta p{color:rgba(255,255,255,.66)} .hero .intro .lede{color:rgba(255,255,255,.88)}
+.hero .pill{color:#fff;--bb:rgba(255,255,255,.12);--bs:inset 0 0 0 1px rgba(255,255,255,.45)} .hero .pill:hover{--bb:rgba(255,255,255,.24);color:#fff}
+.hero .pill.solid{color:var(--deep);--bb:#fff;--bs:none} .hero .pill.solid:hover{--bb:#E6DDF6}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -758,7 +767,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
     <div class="stage">
-      <video class="hv" poster="corporate/img/hero-leaf-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-leaf.mp4" type="video/mp4"><source src="corporate/video/hero-leaf.webm" type="video/webm"></video>
+      <video class="hv" poster="corporate/img/hero-drops-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-drops.mp4" type="video/mp4"><source src="corporate/video/hero-drops.webm" type="video/webm"></video>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
     <div class="meta up">
       <p class="small">Kloten, Switzerland<br>Europe and&nbsp;Japan</p>
