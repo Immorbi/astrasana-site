@@ -107,6 +107,11 @@
   var hd=document.getElementById('hd'), dark=document.querySelector('.x3d-sec');
   if(hd&&dark) ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}});
 
+  /* 11. a soft light follows the cursor across the violet cards */
+  $('.ch li,.pr .list li').forEach(function(card){
+    card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); });
+    card.addEventListener('pointerleave',function(){ card.style.removeProperty('--mx'); card.style.removeProperty('--my'); }); });
+
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
 })();

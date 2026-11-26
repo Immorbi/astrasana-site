@@ -490,7 +490,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .hero .meta p{color:rgba(255,255,255,.7)} .hero .intro .lede{color:rgba(255,255,255,.88)}
 .hero .chm{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
 /* the header sits on the purple while the stage is under it */
-.hd.tint{background:rgba(67,18,145,.9);box-shadow:none}
+.hd.tint{background:rgba(26,6,58,.9);box-shadow:none}
 .hd.tint nav a{color:rgba(255,255,255,.78)} .hd.tint nav a:hover{color:#fff} .hd.tint nav a::after{background:#fff}
 .hd.tint nav .contact{color:#fff} .hd.tint nav .nav3d svg{stroke:#fff}
 .hd.tint .logo .l-col{opacity:0} .hd.tint .logo .l-white{opacity:1}
@@ -503,11 +503,10 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .ch li.lit{background:var(--deep);box-shadow:none}
 /* the filled card: a gradient built from the brand's violet scale (styleguide: Violet 400 #7E52CC, Violet 600 #431291 brand,
    Violet 900 #1A063A) with a fine grain on top; it fades in over the white card when the step is reached */
-:root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --violet-grad:radial-gradient(120% 90% at 12% 0%,#7E52CC 0%,rgba(126,82,204,0) 58%),radial-gradient(90% 80% at 100% 100%,#1A063A 0%,rgba(26,6,58,0) 62%),linear-gradient(160deg,#5A22B3 0%,#431291 48%,#280A58 100%)}
-.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
+:root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");}
+.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--glow),var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
 .ch li::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grain);background-size:180px;mix-blend-mode:soft-light;opacity:0;transition:opacity .7s var(--ease)}
-.ch li.lit::before{opacity:1} .ch li.lit::after{opacity:.55}
+.ch li.lit::before{opacity:1} .ch li.lit::after{opacity:.45}
 .ch li{isolation:isolate;overflow:hidden}
 .ch li.lit b{color:#fff} .ch li.lit p{color:rgba(255,255,255,.78)} .ch li.lit .num{color:var(--lav-2)} .ch li.lit .ic{stroke:#fff}
 .ch li b,.ch li p{transition:color .5s var(--ease)}
@@ -521,6 +520,35 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .ct .send{background:var(--deep)} .ct .send:hover{background:var(--ink)}
 .ft{margin-top:0;border-top:0}
 .ct textarea{border-radius:16px}
+/* ---------- V2 gradients: the violet scale with grain, dark on the bands, light on panels and cards ---------- */
+:root{
+  --grain-k:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-l:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .04  0 0 0 0 .23  0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grad-dark:linear-gradient(180deg,#1A063A 0%,#431291 60%,#5A22B3 100%);
+  --grad-light:linear-gradient(180deg,#FFFFFF 0%,#F4F0FB 50%,#E6DDF6 100%);}
+.grad-l{background:var(--grain-l) 0 0/180px,var(--grad-light)}
+/* bands: full-bleed backgrounds as a pseudo-element, so they can carry a gradient */
+.hero::before{background:var(--grain-k) 0 0/180px,var(--grad-dark)}
+.ch,.ct{background:none;box-shadow:none;clip-path:none;position:relative;isolation:isolate}
+.ch::before,.ct::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%)}
+.ch::before{background:var(--grain-l) 0 0/180px,linear-gradient(180deg,#F4F0FB 0%,#E6DDF6 100%)}
+.ct::before{background:var(--grain-k) 0 0/180px,var(--grad-dark)}
+/* panels */
+.hero .chm,.fig .pm,.ph-sec .ph.phm,.ph-sec .pat{background:var(--grain-l) 0 0/180px,var(--grad-light)}
+/* violet cards: an even gradient down the brand's violet scale; declared on the card so the cursor position (--mx/--my) applies */
+.ch li,.pr .list li{
+  --violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 52%,#7E52CC 100%);
+  --glow:radial-gradient(240px circle at var(--mx,-300px) var(--my,-300px),rgba(203,185,238,.55) 0%,rgba(203,185,238,0) 70%)}
+/* product categories as dark cards, after the reference's news cards: title on top, a glass circle at the bottom,
+   a soft light under the cursor */
+.pr .list{column-gap:12px;row-gap:12px}
+.pr .list li{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(240px,20vw,300px);padding:clamp(22px,2vw,32px);border-top:0;border-radius:var(--r-photo);background:var(--grain-k) 0 0/180px,var(--violet-grad);align-content:start;transition:transform .5s var(--ease)}
+.pr .list li b{color:#fff} .pr .list li span{color:rgba(255,255,255,.78);max-width:24em}
+.pr .list li::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--glow);opacity:0;transition:opacity .4s ease}
+.pr .list li::after{content:"";position:absolute;right:clamp(18px,1.8vw,28px);bottom:clamp(18px,1.8vw,28px);width:clamp(84px,8vw,120px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(255,255,255,.55);background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.02) 0%,rgba(255,255,255,.07) 62%,rgba(255,255,255,.16) 100%);
+  box-shadow:inset 0 0 18px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transition:transform .6s var(--ease)}
+@media (hover:hover){ .pr .list li:hover{transform:translateY(-4px)} .pr .list li:hover::before{opacity:1} .pr .list li:hover::after{transform:scale(1.08)} }
 @media (max-width:760px){ .hero .cta .pill{flex:1 1 auto;justify-content:center} .hero h1{font-size:clamp(34px,11.4vw,52px)} }
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
