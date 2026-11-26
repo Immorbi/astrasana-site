@@ -501,6 +501,14 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .ch.sec{padding-top:clamp(80px,8vw,140px)}
 .ch li{background:#fff;box-shadow:none;border-radius:var(--r-photo)}
 .ch li.lit{background:var(--deep);box-shadow:none}
+/* the filled card: a gradient built from the brand's violet scale (styleguide: Violet 400 #7E52CC, Violet 600 #431291 brand,
+   Violet 900 #1A063A) with a fine grain on top; it fades in over the white card when the step is reached */
+:root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --violet-grad:radial-gradient(120% 90% at 12% 0%,#7E52CC 0%,rgba(126,82,204,0) 58%),radial-gradient(90% 80% at 100% 100%,#1A063A 0%,rgba(26,6,58,0) 62%),linear-gradient(160deg,#5A22B3 0%,#431291 48%,#280A58 100%)}
+.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
+.ch li::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grain);background-size:180px;mix-blend-mode:soft-light;opacity:0;transition:opacity .7s var(--ease)}
+.ch li.lit::before{opacity:1} .ch li.lit::after{opacity:.55}
+.ch li{isolation:isolate;overflow:hidden}
 .ch li.lit b{color:#fff} .ch li.lit p{color:rgba(255,255,255,.78)} .ch li.lit .num{color:var(--lav-2)} .ch li.lit .ic{stroke:#fff}
 .ch li b,.ch li p{transition:color .5s var(--ease)}
 /* the closing band: contact on purple, the form as a white card */
