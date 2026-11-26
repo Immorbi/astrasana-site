@@ -57,11 +57,16 @@
   /* 1c. the hero stage is pinned while the scroll plays the video. Then, as on the reference, a flat signifier shape rises
          from the bottom as a window onto the next block (the map of Switzerland) and grows until that block fills the screen;
          the page continues from there. The window is a CSS mask in the signifier's shape over the map panel. */
-  var stage=document.querySelector('.hero .stage'), chm=document.querySelector('.hero .chm');
-  if(stage&&chm){
+  var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), chm=document.querySelector('.hero .chm');
+  if(stage&&hv&&chm){
     var sw=stage.querySelector('.sweep'); if(sw) sw.remove();
     var rv=document.createElement('div'); rv.className='reveal'; chm.classList.add('revealed'); rv.appendChild(chm); stage.appendChild(rv);
-    var vt={t:0}; function seek(){ if(window.__scene) window.__scene(vt.t); }
+    hv.pause(); hv.muted=true;
+    var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
+    if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
+    var vt={t:0}, want=0, seeking=false;
+    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }
+    hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
     /* the window: size S, and the point (AX,AY) of the shape (inside its right stroke) placed at screen point P */
     var AR=53.6/60.1, AX=.727, AY=.616, m={a:0,b:0};
     function place(){ var W=stage.clientWidth, H=stage.clientHeight, S0=Math.min(W*.46,H*.62,640), S1=Math.hypot(W,H)*5.2;
@@ -167,6 +172,16 @@
     ST.create({trigger:st,start:'top 55%',end:'bottom 55%',toggleClass:{targets:st,className:'on'},onToggle:function(self){ if(self.isActive) hwSet(i); }});
     g.from($('.hw-sub li',st),{autoAlpha:0,y:14,duration:.7,stagger:.06,ease:'expo.out',scrollTrigger:{trigger:st,start:'top 75%',once:true}}); });
   hwSet(0);
+
+  /* 16. a thin progress line along the top of the page */
+  var sp=document.querySelector('.sprog'); if(sp) g.to(sp,{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
+  /* 17. the pins on the figures map drop in one after another */
+  var pm=document.querySelector('.pmap'); if(pm){ var pins=$('.pin',pm), lbls=$('.lbl',pm);
+    g.from(pins,{y:-40,autoAlpha:0,duration:.8,stagger:.12,ease:'back.out(2.2)',scrollTrigger:{trigger:pm,start:'top 70%',once:true}});
+    g.from(lbls,{autoAlpha:0,y:8,duration:.6,stagger:.1,delay:.4,ease:'expo.out',scrollTrigger:{trigger:pm,start:'top 70%',once:true}});
+    g.from($('.on',pm),{autoAlpha:0,duration:.8,stagger:.1,scrollTrigger:{trigger:pm,start:'top 75%',once:true}}); }
+  /* 18. team cards rise one after another; partner dots on the pharmacy map are already staggered in CSS */
+  var tml=document.querySelector('.tm-list'); if(tml){ own(tml); g.from($('li',tml),{y:40,autoAlpha:0,duration:.9,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:tml,start:'top 80%',once:true}}); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
