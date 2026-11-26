@@ -104,15 +104,14 @@ body.leaving .veil{opacity:1;pointer-events:auto}
 
   function start(){ frame.src=src; }
 
-  /* once the story has loaded: hide its own menus and its news chapter */
+  /* once the story has loaded: hide its own menus */
   frame.addEventListener('load',function(){
     if(!frame.src||frame.src==='about:blank') return;
     var d=null; try{ d=frame.contentDocument; }catch(e){}
     if(d&&d.head){
       var st=d.createElement('style'); st.id='astrasana-embed';
-      /* About Us shows the story without its own menus (this layer has the way back) and without its news chapter (news is on the website) */
-      st.textContent='header.nav,#sheet,.hist-rail{display:none!important}'+
-        '#history-10,.news-row{display:none!important}';
+      /* About Us shows the story without its own menus: this layer has the way back */
+      st.textContent='header.nav,#sheet,.hist-rail{display:none!important}';
       d.head.appendChild(st);
       watchEnd(frame.contentWindow,d);
     }
@@ -122,10 +121,7 @@ body.leaving .veil{opacity:1;pointer-events:auto}
 
   /* "Return to website" appears at the end of the story */
   function watchEnd(w,d){
-    /* the story ends where its news chapter would start (news is on the website), or at the very bottom */
-    function newsAt(){ try{ var t=d.getElementById('hist-track'), n=d.querySelectorAll('.hist-list li').length; if(!t||!w.stwP) return Infinity;
-      return t.getBoundingClientRect().top+w.scrollY+(t.offsetHeight-w.innerHeight)*w.stwP(9.55,n); }catch(e){ return Infinity; } }
-    function check(){ var se=d.scrollingElement||d.documentElement; var end=se.scrollTop>=newsAt()||se.scrollTop+w.innerHeight>=se.scrollHeight-Math.max(120,w.innerHeight*.35); ret.classList.toggle('on',end&&!leaving); }
+    function check(){ var se=d.scrollingElement||d.documentElement; var end=se.scrollTop+w.innerHeight>=se.scrollHeight-Math.max(120,w.innerHeight*.35); ret.classList.toggle('on',end&&!leaving); }
     w.addEventListener('scroll',check,{passive:true}); w.addEventListener('resize',check); check();
   }
 
