@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About Us · Astrasana Holding AG</title>
+<meta name="description" content="Discover Astrasana Holding as an interactive 3D journey: our structure, production in Tagelswangen and the route to partner pharmacies.">
+<link rel="icon" href="../land/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* The About Us route: the existing 3D story runs unchanged in a frame; this page adds only a thin layer on top of it:
+   the logo (home), a permanent "Back to website", a loading state that can be cancelled and "Return to website" at the end. */
+:root{ --night:#0e0e11; --fg:#f3eeeb; --fg-2:rgba(243,238,235,.72); --line:rgba(243,238,235,.22); --acc:#a49cf0; --paper:#fff;
+  --display:'Montserrat',ui-sans-serif,system-ui,sans-serif; --text:'DM Sans',ui-sans-serif,system-ui,sans-serif; --ease:cubic-bezier(.16,1,.3,1); color-scheme:dark; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--night);color:var(--fg);font:400 15px/1.5 var(--text);-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit;text-decoration:none} button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+#story{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;background:var(--night);opacity:0;transition:opacity .7s cubic-bezier(.4,0,.2,1)}
+body.ready #story{opacity:1}
+
+/* the persistent layer: logo top left, Back to website top right; never hidden while scrolling or animating */
+.bar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(16px,2.6vw,36px);pointer-events:none}
+.bar>*{pointer-events:auto}
+.logo{display:block;width:62px;height:40px;background:var(--fg);-webkit-mask:url(../corporate/img/astrasana-logo.svg) left center/contain no-repeat;mask:url(../corporate/img/astrasana-logo.svg) left center/contain no-repeat;filter:drop-shadow(0 0 1px rgba(0,0,0,.4))}
+.back{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px 0 14px;font:600 14px/1 var(--display);letter-spacing:-.005em;color:var(--fg);
+  background:rgba(14,14,17,.62);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--line);transition:background-color .25s ease,color .25s ease,box-shadow .25s ease}
+.back:hover,.back:focus-visible{background:var(--fg);color:var(--night);box-shadow:inset 0 0 0 1px var(--fg)}
+.back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* loading: no fake delay, it lifts as soon as the story has drawn; it can be left at any time */
+.load{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:var(--night);transition:opacity .6s cubic-bezier(.4,0,.2,1),visibility 0s .6s}
+body.ready .load{opacity:0;visibility:hidden}
+.load .in{width:min(360px,calc(100% - 48px));text-align:left}
+.load .lbl{font:600 12px/1.3 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.load h1{font:600 clamp(26px,3vw,36px)/1.1 var(--display);letter-spacing:-.025em;margin:14px 0 22px}
+.load .track{height:1px;background:var(--line);overflow:hidden}
+.load .track i{display:block;height:100%;width:36%;background:var(--fg);animation:run 1.4s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes run{from{transform:translateX(-100%)}to{transform:translateX(280%)}}
+.load p{margin-top:18px;color:var(--fg-2);font-size:14px}
+.load .alt{margin-top:22px;display:flex;gap:22px;flex-wrap:wrap}
+.load .alt a,.load .alt button{min-height:44px;display:inline-flex;align-items:center;font:600 14px/1 var(--display);border-bottom:1px solid var(--line)}
+.load .alt a:hover,.load .alt button:hover{border-color:var(--fg)}
+body.nogl .track{display:none}
+
+/* end of the story */
+.ret{position:fixed;z-index:20;left:50%;bottom:28px;transform:translate(-50%,16px);opacity:0;visibility:hidden;display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 24px;
+  background:var(--fg);color:var(--night);font:600 15px/1 var(--display);transition:opacity .4s ease,transform .5s var(--ease),visibility 0s .4s}
+.ret.on{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .4s ease,transform .5s var(--ease)}
+.ret svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* leaving: the same short veil as on the way in, now settling into the white of the website */
+.veil{position:fixed;inset:0;z-index:50;background:var(--paper);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
+body.leaving .veil{opacity:1;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){ #story,.load,.veil,.ret{transition:none} .load .track i{animation:none;width:100%;opacity:.4} }
+@media (max-width:760px){ .bar{padding:12px 14px} .logo{width:52px;height:34px} .back{min-height:40px;padding:0 14px 0 12px;font-size:13px} }
+</style>
+</head>
+<body>
+<div class="bar">
+  <a class="logo" href="../corporate/" data-leave="home" aria-label="Astrasana Holding AG, home"></a>
+  <button class="back" type="button" data-leave="back"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to website</button>
+</div>
+
+<div class="load" role="status" aria-live="polite">
+  <div class="in">
+    <p class="lbl">About Us</p>
+    <h1 id="ltitle">Loading the 3D story</h1>
+    <div class="track"><i></i></div>
+    <p id="lnote">An interactive journey across the map: our structure, production in Tagelswangen and the route to our partner pharmacies.</p>
+    <div class="alt"><button type="button" data-leave="back">Cancel and return</button><a href="../corporate/#companies" data-leave="home">Read about us without 3D</a></div>
+  </div>
+</div>
+
+<iframe id="story" title="Astrasana: the interactive 3D story" allow="fullscreen" tabindex="0"></iframe>
+
+<button class="ret" type="button" data-leave="back" id="ret">Return to website<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+<div class="veil" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var KEY='astrasana:return', HOME='../corporate/', SRC='../index.html';
+  var frame=document.getElementById('story'), ret=document.getElementById('ret'), body=document.body;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var startLen=history.length, leaving=false;
+
+  /* where the visitor came from: set by the corporate site right before it sends them here */
+  function origin(){ try{ var r=JSON.parse(sessionStorage.getItem(KEY)||'null'); if(r&&Date.now()-r.t<6*3600e3) return r; }catch(e){} return null; }
+  var from=origin(), sameSite=document.referrer.indexOf(location.origin)===0;
+
+  /* a chapter can be opened directly: ?chapter=1 opens Tagelswangen */
+  var ch=new URLSearchParams(location.search).get('chapter');
+  var src=SRC+(ch!==null&&/^\d{1,2}$/.test(ch)?'#history-'+ch:'');
+
+  /* devices without WebGL get the way back instead of an empty screen */
+  function hasGL(){ try{ var c=document.createElement('canvas'); return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))); }catch(e){ return false; } }
+  if(!hasGL()){
+    body.classList.add('nogl');
+    document.getElementById('ltitle').textContent='The 3D story is not available on this device';
+    document.getElementById('lnote').textContent='Your browser cannot display WebGL. Everything about Astrasana Holding is also on the website.';
+  } else start();
+
+  function start(){ frame.src=src; }
+
+  /* once the story has loaded: hide its own logo, version switch and contact button (this layer has them), keep its scene navigation */
+  frame.addEventListener('load',function(){
+    if(!frame.src||frame.src==='about:blank') return;
+    var d=null; try{ d=frame.contentDocument; }catch(e){}
+    if(d&&d.head){
+      var st=d.createElement('style'); st.id='astrasana-embed';
+      st.textContent='.nav .logo,.nav .vtog,.nav .wrap>.btn{display:none!important}.nav .wrap{width:auto!important}'+
+        '@media (max-width:760px){header.nav{top:58px!important}}';
+      d.head.appendChild(st);
+      watchEnd(frame.contentWindow,d);
+    }
+    /* lift the loading screen after the story has drawn two frames; no artificial wait */
+    var w=frame.contentWindow; (w.requestAnimationFrame||requestAnimationFrame)(function(){ (w.requestAnimationFrame||requestAnimationFrame)(function(){ body.classList.add('ready'); try{ w.focus(); }catch(e){} }); });
+  });
+
+  /* "Return to website" appears at the end of the story */
+  function watchEnd(w,d){
+    function check(){ var se=d.scrollingElement||d.documentElement; var end=se.scrollTop+w.innerHeight>=se.scrollHeight-Math.max(120,w.innerHeight*.35); ret.classList.toggle('on',end&&!leaving); }
+    w.addEventListener('scroll',check,{passive:true}); w.addEventListener('resize',check); check();
+  }
+
+  /* leaving: back to where the visitor was (history keeps the corporate page and its scroll), home for direct visits */
+  function leave(kind){
+    if(leaving) return; leaving=true; ret.classList.remove('on');
+    var go=function(){
+      if(kind==='back'&&from&&sameSite&&history.length>1){
+        try{ sessionStorage.setItem('astrasana:restore','1'); }catch(e){}
+        var extra=Math.max(0,history.length-startLen); history.go(-(1+extra));
+        /* if the browser has nothing to go back to, fall back to the address the visitor came from */
+        setTimeout(function(){ location.href=from.url||HOME; },700);
+      } else location.href=kind==='home'?HOME:(from&&from.url)||HOME;
+    };
+    if(reduce){ go(); return; }
+    body.classList.add('leaving'); setTimeout(go,380);
+  }
+  document.addEventListener('click',function(e){ var b=e.target.closest('[data-leave]'); if(!b) return; e.preventDefault(); leave(b.getAttribute('data-leave')); });
+
+  /* free the GPU when the page goes away (also into the back-forward cache), start again if it comes back */
+  addEventListener('pagehide',function(){ frame.src='about:blank'; });
+  addEventListener('pageshow',function(e){ if(e.persisted){ leaving=false; body.classList.remove('leaving','ready'); if(!body.classList.contains('nogl')) start(); } });
+})();
+</script>
+</body>
+</html>
