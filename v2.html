@@ -783,6 +783,29 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .gs .hero .reveal .chm{padding-top:calc(64px + clamp(56px,6vw,96px))!important}
 .gs .hero .reveal .chmap{max-height:none;width:min(100%,calc((100svh - 240px) * 731 / 562));justify-self:center;align-self:center}
 .hero + .co{margin-top:0!important} .hero{padding-bottom:0!important;margin-bottom:0!important}
+
+/* hero scene (vector sketch until the final video): leaf, drop, pool, vial; drawn by window.__scene(t) */
+.hero .hs{position:absolute;z-index:-1;inset:0;width:100%;height:100%}
+/* no grid on the map panel */
+.hero .chm,.gs .hero .reveal .chm{background:linear-gradient(160deg,#1A063A 0%,#280A58 55%,#431291 100%)!important}
+
+/* ---------- V2 light purple, with contrast: a flat, clean Violet 100 ground (no grain, no grey mix), pure white cards
+   without lines on it, deep ink text and the brand violet for numbers and accents ---------- */
+:root{--lilac:#E6DDF6}
+.ch::before,.hw::before,.tm::before{background:var(--lilac)!important}
+.tm{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px)} .tm.sec{padding-top:clamp(80px,8vw,140px)}
+.tm::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%)}
+.ch li,.hw-step,.tm-list li{background:#fff!important;box-shadow:0 1px 0 rgba(26,6,58,.06)!important}
+.ch li.lit{box-shadow:none!important}
+.ch h2,.hw h2,.tm h2,.ch li b,.hw-step h3,.tm-list b{color:#14101F}
+.ch .head p,.hw-t,.tm .head p{color:#3A2F55}
+.ch li .num{color:#431291}
+.hw-sub li{border-top-color:rgba(67,18,145,.14)} .hw-sub li{color:#2A2340} .hw-sub .sn{color:#431291}
+.hw-now{border-top-color:rgba(67,18,145,.3)} .hw-bar i{background:rgba(67,18,145,.2)}
+.tm .head p{color:#3A2F55}
+.fig .pm,.ph-sec .ph.phm,.ph-sec .pat{background:var(--lilac)!important;box-shadow:none!important}
+.pa .logos li{background:var(--lilac)!important;box-shadow:none!important}
+.pa .logos img{filter:grayscale(1) brightness(.35)!important;opacity:.9!important}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -820,7 +843,35 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
     <div class="stage">
-      <video class="hv" poster="corporate/img/hero-vial-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-vial.mp4" type="video/mp4"><source src="corporate/video/hero-vial.webm" type="video/webm"></video>
+      <svg class="hs" viewBox="0 0 1600 900" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="hs-glow" cx="75%" cy="45%" r="55%"><stop offset="0" stop-color="#7E52CC" stop-opacity=".55"/><stop offset="1" stop-color="#7E52CC" stop-opacity="0"/></radialGradient>
+          <linearGradient id="hs-leaf" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#5A22B3"/><stop offset="1" stop-color="#A688E0"/></linearGradient>
+          <linearGradient id="hs-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8C175"/><stop offset="1" stop-color="#B07A1F"/></linearGradient>
+          <radialGradient id="hs-drop" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#E6DDF6" stop-opacity=".9"/><stop offset="1" stop-color="#A688E0" stop-opacity=".6"/></radialGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#hs-glow)"/>
+        <g class="hs-leaf">
+          <path d="M820 660C900 430 1150 230 1390 170C1330 330 1130 570 820 660Z" fill="url(#hs-leaf)" fill-opacity=".55" stroke="#CBB9EE" stroke-width="2"/>
+          <path d="M820 660L1390 170" stroke="#E6DDF6" stroke-width="2.4" fill="none"/>
+          <path d="M920 574L960 470M1010 497L1060 390M1100 419L1160 320M1190 342L1250 260M960 574L1050 560M1050 497L1150 480M1140 419L1240 400M1230 342L1310 320" stroke="#CBB9EE" stroke-width="1.4" fill="none" opacity=".8"/>
+        </g>
+        <g class="hs-pool" opacity="0">
+          <ellipse cx="1240" cy="700" rx="300" ry="48" fill="url(#hs-gold)" opacity=".9"/>
+          <ellipse class="hs-r1" cx="1240" cy="700" rx="0" ry="0" fill="none" stroke="#F3ECDD" stroke-width="2"/>
+          <ellipse class="hs-r2" cx="1240" cy="700" rx="0" ry="0" fill="none" stroke="#F3ECDD" stroke-width="1.5"/>
+        </g>
+        <g class="hs-vial" opacity="0">
+          <rect x="1150" y="400" width="180" height="300" rx="34" fill="#E6DDF6" fill-opacity=".14" stroke="#E6DDF6" stroke-width="3"/>
+          <clipPath id="hs-vclip"><rect x="1153" y="403" width="174" height="294" rx="31"/></clipPath>
+          <rect class="hs-fill" x="1150" y="700" width="180" height="0" fill="url(#hs-gold)" clip-path="url(#hs-vclip)"/>
+          <rect x="1180" y="352" width="120" height="52" rx="12" fill="#E6DDF6" fill-opacity=".18" stroke="#E6DDF6" stroke-width="3"/>
+          <rect x="1170" y="330" width="140" height="28" rx="10" fill="#CBB9EE"/>
+          <path d="M1176 450v190" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".35"/>
+          <ellipse cx="1240" cy="712" rx="200" ry="22" fill="#000" opacity=".25"/>
+        </g>
+        <circle class="hs-dr" cx="0" cy="0" r="16" fill="url(#hs-drop)" stroke="#fff" stroke-width="1.5"/>
+      </svg>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
     <div class="meta up">
       <p class="small">Kloten, Switzerland<br>Europe and&nbsp;Japan</p>
@@ -1209,6 +1260,23 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
     hd.classList.toggle('tint',!!(c&&c.top<=64&&c.bottom>64)&&!hd.classList.contains('open')); }
   size(); tint(); addEventListener('resize',function(){ size(); tint(); }); addEventListener('scroll',tint,{passive:true}); addEventListener('load',function(){ size(); tint(); });
   if('ResizeObserver' in window) new ResizeObserver(function(){ size(); tint(); }).observe(chm); })();
+</script>
+<script>
+/* hero scene: t 0..1 — the drop runs down the leaf's vein, falls, rings spread on the pool, the vial rises and fills */
+(function(){ var sv=document.querySelector('.hero .hs'); if(!sv) return; var q=function(c){ return sv.querySelector(c); };
+  var leaf=q('.hs-leaf'), dr=q('.hs-dr'), pool=q('.hs-pool'), r1=q('.hs-r1'), r2=q('.hs-r2'), vial=q('.hs-vial'), fill=q('.hs-fill');
+  function cl(a,b,x){ return Math.max(0,Math.min(1,(x-a)/(b-a))); } function ez(x){ return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2; }
+  window.__scene=function(t){
+    var a=ez(cl(0,.32,t)), p=.3+.45*a, x=820+(1390-820)*p, y=660+(170-660)*p, f=cl(.34,.5,t);
+    if(f>0){ y=y+(690-y)*f*f; }
+    dr.setAttribute('cx',x.toFixed(1)); dr.setAttribute('cy',y.toFixed(1)); dr.style.opacity=t<.5?1:0;
+    leaf.style.opacity=1-cl(.36,.55,t); leaf.style.transform='translate('+(-40*cl(.36,.55,t))+'px,'+(-30*cl(.36,.55,t))+'px)';
+    var pp=cl(.46,.6,t)*(1-cl(.7,.82,t)); pool.style.opacity=pp;
+    var k=cl(.48,.75,t); r1.setAttribute('rx',(260*k).toFixed(1)); r1.setAttribute('ry',(42*k).toFixed(1)); r1.style.opacity=1-k;
+    var k2=cl(.55,.8,t); r2.setAttribute('rx',(260*k2).toFixed(1)); r2.setAttribute('ry',(42*k2).toFixed(1)); r2.style.opacity=1-k2;
+    var v=ez(cl(.66,.84,t)); vial.style.opacity=v; vial.style.transform='translateY('+(60*(1-v))+'px)';
+    var h=230*ez(cl(.76,1,t)); fill.setAttribute('y',(700-h).toFixed(1)); fill.setAttribute('height',h.toFixed(1)); };
+  window.__scene(0); })();
 </script>
 <script>
 /* V2 hero map: gradient fill, dots, labels above with leader lines; window.__mapProgress(p) builds the map up with the scroll */

@@ -57,16 +57,11 @@
   /* 1c. the hero stage is pinned while the scroll plays the video. Then, as on the reference, a flat signifier shape rises
          from the bottom as a window onto the next block (the map of Switzerland) and grows until that block fills the screen;
          the page continues from there. The window is a CSS mask in the signifier's shape over the map panel. */
-  var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), chm=document.querySelector('.hero .chm');
-  if(stage&&hv&&chm){
+  var stage=document.querySelector('.hero .stage'), chm=document.querySelector('.hero .chm');
+  if(stage&&chm){
     var sw=stage.querySelector('.sweep'); if(sw) sw.remove();
     var rv=document.createElement('div'); rv.className='reveal'; chm.classList.add('revealed'); rv.appendChild(chm); stage.appendChild(rv);
-    hv.pause(); hv.muted=true;
-    var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
-    if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
-    var vt={t:0}, want=0, seeking=false;
-    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }
-    hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
+    var vt={t:0}; function seek(){ if(window.__scene) window.__scene(vt.t); }
     /* the window: size S, and the point (AX,AY) of the shape (inside its right stroke) placed at screen point P */
     var AR=53.6/60.1, AX=.727, AY=.616, m={a:0,b:0};
     function place(){ var W=stage.clientWidth, H=stage.clientHeight, S0=Math.min(W*.46,H*.62,640), S1=Math.hypot(W,H)*5.2;
@@ -79,7 +74,7 @@
       rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
       rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0);
       /* the header is dark over the video and light once the white map has taken most of the screen */
-      var hdr=document.getElementById('hd'); if(hdr&&stage.getBoundingClientRect().bottom>64) hdr.classList.add('dark');
+      
       /* the map builds up as the window opens */
       if(window.__mapProgress) window.__mapProgress(Math.min(1,ra*.25+rb*1.05)); }
     place(); addEventListener('resize',place);
@@ -143,7 +138,10 @@
 
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
-  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
+  /* the header is dark exactly while a dark band is under it */
+  var darkEls=$('.hero .stage,.co,.x3d-sec,.ct');
+  function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; }); hd.classList.toggle('dark',on); }
+  addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
 
   /* 11. a soft light follows the cursor across the violet cards */
   $('.pr .list li').forEach(function(card){
