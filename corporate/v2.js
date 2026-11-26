@@ -79,7 +79,9 @@
       rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
       rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0);
       /* the header is dark over the video and light once the white map has taken most of the screen */
-      var hdr=document.getElementById('hd'); if(hdr&&stage.getBoundingClientRect().bottom>64) hdr.classList.toggle('dark',rb<.35); }
+      var hdr=document.getElementById('hd'); if(hdr&&stage.getBoundingClientRect().bottom>64) hdr.classList.add('dark');
+      /* the map builds up as the window opens */
+      if(window.__mapProgress) window.__mapProgress(Math.min(1,ra*.25+rb*1.05)); }
     place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
     var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
@@ -152,7 +154,7 @@
   $('.co .brk').forEach(function(b){ g.fromTo(b,{clipPath:'inset(50% 0% 50% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,ease:'power3.out',scrollTrigger:{trigger:b,start:'top 80%',once:true}}); });
 
   /* 13. photographs drift at their own pace while the page scrolls */
-  [['.img-sec .ph',60,-60],['.tg .p1',70,-70],['.tg .p2',-20,110],['.co .ph',50,-50]].forEach(function(p){ $(p[0]).forEach(function(el){
+  [['.img-sec .ph',60,-60],['.tg .p1',70,-70],['.tg .p2',-20,110],].forEach(function(p){ $(p[0]).forEach(function(el){
     g.fromTo(el,{y:p[1]},{y:p[2],ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}); }); });
 
   /* 14. the news cards: the same soft light under the cursor */
