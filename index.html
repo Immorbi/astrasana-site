@@ -90,14 +90,16 @@ p,li,dd,figcaption{text-wrap:pretty}
 /* the chain: five stops on one line. When the row reaches mid-screen a parcel runs the line once; each badge fills as it is reached */
 .ch .head h2{grid-column:1/7}
 .ch .head p{grid-column:8/12;align-self:end}
-.ch ol{--b:clamp(64px,5.4vw,80px);--fill:0;grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative}
-.ch .track{position:absolute;top:calc(var(--b) / 2 - 1px);left:calc(var(--b) / 2);right:calc((100% - 4 * var(--gut)) / 5 - var(--b) / 2);height:2px;background:var(--rule);z-index:0}
+.ch ol{--b:clamp(64px,5.4vw,80px);--fill:0;grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:clamp(10px,1vw,16px);position:relative}
+.ch .track{visibility:hidden;position:absolute;top:calc(var(--b) / 2 - 1px);left:calc(var(--b) / 2);right:calc((100% - 4 * var(--gut)) / 5 - var(--b) / 2);height:2px;background:var(--rule);z-index:0}
 .ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
 .ch .track b{position:absolute;top:50%;left:calc(var(--fill) * 100%);width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--purple);opacity:0;transition:opacity .3s ease}
 .ch ol.running .track b{opacity:1}
-.ch li{position:relative;z-index:1}
-.ch li .badge{display:grid;place-items:center;width:var(--b);height:var(--b);border-radius:50%;background:var(--paper);transition:transform .35s var(--ease)}
-.ch li .ic{display:block;width:76%;height:auto;fill:none;stroke:var(--ink-3);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
+.ch li{position:relative;z-index:1;padding:clamp(20px,2vw,32px);border-radius:var(--r-photo);background:var(--paper-2);transition:background-color .6s var(--ease)}
+/* each step is a card that turns lavender as the run reaches it */
+.ch li.lit{background:var(--lav-1)}
+.ch li .badge{display:block;width:clamp(44px,3.6vw,56px);height:clamp(44px,3.6vw,56px);transition:transform .35s var(--ease)}
+.ch li .ic{display:block;width:100%;height:auto;fill:none;stroke:var(--ink-3);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
 .ch li .num{display:block;margin-top:24px;font:300 clamp(40px,3.8vw,60px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .6s ease}
 .ch li b{display:block;margin-top:12px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
@@ -107,15 +109,13 @@ p,li,dd,figcaption{text-wrap:pretty}
 .ch li.lit .ic{stroke:var(--purple)}
 .ch li.lit .num{color:var(--purple)}
 @keyframes reach{0%{transform:scale(.92)}55%{transform:scale(1.07)}100%{transform:none}}
-@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .badge,.ch li .ic,.ch li .num{transition:none} .ch li.lit .badge{animation:none} .ch .track b{display:none} }
+@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li,.ch li .badge,.ch li .ic,.ch li .num{transition:none} .ch li.lit .badge{animation:none} .ch .track b{display:none} }
 @media (max-width:1100px){
   .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
-  .ch ol{--b:60px;grid-template-columns:1fr;row-gap:44px;padding-left:calc(var(--b) + 24px)}
+  .ch ol{--b:60px;grid-template-columns:1fr;row-gap:12px}
   .ch .track{left:calc(var(--b) / 2 - 1px);right:auto;top:calc(var(--b) / 2);bottom:auto;height:var(--trackh,0px);width:2px}
   .ch .track i{transform-origin:top;transform:scaleY(var(--fill))}
   .ch .track b{left:50%;top:calc(var(--fill) * 100%);margin:-7px 0 0 -7px}
-  .ch li .badge{position:absolute;left:calc(-1 * (var(--b) + 24px));top:0}
-  .ch li .num{margin-top:4px}
 }
 }
 .in .rule,.rule.in{transform:none}
@@ -166,7 +166,7 @@ p,li,dd,figcaption{text-wrap:pretty}
 .hero .mapt p{font-size:var(--t-s);color:var(--ink-2);max-width:26em}
 .hero .chm{grid-column:1/13;grid-row:3;margin-top:clamp(40px,4vw,64px);position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:center;background:var(--lav-1);border-radius:var(--r-photo);padding:clamp(28px,3.4vw,56px) 0;overflow:hidden}
 .chmap{grid-column:5/13;grid-row:1;margin-right:clamp(0px,2vw,32px);width:100%;height:auto;overflow:visible}
-.chmap .cn{fill:#fff;stroke:var(--purple);stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
+.chmap .cn{fill:var(--lav-2);stroke:var(--purple);stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
 .chmap .ct{fill:none;stroke:#cfc3e4;stroke-width:.9}
 .chmap .pin path{fill:var(--purple);stroke:#fff;stroke-width:1.2} .chmap .pin .in{fill:#fff}
 .chmap .lbl rect{fill:#fff;stroke:var(--rule);stroke-width:.7;rx:5px}
@@ -534,7 +534,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       <ol aria-label="From cultivation to pharmacy">
         <span class="track" aria-hidden="true"><i></i><b></b></span>
         <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36M11 40c2.6-4 7.4-6.5 13-6.5S34.4 36 37 40"/><path d="M24 33.5V22.5"/><path class="f" d="M24 22.5c0-7 5-11.5 12.5-11.5 0 7.5-5 11.5-12.5 11.5z"/><path class="f" d="M24 28c-6.5 0-10.5-3.8-10.5-9.8 6.5 0 10.5 3.8 10.5 9.8z"/></svg></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in&nbsp;Switzerland under a&nbsp;Swissmedic licence, following GACP.</p></li>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M18 7h12M20 7v11L10 36.5A2.4 2.4 0 0 0 12.2 40h23.6a2.4 2.4 0 0 0 2.2-3.5L28 18V7"/><path class="f" d="M15.2 28h17.6l5.2 8.5a2.4 2.4 0 0 1-2.2 3.5H12.2a2.4 2.4 0 0 1-2.2-3.5z"/><circle cx="21" cy="34" r="1.6"/><circle cx="27.5" cy="31.5" r="1.1"/></svg></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and&nbsp;packaging, an&nbsp;in-house quality control laboratory and&nbsp;GDP-standard storage.</p></li>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M18 7h12M20 7v11L10 36.5A2.4 2.4 0 0 0 12.2 40h23.6a2.4 2.4 0 0 0 2.2-3.5L28 18V7"/><path class="f" d="M15.2 28h17.6l5.2 8.5a2.4 2.4 0 0 1-2.2 3.5H12.2a2.4 2.4 0 0 1-2.2-3.5z"/><circle cx="21" cy="34" r="1.6"/><circle cx="27.5" cy="31.5" r="1.1"/></svg></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and&nbsp;packaging, an&nbsp;in‑house quality control laboratory and&nbsp;GDP‑standard storage.</p></li>
         <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 32V15a2 2 0 0 1 2-2h19a2 2 0 0 1 2 2v17"/><path d="M28 18h7.5a2 2 0 0 1 1.6.8l5 6.5a2 2 0 0 1 .4 1.2V32"/><path d="M5 32h3.5M19.5 32h10M40.5 32H43"/><circle cx="14" cy="33" r="3.5"/><circle cx="35" cy="33" r="3.5"/><path d="M12 19h11v7H12zM17.5 19v3"/></svg></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and&nbsp;distribution of&nbsp;medical cannabis to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic.</p></li>
         <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><rect class="f" x="13" y="6" width="22" height="8" rx="2"/><path d="M15 14h18v22a4 4 0 0 1-4 4H19a4 4 0 0 1-4-4z"/><rect class="f" x="15" y="20" width="18" height="12"/><path d="M24 22.5v7M20.5 26h7"/></svg></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding, with&nbsp;expert advice.</p></li>
         <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle class="f" cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-4.6 4.6-7 10.3-7 17s2.4 12.4 7 17c4.6-4.6 7-10.3 7-17S28.6 11.6 24 7z"/><path d="M9.5 15.5h29M9.5 32.5h29"/></svg></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18&nbsp;countries, with&nbsp;companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and&nbsp;Belgium.</p></li>
@@ -558,7 +558,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       <p class="label up">Tagelswangen, Canton Zurich</p>
       <h2 id="t-tg" class="up" style="margin-top:20px">Production facility in&nbsp;Tagelswangen complete</h2>
       <p class="lede up">Astrasana successfully completes the&nbsp;setup of&nbsp;its&nbsp;pharmaceutical production facility in&nbsp;Tagelswangen, Canton Zurich.</p>
-      <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and&nbsp;packaging, an&nbsp;in-house quality control laboratory and&nbsp;GDP-standard storage sit under one roof.</p>
+      <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and&nbsp;packaging, an&nbsp;in-house quality control laboratory and&nbsp;GDP‑standard storage sit under one roof.</p>
     </div>
   </section>
 
@@ -762,8 +762,8 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     /* on phones the line runs from the first badge to the last one */
     function size(){ if(!vert()){ track.style.removeProperty('--trackh'); return; } var a=stops[0].querySelector('.badge').getBoundingClientRect(), z=stops[stops.length-1].querySelector('.badge').getBoundingClientRect(); track.style.setProperty('--trackh',Math.round(z.top-a.top)+'px'); }
     /* the parcel runs the line once when the row reaches the middle of the screen; each badge fills as the parcel reaches it */
-    function setFill(f){ chol.style.setProperty('--fill',f.toFixed(3)); var t=track.getBoundingClientRect(), v=vert();
-      stops.forEach(function(li){ var d=li.querySelector('.badge').getBoundingClientRect(), at=v?(d.top+d.height/2-t.top)/Math.max(1,t.height):(d.left+d.width/2-t.left)/Math.max(1,t.width); li.classList.toggle('lit',f>=at-.002); }); }
+    /* the cards light one after another as the run passes them */
+    function setFill(f){ chol.style.setProperty('--fill',f.toFixed(3)); var n=stops.length; stops.forEach(function(li,i){ li.classList.toggle('lit',f>=(i+1)/n-.002); }); }
     function play(){ if(played) return; played=true; removeEventListener('scroll',check);
       if(reduce){ setFill(1); return; }
       var t0=null, dur=vert()?2400:1700; chol.classList.add('running');
