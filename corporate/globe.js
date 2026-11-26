@@ -8,15 +8,21 @@
   if(!gl()||!('IntersectionObserver' in window)) return;
   function load(src){ return new Promise(function(ok,no){ var s=document.createElement('script'); s.src=src; s.async=true; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
   var io=new IntersectionObserver(function(es){ if(!es[0].isIntersecting) return; io.disconnect();
-    (window.THREE?Promise.resolve():load(BASE+'three.min.js')).then(function(){ return window.LANDMASK?null:load(BASE+'landmask.js'); }).then(start).catch(function(){}); },{rootMargin:'400px 0px'});
+    (window.THREE?Promise.resolve():load(BASE+'three.min.js')).then(function(){ return window.LANDMASK?null:load(BASE+'landmask.js'); })
+      .then(function(){ /* the story's glow: three.js post-processing, loaded in order; without it the globe simply has no glow */
+        var FX=BASE+'fx/', list=['CopyShader.js','LuminosityHighPassShader.js','EffectComposer.js','RenderPass.js','ShaderPass.js','UnrealBloomPass.js']; /* three.js r128 examples, MIT */
+        if(window.THREE.UnrealBloomPass) return null;
+        return list.reduce(function(p,f){ return p.then(function(){ return load(FX+f); }); },Promise.resolve()).catch(function(){}); })
+      .then(start).catch(function(){}); },{rootMargin:'400px 0px'});
   io.observe(box);
 
   function start(){
     var T=window.THREE, GR=70;
     var canvas=document.createElement('canvas'); canvas.className='globe-cv'; canvas.setAttribute('aria-hidden','true'); box.appendChild(canvas);
     var tagsEl=document.createElement('div'); tagsEl.className='globe-tags'; tagsEl.setAttribute('aria-hidden','true'); box.appendChild(tagsEl);
-    var ren=new T.WebGLRenderer({canvas:canvas,antialias:true,alpha:true}); ren.setPixelRatio(Math.min(2,devicePixelRatio||1)); ren.setClearColor(0x000000,0);
-    var scene=new T.Scene(), cam=new T.PerspectiveCamera(30,1,1,4000);
+    var ren=new T.WebGLRenderer({canvas:canvas,antialias:true}); var PR=Math.min(2,devicePixelRatio||1); ren.setPixelRatio(PR); ren.setClearColor(0x0e0e11,1); /* opaque in the section's colour, so the glow can be added */
+    var scene=new T.Scene(), cam=new T.PerspectiveCamera(30,1,1,4000), composer=null;
+    if(T.EffectComposer&&T.UnrealBloomPass&&T.RenderPass){ try{ composer=new T.EffectComposer(ren); composer.addPass(new T.RenderPass(scene,cam)); composer.addPass(new T.UnrealBloomPass(new T.Vector2(256,256),.95,.6,.5)); }catch(e){ composer=null; } }
     var globe=new T.Group(), gTilt=new T.Group(), gSpin=new T.Group(); scene.add(globe); globe.add(gTilt); gTilt.add(gSpin);
     var LAT0=38*Math.PI/180, LON0=-8.2*Math.PI/180;
     function gv(lat,lon,r){ var la=lat*Math.PI/180, lo=lon*Math.PI/180; return new T.Vector3(r*Math.cos(la)*Math.sin(lo), r*Math.sin(la), r*Math.cos(la)*Math.cos(lo)); }
@@ -44,7 +50,7 @@
       var el=document.createElement('span'); el.className='gtag'+(a[3]?' hq':''); el.innerHTML=a[0]; tagsEl.appendChild(el); return {m:m,el:el,dx:a[4],dy:a[5],hq:!!a[3]}; });
 
     /* size: the shell fits the frame */
-    var W=1,H=1; function size(){ W=canvas.clientWidth; H=canvas.clientHeight; if(!W||!H) return; ren.setSize(W,H,false); cam.aspect=W/H;
+    var W=1,H=1; function size(){ W=canvas.clientWidth; H=canvas.clientHeight; if(!W||!H) return; ren.setSize(W,H,false); if(composer){ composer.setPixelRatio(PR); composer.setSize(W,H); } cam.aspect=W/H;
       var fit=GR*1.2, v=fit/Math.tan(cam.fov*Math.PI/360), h=v/Math.min(1,cam.aspect); cam.position.set(0,0,Math.max(v,h)); cam.lookAt(0,0,0); cam.updateProjectionMatrix(); }
     size(); if('ResizeObserver' in window) new ResizeObserver(size).observe(box); else addEventListener('resize',size);
 
@@ -62,7 +68,7 @@
       tags.forEach(function(g){ g.m.getWorldPosition(tmp); var nrm=tmp.clone().normalize(), face=nrm.dot(cpos.clone().sub(tmp).normalize());
         tmp.project(cam); var x=(tmp.x*.5+.5)*W+g.dx*k, y=(-tmp.y*.5+.5)*H-10+g.dy*k;
         g.el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) translate(-50%,-100%)'; g.el.style.opacity=few&&!g.hq?0:Math.max(0,Math.min(1,(face-.2)*5)); });
-      ren.render(scene,cam); raf=requestAnimationFrame(frame); }
+      if(composer) composer.render(); else ren.render(scene,cam); raf=requestAnimationFrame(frame); }
     function run(v){ on=v&&!document.hidden; if(on&&!raf){ last=0; raf=requestAnimationFrame(frame); } }
     new IntersectionObserver(function(es){ run(es[0].isIntersecting); }).observe(box);
     document.addEventListener('visibilitychange',function(){ run(!document.hidden); });
