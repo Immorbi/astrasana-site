@@ -7,6 +7,7 @@
    Switches:
      <html data-lenis>   turns on Lenis smooth scrolling (or add ?lenis=1 to the address while experimenting)
      prefers-reduced-motion: Lenis stays off and Motion.reduce is true, so effects should show their final state
+     ?motion=on          overrides reduced motion for the rest of the visit (reviews); ?motion=off returns to the device setting
 
    What other code can use:
      window.Motion.gsap, .ScrollTrigger, .SplitText, .CustomEase, .Flip   the registered tools
@@ -18,7 +19,9 @@
   var plugins=['ScrollTrigger','SplitText','CustomEase','Flip'].map(function(n){ return window[n]; }).filter(Boolean);
   g.registerPlugin.apply(g,plugins);
 
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ?motion=on shows the motion even when the device asks for reduced motion (for reviews); remembered for the visit, ?motion=off clears it */
+  var force=false; try{ if(/[?&]motion=on\b/.test(location.search)) sessionStorage.setItem('as-motion','on'); if(/[?&]motion=off\b/.test(location.search)) sessionStorage.removeItem('as-motion'); force=sessionStorage.getItem('as-motion')==='on'; }catch(e){}
+  var reduce=!force&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var wantLenis=document.documentElement.hasAttribute('data-lenis')||/[?&]lenis=1\b/.test(location.search);
   var lenis=null;
 
