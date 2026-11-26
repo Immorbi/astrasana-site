@@ -139,7 +139,7 @@
 
   /* 10. the header turns dark over the dark About Us band */
   var hd=document.getElementById('hd');
-  $('.x3d-sec,.co,.hw').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
+  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
 
   /* 11. a soft light follows the cursor across the violet cards */
   $('.pr .list li').forEach(function(card){
@@ -157,11 +157,14 @@
   $('.nw li a').forEach(function(card){
     card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); }); });
 
-  /* 15. How we work: the current step lights its number; sub-points arrive line by line */
-  $('.hw-step').forEach(function(st){
-    ST.create({trigger:st,start:'top 55%',end:'bottom 55%',toggleClass:{targets:st,className:'on'}});
-    g.from($('.hw-sub li',st),{autoAlpha:0,x:24,duration:.7,stagger:.06,ease:'expo.out',scrollTrigger:{trigger:st,start:'top 75%',once:true}}); });
-  $('.hw-fig img').forEach(function(im){ g.fromTo(im,{rotation:-6,y:20},{rotation:6,y:-20,ease:'none',scrollTrigger:{trigger:'.hw',start:'top bottom',end:'bottom top',scrub:true}}); });
+  /* 15. How we work: the step at the middle of the screen lights its number and sets the counter and bar on the right */
+  var hwBig=document.querySelector('.hw-big'), hwName=document.querySelector('.hw-name'), hwBars=$('.hw-bar i'), hwSteps=$('.hw-step');
+  function hwSet(i){ if(!hwBig||!hwSteps[i]) return; hwBig.textContent=('0'+(i+1)).slice(-2); hwName.textContent=hwSteps[i].querySelector('h3').textContent.replace(/^\d+/,'');
+    hwBars.forEach(function(b,k){ b.classList.toggle('on',k<=i); }); }
+  hwSteps.forEach(function(st,i){
+    ST.create({trigger:st,start:'top 55%',end:'bottom 55%',toggleClass:{targets:st,className:'on'},onToggle:function(self){ if(self.isActive) hwSet(i); }});
+    g.from($('.hw-sub li',st),{autoAlpha:0,y:14,duration:.7,stagger:.06,ease:'expo.out',scrollTrigger:{trigger:st,start:'top 75%',once:true}}); });
+  hwSet(0);
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

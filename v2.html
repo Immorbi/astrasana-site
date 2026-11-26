@@ -669,32 +669,37 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .btn3d{padding:0 28px;--bs:inset 0 0 0 1px rgba(243,238,235,.5)} .btn3d:hover,.btn3d:focus-visible{--bb:#fff;--bs:none}
 @media (max-width:980px){ .hd nav a::before{display:none} .hd nav{gap:0} .hd nav a{padding:0} }
 
-/* ---------- V2 "How we work": a dark band; the left column stays in view while the steps scroll on the right ---------- */
-.hw{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px);color:#fff;align-items:start}
+/* ---------- V2 "How we work": light; the steps scroll on the left as white cards, the right column stays with a large
+   step counter and a slanted progress bar that follow the scroll ---------- */
+.hw{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px);align-items:start}
 .hw.sec{padding-top:clamp(80px,8vw,140px)}
-.hw::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:var(--grain-k) 0 0/180px,linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)}
-.hw-l{grid-column:1/6;position:sticky;top:96px}
-.hw-k{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--text);color:rgba(255,255,255,.8)}
-.hw-k i{width:8px;height:8px;border-radius:2px;background:#fff;transform:skewX(-19.6deg)}
-.hw h2{color:#fff;margin-top:22px;font-size:clamp(36px,4.2vw,64px)}
-.hw-t{margin-top:22px;color:rgba(255,255,255,.72);max-width:30em}
-.hw .hw-cta{margin-top:30px;margin-left:10px;--bb:#fff;color:var(--deep)} .hw .hw-cta:hover{--bb:var(--lav-2)}
-.hw .pill{position:relative;isolation:isolate;background:none!important;box-shadow:none!important}
-.hw .pill::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);background:var(--bb);transition:background-color .3s ease}
-.hw-fig{margin-top:clamp(32px,3.4vw,48px);width:min(100%,380px);aspect-ratio:1;border-radius:22px;display:grid;place-items:center;
-  background:radial-gradient(circle closest-side,rgba(255,255,255,.05) 0 88%,rgba(255,255,255,.5) 89.2% 90%,rgba(255,255,255,0) 91%),rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
-.hw-fig img{width:62%;height:auto;filter:drop-shadow(0 20px 40px rgba(26,6,58,.5))}
-.hw-r{grid-column:7/13;list-style:none}
-.hw-step{padding:clamp(22px,2vw,30px) 0 clamp(56px,6vw,96px);border-top:1px solid rgba(255,255,255,.22)}
-.hw-step h3{display:flex;align-items:center;gap:22px;font:400 clamp(24px,2.2vw,34px)/1.1 var(--display);letter-spacing:-.03em;color:#fff}
-.hw-n{position:relative;isolation:isolate;display:inline-grid;place-items:center;width:44px;height:40px;font:500 16px/1 var(--display)}
-.hw-n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);box-shadow:inset 0 0 0 1.5px #A688E0}
-.hw-sub{list-style:none;margin-top:clamp(28px,3vw,48px)}
-.hw-sub li{display:grid;grid-template-columns:clamp(56px,5vw,86px) 1fr;padding:18px 0;border-top:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.78);font-size:var(--t-s)}
-.hw-sub .sn{color:rgba(255,255,255,.5)}
-.hw-step.on .hw-n::before{background:#A688E0;box-shadow:none} .hw-step.on .hw-n{color:#1A063A}
-.hw-n::before,.hw-n{transition:background-color .4s ease,color .4s ease}
-@media (max-width:980px){ .hw-l{grid-column:1/13;position:static} .hw-r{grid-column:1/13;margin-top:48px} .hw-fig{display:none} }
+.hw::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:var(--grain-l) 0 0/180px,linear-gradient(180deg,#F4F0FB 0%,#E6DDF6 100%)}
+.hw-l{grid-column:8/13;grid-row:1;position:sticky;top:110px}
+.hw-k{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--text);color:var(--deep)}
+.hw-k i{width:8px;height:8px;border-radius:2px;background:var(--deep);transform:skewX(-19.6deg)}
+.hw h2{margin-top:22px;font-size:clamp(34px,3.6vw,56px)}
+.hw-t{margin-top:20px;max-width:30em}
+.hw .hw-cta{margin-top:28px;margin-left:10px;color:#fff;position:relative;isolation:isolate;background:none!important;box-shadow:none!important}
+.hw .hw-cta::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);background:var(--deep);transition:background-color .3s ease}
+.hw .hw-cta:hover::before{background:#5A22B3}
+.hw-now{margin-top:clamp(40px,4vw,64px);padding-top:24px;border-top:1px solid rgba(67,18,145,.2)}
+.hw-cnt{display:flex;align-items:baseline;gap:12px;font-family:var(--display);color:var(--deep)}
+.hw-big{font-weight:300;font-size:clamp(88px,9vw,148px);line-height:.85;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.hw-of{font-size:20px;color:#7E52CC}
+.hw-name{display:block;margin-top:14px;font:500 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
+.hw-bar{display:flex;gap:10px;margin-top:22px;padding-left:4px}
+.hw-bar i{flex:1;height:10px;border-radius:3px;transform:skewX(-19.6deg);background:rgba(67,18,145,.14);transition:background-color .45s var(--ease)}
+.hw-bar i.on{background:var(--deep)}
+.hw-r{grid-column:1/7;grid-row:1;list-style:none;display:grid;gap:14px}
+.hw-step{background:#fff;border-radius:var(--r-photo);padding:clamp(26px,2.6vw,40px)}
+.hw-step h3{display:flex;align-items:center;gap:20px;font:500 clamp(22px,2vw,30px)/1.1 var(--display);letter-spacing:-.025em;color:var(--ink)}
+.hw-n{position:relative;isolation:isolate;display:inline-grid;place-items:center;width:44px;height:38px;font:500 16px/1 var(--display);color:var(--deep);transition:color .4s ease}
+.hw-n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);box-shadow:inset 0 0 0 1.5px var(--deep);transition:background-color .4s ease}
+.hw-step.on .hw-n{color:#fff} .hw-step.on .hw-n::before{background:var(--deep)}
+.hw-sub{list-style:none;margin-top:22px}
+.hw-sub li{display:grid;grid-template-columns:56px 1fr;padding:14px 0;border-top:1px solid rgba(67,18,145,.12);font-size:var(--t-s);color:var(--ink-2)}
+.hw-sub .sn{color:#7E52CC;font-variant-numeric:tabular-nums}
+@media (max-width:980px){ .hw-l{grid-column:1/13;grid-row:1;position:static} .hw-now{display:none} .hw-r{grid-column:1/13;grid-row:2;margin-top:40px} }
 
 /* ---------- V2 value chain: a sideways row of large cards, each with its own gradient from the violet scale ---------- */
 .ch li:nth-child(1){--violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 55%,#7E52CC 100%)}
@@ -738,7 +743,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
     <nav id="menu" aria-label="Main">
       <a href="#companies">Companies</a>
       <a href="#cultivation">Pharma</a>
-      <a class="nav3d" href="#about">About Us<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8l5.4 3.1v6.2L8 14.2l-5.4-3.1V4.9z"/><path d="M2.6 4.9L8 8l5.4-3.1M8 8v6.2"/></svg><span class="vh"> (with&nbsp;a&nbsp;3D story)</span></a>
+      <a class="nav3d" href="#about">About Us<span class="vh"> (with&nbsp;a&nbsp;3D story)</span></a>
       <a href="#pharmacies">Pharmacies</a>
       <a href="#products">Products</a>
       <a href="#partners">Partners</a>
@@ -832,11 +837,11 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
     <div class="grid">
       <ol aria-label="From cultivation to pharmacy">
         <span class="track" aria-hidden="true"><i></i><b></b></span>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40h36M11 40c2.6-4 7.4-6.5 13-6.5S34.4 36 37 40"/><path d="M24 33.5V22.5"/><path class="f" d="M24 22.5c0-7 5-11.5 12.5-11.5 0 7.5-5 11.5-12.5 11.5z"/><path class="f" d="M24 28c-6.5 0-10.5-3.8-10.5-9.8 6.5 0 10.5 3.8 10.5 9.8z"/></svg></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in&nbsp;Switzerland under a&nbsp;Swissmedic licence, following GACP.</p></li>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M18 7h12M20 7v11L10 36.5A2.4 2.4 0 0 0 12.2 40h23.6a2.4 2.4 0 0 0 2.2-3.5L28 18V7"/><path class="f" d="M15.2 28h17.6l5.2 8.5a2.4 2.4 0 0 1-2.2 3.5H12.2a2.4 2.4 0 0 1-2.2-3.5z"/><circle cx="21" cy="34" r="1.6"/><circle cx="27.5" cy="31.5" r="1.1"/></svg></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and&nbsp;packaging, an&nbsp;in‑house quality control laboratory and&nbsp;GDP‑standard storage.</p></li>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 32V15a2 2 0 0 1 2-2h19a2 2 0 0 1 2 2v17"/><path d="M28 18h7.5a2 2 0 0 1 1.6.8l5 6.5a2 2 0 0 1 .4 1.2V32"/><path d="M5 32h3.5M19.5 32h10M40.5 32H43"/><circle cx="14" cy="33" r="3.5"/><circle cx="35" cy="33" r="3.5"/><path d="M12 19h11v7H12zM17.5 19v3"/></svg></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and&nbsp;distribution of&nbsp;medical cannabis to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic.</p></li>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><rect class="f" x="13" y="6" width="22" height="8" rx="2"/><path d="M15 14h18v22a4 4 0 0 1-4 4H19a4 4 0 0 1-4-4z"/><rect class="f" x="15" y="20" width="18" height="12"/><path d="M24 22.5v7M20.5 26h7"/></svg></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding, with&nbsp;expert advice.</p></li>
-        <li><span class="badge"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle class="f" cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-4.6 4.6-7 10.3-7 17s2.4 12.4 7 17c4.6-4.6 7-10.3 7-17S28.6 11.6 24 7z"/><path d="M9.5 15.5h29M9.5 32.5h29"/></svg></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18&nbsp;countries, with&nbsp;companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and&nbsp;Belgium.</p></li>
+        <li><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in&nbsp;Switzerland under a&nbsp;Swissmedic licence, following GACP.</p></li>
+        <li><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and&nbsp;packaging, an&nbsp;in‑house quality control laboratory and&nbsp;GDP‑standard storage.</p></li>
+        <li><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and&nbsp;distribution of&nbsp;medical cannabis to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic.</p></li>
+        <li><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding, with&nbsp;expert advice.</p></li>
+        <li><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18&nbsp;countries, with&nbsp;companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and&nbsp;Belgium.</p></li>
       </ol>
     </div>
   </section>
@@ -848,7 +853,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
       <h2 id="t-hw">From&nbsp;seed to&nbsp;pharmacy in&nbsp;one group</h2>
       <p class="hw-t">Each step of&nbsp;the&nbsp;chain sits with&nbsp;a&nbsp;company of&nbsp;the&nbsp;Astrasana group, so&nbsp;quality and&nbsp;supply are controlled from&nbsp;cultivation to&nbsp;the&nbsp;pharmacy counter.</p>
       <a class="pill solid hw-cta" href="#contact">Work with&nbsp;us</a>
-      <figure class="hw-fig"><img src="corporate/img/glass-mark-640.webp" alt="" width="640" height="592" loading="lazy"></figure>
+      <div class="hw-now" aria-hidden="true"><p class="hw-cnt"><span class="hw-big">01</span><span class="hw-of">/&nbsp;04</span></p><b class="hw-name">Cultivation</b><div class="hw-bar"><i></i><i></i><i></i><i></i></div></div>
     </div>
     <ol class="hw-r">
         <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">1</span>Cultivation</h3><ol class="hw-sub"><li><span class="sn">1.1</span><span>Around 1,000&nbsp;m² in&nbsp;Switzerland</span></li><li><span class="sn">1.2</span><span>Operating under a&nbsp;Swissmedic licence</span></li><li><span class="sn">1.3</span><span>Grown following GACP</span></li><li><span class="sn">1.4</span><span>Every batch traceable from&nbsp;seed to&nbsp;harvest</span></li><li><span class="sn">1.5</span><span>Accredited laboratories test cannabinoids, terpenes and&nbsp;contaminants</span></li></ol></li>
@@ -1077,7 +1082,7 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
   if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), track=chol.querySelector('.track'), played=false;
     function vert(){ return innerWidth<=1100; }
     /* on phones the line runs from the first badge to the last one */
-    function size(){ if(!vert()){ track.style.removeProperty('--trackh'); return; } var a=stops[0].querySelector('.badge').getBoundingClientRect(), z=stops[stops.length-1].querySelector('.badge').getBoundingClientRect(); track.style.setProperty('--trackh',Math.round(z.top-a.top)+'px'); }
+    function size(){ if(!vert()){ track.style.removeProperty('--trackh'); return; } var a=stops[0].getBoundingClientRect(), z=stops[stops.length-1].getBoundingClientRect(); track.style.setProperty('--trackh',Math.round(z.top-a.top)+'px'); }
     /* the parcel runs the line once when the row reaches the middle of the screen; each badge fills as the parcel reaches it */
     /* the cards light one after another as the run passes them */
     function setFill(f){ chol.style.setProperty('--fill',f.toFixed(3)); var n=stops.length; stops.forEach(function(li,i){ li.classList.toggle('lit',f>=(i+1)/n-.002); }); }

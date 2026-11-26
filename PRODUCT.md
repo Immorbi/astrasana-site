@@ -44,6 +44,7 @@ The corporate website of Astrasana Holding AG, a vertically integrated Swiss pha
 - Typefaces: the existing families, Montserrat (display) and DM Sans (text). No new families.
 - Direction set by the client for the corporate site: editorial, tasteful, sophisticated, light mode, subtle use of purple; the investor brochure is the visual reference, not a source of figures. The brand purple is used sparingly (captions, links, small details), never as large saturated fields.
 - The 3D story keeps its scenes, materials, animations and dark background.
+- Never use the glass (3D-rendered) signifier image (`land/site/glass-mark@2x.webp`) on the website; the signifier appears only as the flat brand mark.
 
 ## Evidence on Hand
 
