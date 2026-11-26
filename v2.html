@@ -439,6 +439,27 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
 }
 /* ---------- V2 motion (corporate/v2.js) ---------- */
+/* preloader: two halves of the signifier meet, a purple disc covers the screen, the page opens */
+.loader{display:none}
+.pre .loader{display:block;position:fixed;inset:0;z-index:100;background:var(--paper);overflow:hidden}
+.pre body{overflow:hidden}
+.loader .cap{position:absolute;font:600 14px/1 var(--display);letter-spacing:-.005em;color:var(--ink)}
+.loader .cap.l{left:var(--pad);top:28px} .loader .cap.r{right:var(--pad);bottom:28px}
+.loader .mark{position:absolute;left:50%;top:50%;width:clamp(64px,7vw,96px);aspect-ratio:60.1/53.6;transform:translate(-50%,-50%)}
+.loader .half{position:absolute;inset:0;width:100%;height:100%;fill:var(--purple)}
+.loader .half.a{clip-path:inset(0 52% 0 0)} .loader .half.b{clip-path:inset(0 0 0 48%)}
+.loader .cover{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--purple);transform:scale(0)}
+/* header over the dark About Us band */
+.hd{transition:background-color .35s ease,box-shadow .3s ease}
+.hd nav a,.hd .vtog a{transition:color .35s ease,background-color .35s ease}
+.hd.dark{background:rgba(14,14,17,.78);box-shadow:none}
+.hd.dark nav a{color:rgba(243,238,235,.72)} .hd.dark nav a:hover{color:#fff} .hd.dark nav a::after{background:#fff}
+.hd.dark nav .contact{color:var(--night-acc)} .hd.dark nav .nav3d svg{stroke:var(--night-acc)}
+.hd.dark .logo .l-col{opacity:0} .hd.dark .logo .l-white{opacity:1}
+.hd.dark .vtog{box-shadow:inset 0 0 0 1px rgba(243,238,235,.28)} .hd.dark .vtog a{color:rgba(243,238,235,.6)} .hd.dark .vtog a[aria-current]{background:#fff;color:var(--night)}
+.hd.dark .menu-btn i{background:#fff}
+/* hero panel grows to the full screen width as the page scrolls */
+.hero .chm.bleed{margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);padding-left:calc((100vw - 100%) / 2);padding-right:calc((100vw - 100%) / 2);border-radius:0}
 .has-ln{position:relative;border-top-color:transparent!important}
 .ln{position:absolute;left:0;right:0;transform-origin:left center;pointer-events:none}
 .gs .rise .w>span{transform:none;transition:none}
@@ -447,9 +468,17 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js');
+/* V2 preloader: once per visit, never with reduced motion; removed after 4.5s whatever happens */
+(function(){ try{ if(sessionStorage.getItem('as-pre')||matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){ return; }
+  document.documentElement.classList.add('pre'); setTimeout(function(){ document.documentElement.classList.remove('pre'); },4500); })();</script>
 </head>
 <body id="top">
+<div class="loader" aria-hidden="true">
+  <span class="cap l">Astrasana</span><span class="cap r">Holding AG</span>
+  <div class="mark"><svg class="half a" viewBox="0 0.3 60.1 53.6"><path d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/></svg><svg class="half b" viewBox="0 0.3 60.1 53.6"><path d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/></svg></div>
+  <i class="cover"></i>
+</div>
 <a class="skip" href="#main">Skip to&nbsp;content</a>
 <header class="hd" id="hd">
   <div class="grid">
@@ -783,7 +812,8 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       var t0=null, dur=vert()?2400:1700; chol.classList.add('running');
       (function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; setFill(e);
         if(p<1) requestAnimationFrame(step); else setTimeout(function(){ chol.classList.remove('running'); },250); })(performance.now()); }
-    function check(){ var r=chol.getBoundingClientRect(), vh=innerHeight; if(r.top<=vh*.92&&r.bottom>0) play(); }
+    function check(){ if(window.__chainScrub) return; var r=chol.getBoundingClientRect(), vh=innerHeight; if(r.top<=vh*.92&&r.bottom>0) play(); }
+    window.__chainSet=function(f){ played=true; setFill(f); };
     size(); setFill(0); addEventListener('resize',function(){ size(); setFill(played?1:0); }); addEventListener('scroll',check,{passive:true}); check(); }
 
   /* entering the 3D story from About Us: settle into dark, then go (same tab) */
