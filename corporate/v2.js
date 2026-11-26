@@ -84,7 +84,8 @@
     g.set(w,{color:muted});
     ST.create({trigger:el,start:'top 85%',end:'top 35%',scrub:true,onUpdate:function(self){ var head=self.progress*w.length;
       w.forEach(function(word,i){ g.set(word,{color:g.utils.interpolate(muted,active,g.utils.clamp(0,1,head-i))}); }); }}); }
-  $('.co .ttl .lede,.ph-sec .lede').forEach(function(el){ highlight(el,'rgba(35,31,32,.18)','#231f20'); });
+  $('.ph-sec .lede').forEach(function(el){ highlight(el,'rgba(35,31,32,.18)','#231f20'); });
+  $('.co .ttl .lede').forEach(function(el){ highlight(el,'rgba(255,255,255,.2)','rgba(255,255,255,.9)'); });
   $('.x3d-sec .txt').forEach(function(el){ highlight(el,'rgba(243,238,235,.18)','rgba(243,238,235,.86)'); });
 
   /* 4. photographs settle from a slight zoom as they come in */
@@ -123,13 +124,24 @@
       return function(){ st.kill(); window.__chainScrub=false; window.__chainSet(1); }; }); }
 
   /* 10. the header turns dark over the dark About Us band */
-  var hd=document.getElementById('hd'), dark=document.querySelector('.x3d-sec');
-  if(hd&&dark) ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}});
+  var hd=document.getElementById('hd');
+  $('.x3d-sec,.co').forEach(function(dark){ ST.create({trigger:dark,start:'top 64px',end:'bottom 64px',toggleClass:{targets:hd,className:'dark'}}); });
 
   /* 11. a soft light follows the cursor across the violet cards */
   $('.ch li,.pr .list li').forEach(function(card){
     card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); });
     card.addEventListener('pointerleave',function(){ card.style.removeProperty('--mx'); card.style.removeProperty('--my'); }); });
+
+  /* 12. the bracket corners around the Companies statement open from the middle */
+  $('.co .brk').forEach(function(b){ g.fromTo(b,{clipPath:'inset(50% 0% 50% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.1,ease:'power3.out',scrollTrigger:{trigger:b,start:'top 80%',once:true}}); });
+
+  /* 13. photographs drift at their own pace while the page scrolls */
+  [['.img-sec .ph',60,-60],['.tg .p1',70,-70],['.tg .p2',-20,110],['.co .ph',50,-50]].forEach(function(p){ $(p[0]).forEach(function(el){
+    g.fromTo(el,{y:p[1]},{y:p[2],ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}}); }); });
+
+  /* 14. the news cards: the same soft light under the cursor */
+  $('.nw li a').forEach(function(card){
+    card.addEventListener('pointermove',function(e){ var r=card.getBoundingClientRect(); card.style.setProperty('--mx',(e.clientX-r.left)+'px'); card.style.setProperty('--my',(e.clientY-r.top)+'px'); }); });
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
