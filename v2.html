@@ -465,6 +465,55 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 .gs .rise .w>span{transform:none;transition:none}
 .gs #t-hero{text-wrap:wrap} /* same line breaks as V1 once SplitText takes the title over */
 .pr .band.bleed{margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);border-radius:0;clip-path:none}
+
+/* ================= V2 design: the reference site's look on the Astrasana brand =================
+   A full-bleed brand-purple stage behind the hero, light large headlines with tight tracking,
+   pill buttons, a lavender band for the value chain where the cards fill with purple, and a purple
+   closing band around the contact form. Colours stay the brand's: #431291 and its lavenders. */
+:root{--r-photo:16px;--r-btn:999px;--deep:#431291}
+h1,h2{font-weight:400;letter-spacing:-.045em}
+h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
+.hero h1{font-weight:300;font-size:clamp(48px,7.6vw,124px);line-height:.94;letter-spacing:-.05em}
+.fig h2,.ct h2,.nw h2{font-weight:400}
+.ph-sec .pat h3,.ct form h3{font-weight:500;letter-spacing:-.025em}
+/* pill buttons */
+.pill{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 26px;border-radius:999px;font:600 15px/1 var(--display);letter-spacing:-.005em;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);transition:background-color .3s ease,color .3s ease,box-shadow .3s ease}
+.pill svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .35s var(--ease)}
+.pill:hover{background:#fff;color:var(--deep);box-shadow:inset 0 0 0 1px #fff} .pill:hover svg{transform:translateX(4px)}
+.pill.solid{background:#fff;color:var(--deep);box-shadow:none} .pill.solid:hover{background:var(--lav-2)}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn3d,.ct .send{border-radius:999px}
+/* the hero stage: brand purple from behind the header to the middle of the map panel */
+.hero{position:relative;isolation:isolate;padding-top:clamp(40px,5vw,88px)}
+.hero::before{content:"";position:absolute;z-index:-1;left:50%;top:-64px;width:100vw;transform:translateX(-50%);height:calc(var(--stage,70vh) + 64px);background:var(--deep)}
+.hero h1{color:#fff}
+.hero .meta p{color:rgba(255,255,255,.7)} .hero .intro .lede{color:rgba(255,255,255,.88)}
+.hero .chm{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+/* the header sits on the purple while the stage is under it */
+.hd.tint{background:rgba(67,18,145,.9);box-shadow:none}
+.hd.tint nav a{color:rgba(255,255,255,.78)} .hd.tint nav a:hover{color:#fff} .hd.tint nav a::after{background:#fff}
+.hd.tint nav .contact{color:#fff} .hd.tint nav .nav3d svg{stroke:#fff}
+.hd.tint .logo .l-col{opacity:0} .hd.tint .logo .l-white{opacity:1}
+.hd.tint .vtog{box-shadow:inset 0 0 0 1px rgba(255,255,255,.32)} .hd.tint .vtog a{color:rgba(255,255,255,.7)} .hd.tint .vtog a[aria-current]{background:#fff;color:var(--deep)}
+.hd.tint .menu-btn i{background:#fff}
+/* the value chain on a lavender band; a reached card fills with purple */
+.ch{background:var(--lav-1);box-shadow:0 0 0 100vmax var(--lav-1);clip-path:inset(0 -100vmax);padding-bottom:clamp(80px,8vw,140px);margin-top:var(--sec)}
+.ch.sec{padding-top:clamp(80px,8vw,140px)}
+.ch li{background:#fff;box-shadow:none;border-radius:var(--r-photo)}
+.ch li.lit{background:var(--deep);box-shadow:none}
+.ch li.lit b{color:#fff} .ch li.lit p{color:rgba(255,255,255,.78)} .ch li.lit .num{color:var(--lav-2)} .ch li.lit .ic{stroke:#fff}
+.ch li b,.ch li p{transition:color .5s var(--ease)}
+/* the closing band: contact on purple, the form as a white card */
+.ct{background:var(--deep);box-shadow:0 0 0 100vmax var(--deep);clip-path:inset(0 -100vmax);padding-bottom:clamp(80px,8vw,140px);margin-top:var(--sec)}
+.ct.sec{padding-top:clamp(80px,8vw,140px)}
+.ct h2{color:#fff} .ct .lede{color:rgba(255,255,255,.85)}
+.ct th{color:#fff;border-top-color:rgba(255,255,255,.35)} .ct td{color:rgba(255,255,255,.78);border-top-color:rgba(255,255,255,.35)} .ct tr:last-child th,.ct tr:last-child td{border-bottom-color:rgba(255,255,255,.35)}
+.ct td a:hover{color:#fff}
+.ct form{background:#fff}
+.ct .send{background:var(--deep)} .ct .send:hover{background:var(--ink)}
+.ft{margin-top:0;border-top:0}
+.ct textarea{border-radius:16px}
+@media (max-width:760px){ .hero .cta .pill{flex:1 1 auto;justify-content:center} .hero h1{font-size:clamp(34px,11.4vw,52px)} }
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
@@ -507,7 +556,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     </div>
     <div class="intro up">
       <p class="lede">A&nbsp;vertically integrated Swiss pharmaceutical and&nbsp;cannabis company covering all market segments within the&nbsp;industry.</p>
-      <a class="tlink" href="#chain"><span>See the&nbsp;value chain</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <div class="cta"><a class="pill solid" href="#contact">Get in&nbsp;touch</a><a class="pill" href="#chain">See the&nbsp;value chain<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
     </div>
     <figure class="chm">
       <figcaption class="mapt"><h2>Swiss at&nbsp;every step</h2><p>Headquartered in&nbsp;Kloten, with&nbsp;our&nbsp;pharmaceutical production facility in&nbsp;Tagelswangen, Canton Zurich. From&nbsp;there we&nbsp;supply partner pharmacies across Switzerland and&nbsp;markets in&nbsp;over 18&nbsp;countries.</p></figcaption>
@@ -850,6 +899,16 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     var body=f.msg.value+'\n\n'+f.name.value+(f.who.value?' ('+f.who.value+')':'')+'\n'+f.email.value;
     location.href='mailto:info@astrasana.com?subject='+encodeURIComponent('Enquiry from '+f.name.value)+'&body='+encodeURIComponent(body); });
 })();
+</script>
+<script>
+/* V2 hero stage: the purple reaches the middle of the map panel; the header is purple while the stage is under it */
+(function(){ var hero=document.querySelector('.hero'), chm=document.querySelector('.hero .chm'), hd=document.getElementById('hd'); if(!hero||!chm) return;
+  function size(){ hero.style.setProperty('--stage',(chm.offsetTop+chm.offsetHeight*.42)+'px'); }
+  var ct=document.getElementById('contact');
+  function tint(){ var r=hero.getBoundingClientRect(), stage=parseFloat(getComputedStyle(hero).getPropertyValue('--stage'))||0, c=ct?ct.getBoundingClientRect():null;
+    hd.classList.toggle('tint',(r.top+stage>64||(c&&c.top<=64&&c.bottom>64))&&!hd.classList.contains('open')); }
+  size(); tint(); addEventListener('resize',function(){ size(); tint(); }); addEventListener('scroll',tint,{passive:true}); addEventListener('load',function(){ size(); tint(); });
+  if('ResizeObserver' in window) new ResizeObserver(function(){ size(); tint(); }).observe(chm); })();
 </script>
 <script src="corporate/globe.js" defer></script>
 <!-- motion environment (see corporate/motion.js): GSAP 3.15.0 + plugins, Lenis 1.3.27 -->
