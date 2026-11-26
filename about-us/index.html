@@ -7,6 +7,7 @@
 <meta name="description" content="Discover Astrasana Holding as an interactive 3D journey: our structure, production in Tagelswangen and the route to partner pharmacies.">
 <link rel="icon" href="../land/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="../corporate/img/astrasana-logo.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* The About Us route: the existing 3D story runs unchanged in a frame; this page adds only a thin layer on top of it:
@@ -55,6 +56,11 @@ body.nogl .track{display:none}
 /* leaving: the same short veil as on the way in, now settling into the white of the website */
 .veil{position:fixed;inset:0;z-index:50;background:var(--paper);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
 body.leaving .veil{opacity:1;pointer-events:auto}
+/* the logo stays through the veil and turns dark, as it stands on the website */
+.logo{transition:background-color .4s cubic-bezier(.4,0,.2,1)}
+body.leaving .bar{z-index:60}
+body.leaving .logo{background-color:#231f20;filter:none}
+body.leaving .back,body.leaving .ret{opacity:0;transition:opacity .2s ease}
 @media (prefers-reduced-motion:reduce){ #story,.load,.veil,.ret{transition:none} .load .track i{animation:none;width:100%;opacity:.4} }
 @media (max-width:980px){ .bar{height:68px} .logo{width:68px;height:44px} }
 @media (max-width:760px){ .back{min-height:44px;padding:0 14px 0 12px;font-size:13px} }

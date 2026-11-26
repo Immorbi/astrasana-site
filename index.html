@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="corporate/img/astrasana-logo.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="corporate/img/leaf-lavender.webp" imagesrcset="corporate/img/leaf-lavender-900.webp 900w, corporate/img/leaf-lavender.webp 1800w" imagesizes="(min-width:900px) 75vw, 100vw">
 <style>
 /* Astrasana corporate, light editorial version.
@@ -266,6 +267,11 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .veil{position:fixed;inset:0;z-index:200;background:var(--night);opacity:0;pointer-events:none;transition:opacity .42s cubic-bezier(.4,0,.2,1)}
 .veil::after{content:"";position:absolute;inset:0;background:var(--lav-2);opacity:.0;transition:opacity .2s ease}
 body.leaving .veil{opacity:1;pointer-events:auto}
+/* the logo stays where it is through the veil and turns light, as it stands on the About Us page */
+.hd .logo{transition:color .42s cubic-bezier(.4,0,.2,1)}
+body.leaving .hd{z-index:210;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.leaving .hd .logo{color:#f3eeeb}
+body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s ease}
 @media (prefers-reduced-motion:reduce){ .veil{transition:none} }
 
 /* ---------- tablet ---------- */
