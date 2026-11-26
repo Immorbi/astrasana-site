@@ -60,6 +60,7 @@ h3{font-size:var(--t-h3);line-height:1.15;letter-spacing:-.015em}
 .label{font:500 15px/1.4 var(--text);color:var(--ink-3)}
 .small{font-size:var(--t-s);line-height:1.6}
 p+p{margin-top:1em}
+p,li,dd,figcaption{text-wrap:pretty}
 .cols2{columns:2;column-gap:var(--gut)}
 .cols2 p{break-inside:avoid-column}
 
@@ -87,30 +88,34 @@ p+p{margin-top:1em}
 .up{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .in .up,.up.in{opacity:1;transform:none}
 .rule{height:1px;background:var(--rule);transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease)}
-/* the chain: five stops with their picture; the line fills as the section scrolls past and each stop lights when the fill reaches it */
+/* the chain: five stops on one line. When the row reaches mid-screen a parcel runs the line once; each badge fills as it is reached */
 .ch .head h2{grid-column:1/7}
 .ch .head p{grid-column:8/12;align-self:end}
-.ch ol{grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative;--fill:0}
-.ch .track{position:absolute;left:0;right:0;top:calc(clamp(60px,5vw,76px) + 28px);height:2px;background:var(--rule)}
+.ch ol{--b:clamp(64px,5.4vw,80px);--fill:0;grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative}
+.ch .track{position:absolute;top:calc(var(--b) / 2 - 1px);left:calc(var(--b) / 2);right:calc((100% - 4 * var(--gut)) / 5 - var(--b) / 2);height:2px;background:var(--rule);z-index:0}
 .ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
-.ch li{position:relative}
-.ch li .ic{display:block;width:clamp(60px,5vw,76px);height:auto;fill:none;stroke:var(--rule-2);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .7s ease}
-.ch li .ic *{vector-effect:non-scaling-stroke}
-.ch li .dot{position:relative;display:block;width:15px;height:15px;margin-top:21px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--rule-2);transition:background-color .6s ease,box-shadow .6s ease}
-.ch li .num{display:block;margin-top:20px;font:300 clamp(44px,4.4vw,72px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .7s ease}
-.ch li b{display:block;margin-top:14px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
+.ch .track b{position:absolute;top:50%;left:calc(var(--fill) * 100%);width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 5px rgba(67,18,145,.16),0 2px 8px rgba(67,18,145,.35);opacity:0;transition:opacity .3s ease}
+.ch ol.running .track b{opacity:1}
+.ch li{position:relative;z-index:1}
+.ch li .badge{display:grid;place-items:center;width:var(--b);height:var(--b);border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--rule-2);transition:background-color .45s var(--ease),box-shadow .45s var(--ease),transform .35s var(--ease)}
+.ch li .ic{display:block;width:44%;height:auto;fill:none;stroke:var(--ink-3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
+.ch li .num{display:block;margin-top:24px;font:300 clamp(40px,3.8vw,60px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .6s ease}
+.ch li b{display:block;margin-top:12px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
-.ch li.lit .ic{stroke:var(--purple)}
-.ch li.lit .dot{background:var(--purple);box-shadow:inset 0 0 0 2px var(--purple)}
-.ch li.lit .num{color:var(--ink)}
-@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .ic,.ch li .dot,.ch li .num{transition:none} }
+.ch li:hover .badge{transform:translateY(-2px)}
+.ch li.lit .badge{background:var(--purple);box-shadow:inset 0 0 0 1.5px var(--purple),0 8px 20px -8px rgba(67,18,145,.55);animation:reach .5s var(--ease)}
+.ch li.lit .ic{stroke:#fff}
+.ch li.lit .num{color:var(--purple)}
+@keyframes reach{0%{transform:scale(.92)}55%{transform:scale(1.07)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li .badge,.ch li .ic,.ch li .num{transition:none} .ch li.lit .badge{animation:none} .ch .track b{display:none} }
 @media (max-width:1100px){
   .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
-  .ch ol{grid-template-columns:1fr;row-gap:40px;padding-left:40px}
-  .ch .track{left:6px;right:auto;top:0;bottom:0;width:2px;height:auto} .ch .track i{transform-origin:top;transform:scaleY(var(--fill))}
-  .ch li .dot{position:absolute;left:-40px;top:0;margin:0}
-  .ch li .num{margin-top:16px}
-  .ch li .ic{width:48px}
+  .ch ol{--b:60px;grid-template-columns:1fr;row-gap:44px;padding-left:calc(var(--b) + 24px)}
+  .ch .track{left:calc(var(--b) / 2 - 1px);right:auto;top:calc(var(--b) / 2);bottom:auto;height:var(--trackh,0px);width:2px}
+  .ch .track i{transform-origin:top;transform:scaleY(var(--fill))}
+  .ch .track b{left:50%;top:calc(var(--fill) * 100%);margin:-7px 0 0 -7px}
+  .ch li .badge{position:absolute;left:calc(-1 * (var(--b) + 24px));top:0}
+  .ch li .num{margin-top:4px}
 }
 }
 .in .rule,.rule.in{transform:none}
@@ -241,6 +246,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .pr .list{grid-column:1/13;margin-top:clamp(40px,4vw,64px);list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gut);row-gap:clamp(32px,3vw,48px)}
 .pr .list li{display:grid;gap:10px;align-content:start;padding-top:20px;border-top:1px solid var(--ink)}
 .pr .list i{font:600 13px/1 var(--display);font-style:normal;color:var(--purple)}
+.pr .list .pi{width:34px;height:34px;margin-bottom:6px;fill:none;stroke:var(--purple);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .pr .list b{font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .pr .list span{font-size:var(--t-s)}
 
@@ -406,13 +412,13 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <main id="main">
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
-    <h1 id="t-hero" class="rise">Swiss medical cannabis. From cultivation to pharmacy.</h1>
+    <h1 id="t-hero" class="rise">Swiss medical cannabis. From cultivation to&nbsp;pharmacy.</h1>
     <div class="meta up">
       <p class="small">Kloten, Switzerland<br>Europe and Japan</p>
     </div>
     <div class="intro up">
-      <p class="lede">A vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the industry.</p>
-      <a class="tlink" href="#chain"><span>See the value chain</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <p class="lede">A&nbsp;vertically integrated Swiss pharmaceutical and cannabis company covering all market segments within the&nbsp;industry.</p>
+      <a class="tlink" href="#chain"><span>See the&nbsp;value chain</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
     <ol class="idx up" aria-label="On this page">
       <li><a href="#companies"><b>01</b>Our companies</a></li>
@@ -428,13 +434,13 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     <figure class="ph"><img src="land/site/homepage-ueber-uns-2@2x.webp" alt="The Astrasana team in front of the office" width="1170" height="1528" loading="lazy" style="object-position:50% 72%"></figure>
     <div class="ttl">
       <h2 id="t-co" class="up">Vertically integrated, globally distributed</h2>
-      <p class="lede up">Astrasana Holding brings its companies together under one roof: cultivation and research, pharmaceutical production, distribution to pharmacies and clinics, and animal health.</p>
+      <p class="lede up">Astrasana Holding brings its companies together under one roof: cultivation and research, pharmaceutical production, distribution to&nbsp;pharmacies and clinics, and animal health.</p>
     </div>
     <div class="text cols2 small up">
-      <p>As a pharmaceutical distribution specialist, Astrasana imports and distributes medical cannabis, supplying pharmacies and clinics in Switzerland and the Czech Republic. The company also cultivates cannabis for medical purposes in Switzerland.</p>
-      <p>As the first Swiss company, Astrasana maintains an exclusive partnership with the publicly listed GSI Creos corporation and distributes CBD products for both human and veterinary use.</p>
+      <p>As a&nbsp;pharmaceutical distribution specialist, Astrasana imports and distributes medical cannabis, supplying pharmacies and clinics in&nbsp;Switzerland and the&nbsp;Czech Republic. The&nbsp;company also cultivates cannabis for&nbsp;medical purposes in&nbsp;Switzerland.</p>
+      <p>As the&nbsp;first Swiss company, Astrasana maintains an&nbsp;exclusive partnership with the&nbsp;publicly listed GSI Creos corporation and distributes CBD products for&nbsp;both human and veterinary use.</p>
     </div>
-    <p class="lab small up">With locations in Europe and Japan, Astrasana Holding remains competitive, agile and flexible. Our international network serves all market segments of the industry.</p>
+    <p class="lab small up">With locations in&nbsp;Europe and Japan, Astrasana Holding remains competitive, agile and flexible. Our international network serves all market segments of&nbsp;the&nbsp;industry.</p>
     <div class="tbl up">
       <table>
         <caption>Group companies</caption>
@@ -452,11 +458,11 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <!-- key figures -->
   <section class="fig grid sec rv" aria-labelledby="t-fig">
     <figure class="ph"><img src="corporate/img/leaf-dark.webp" srcset="corporate/img/leaf-dark-900.webp 900w, corporate/img/leaf-dark.webp 1800w" sizes="(min-width:1100px) 42vw, 100vw" alt="A cannabis leaf in low light" width="1800" height="2400" loading="lazy">
-      <figcaption>Headquartered in Kloten, Switzerland.</figcaption></figure>
-    <h2 id="t-fig" class="up">Astrasana in figures</h2>
+      <figcaption>Headquartered in&nbsp;Kloten, Switzerland.</figcaption></figure>
+    <h2 id="t-fig" class="up">Astrasana in&nbsp;figures</h2>
     <dl>
-      <div class="up"><dt>Employees</dt><dd>~30</dd><p>Around 30 people, with headquarters in Kloten, Switzerland.</p></div>
-      <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd><p>In Switzerland, the Czech Republic, Japan, the United Kingdom and Belgium.</p></div>
+      <div class="up"><dt>Employees</dt><dd>~30</dd><p>Around 30 people, with headquarters in&nbsp;Kloten, Switzerland.</p></div>
+      <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd><p>In&nbsp;Switzerland, the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and Belgium.</p></div>
       <div class="up"><dt>Countries worldwide</dt><dd>18<small>+</small></dd><p>Markets where Astrasana products are distributed.</p></div>
     </dl>
   </section>
@@ -465,17 +471,17 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <!-- the chain: every step from cultivation to pharmacy inside one group -->
   <section class="ch sec rv" id="chain" aria-labelledby="t-ch">
     <div class="grid head">
-      <h2 id="t-ch" class="up">One group, every step of the chain</h2>
-      <p class="up">From cultivation in Switzerland to the pharmacy counter and markets abroad, each step sits with a company of the Astrasana group.</p>
+      <h2 id="t-ch" class="up">One group, every step of&nbsp;the&nbsp;chain</h2>
+      <p class="up">From cultivation in&nbsp;Switzerland to&nbsp;the&nbsp;pharmacy counter and markets abroad, each step sits with a&nbsp;company of&nbsp;the&nbsp;Astrasana group.</p>
     </div>
     <div class="grid">
       <ol aria-label="From cultivation to pharmacy">
-        <span class="track" aria-hidden="true"><i></i></span>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(1.14) translate(-24 -26.5)"><path d="M24 40V22"/><path d="M24 24c0-6.6 4.6-11 11-11 0 6.6-4.6 11-11 11z"/><path d="M24 29c0-5.5-3.9-9-9-9 0 5.5 3.9 9 9 9z"/><path d="M12 40h24"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.94) translate(-24 -24)"><path d="M19 8h10"/><path d="M20.5 8v11L11 36.5c-.9 1.7.3 3.5 2.2 3.5h21.6c1.9 0 3.1-1.8 2.2-3.5L27.5 19V8"/><path d="M15 31h18"/><path d="M24 31c0-3.3 2.2-5.5 5.5-5.5 0 3.3-2.2 5.5-5.5 5.5z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.92) translate(-24 -25)"><path d="M6 31V15.5c0-.8.7-1.5 1.5-1.5h19c.8 0 1.5.7 1.5 1.5V31"/><path d="M28 19h7.2c.5 0 1 .2 1.3.6l4.9 5.6c.4.4.6.9.6 1.4V31"/><path d="M6 31h4.5M17.5 31h14M38.5 31H42"/><circle cx="14" cy="32" r="3.5"/><circle cx="35" cy="32" r="3.5"/><path d="M12 19h10v7H12zM17 19v3"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.9) translate(-24 -24)"><path d="M19.5 8.5h9c.6 0 1 .4 1 1v9h9c.6 0 1 .4 1 1v9c0 .6-.4 1-1 1h-9v9c0 .6-.4 1-1 1h-9c-.6 0-1-.4-1-1v-9h-9c-.6 0-1-.4-1-1v-9c0-.6.4-1 1-1h9v-9c0-.6.4-1 1-1z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
-        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(24 24) scale(0.86) translate(-24 -24)"><circle cx="24" cy="24" r="16"/><path d="M8 24h32M10.5 15.5h27M10.5 32.5h27"/><path d="M24 8c-4.4 4.3-6.6 9.6-6.6 16s2.2 11.7 6.6 16c4.4-4.3 6.6-9.6 6.6-16S28.4 12.3 24 8z"/></g></svg><span class="dot" aria-hidden="true"></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
+        <span class="track" aria-hidden="true"><i></i><b></b></span>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3" /><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4" /><path d="M5 21h14" /></svg></span><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in&nbsp;Switzerland under a&nbsp;Swissmedic licence, following GACP.</p></li>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" /><path d="M6.453 15h11.094" /><path d="M8.5 2h7" /></svg></span><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and packaging, an&nbsp;in-house quality control laboratory and GDP-standard storage.</p></li>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /><path d="M15 18H9" /><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /><circle cx="17" cy="18" r="2" /><circle cx="7" cy="18" r="2" /></svg></span><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and distribution of&nbsp;medical cannabis to&nbsp;pharmacies and clinics in&nbsp;Switzerland and the&nbsp;Czech Republic.</p></li>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 11h-4a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h4" /><path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" /><rect width="16" height="5" x="4" y="2" rx="1" /></svg></span><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and dronabinol for&nbsp;compounding, with expert advice.</p></li>
+        <li><span class="badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></svg></span><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18 countries, with companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and Belgium.</p></li>
       </ol>
     </div>
   </section>
@@ -484,7 +490,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="A cannabis seedling breaking through the soil" width="1800" height="2609" loading="lazy"></figure>
       <div class="over">
         <h2 id="t-cu">Swiss cannabis cultivation</h2>
-        <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on approximately 1,000&nbsp;m² in Switzerland, operating under a Swissmedic licence. Production follows GACP, every batch is traceable from seed to harvest, and accredited laboratories test cannabinoids, terpenes and contaminants.</p>
+        <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on&nbsp;approximately 1,000&nbsp;m² in&nbsp;Switzerland, operating under a&nbsp;Swissmedic licence. Production follows GACP, every batch is traceable from seed to&nbsp;harvest, and accredited laboratories test cannabinoids, terpenes and contaminants.</p>
       </div>
   </section>
 
@@ -494,28 +500,28 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     <figure class="ph p2"><img src="land/site/AstraSana-10.webp" alt="Corridor of the Astrasana facility with the company sign" width="1600" height="1067" loading="lazy" style="object-position:80% 45%"></figure>
     <div class="ttl">
       <p class="label up">Tagelswangen, Canton Zurich</p>
-      <h2 id="t-tg" class="up" style="margin-top:20px">Production facility in Tagelswangen complete</h2>
-      <p class="lede up">Astrasana successfully completes the setup of its pharmaceutical production facility in Tagelswangen, Canton Zurich.</p>
-      <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and packaging, an in-house quality control laboratory and GDP-standard storage sit under one roof.</p>
+      <h2 id="t-tg" class="up" style="margin-top:20px">Production facility in&nbsp;Tagelswangen complete</h2>
+      <p class="lede up">Astrasana successfully completes the&nbsp;setup of&nbsp;its pharmaceutical production facility in&nbsp;Tagelswangen, Canton Zurich.</p>
+      <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and packaging, an&nbsp;in-house quality control laboratory and GDP-standard storage sit under one roof.</p>
     </div>
   </section>
 
   <!-- pharmacies -->
   <section class="ph-sec grid sec rv" id="pharmacies" aria-labelledby="t-ph">
     <figure class="ph"><img src="corporate/img/hands.webp" srcset="corporate/img/hands-900.webp 900w, corporate/img/hands.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="Two people holding hands across a table" width="1800" height="2609" loading="lazy"></figure>
-    <h2 id="t-ph" class="up">Our partner pharmacies in Switzerland</h2>
-    <p class="lede up">As part of the Astrasana Holding AG, Bogen Pharma AG works with carefully selected, specialised partner pharmacies in Switzerland.</p>
+    <h2 id="t-ph" class="up">Our partner pharmacies in&nbsp;Switzerland</h2>
+    <p class="lede up">As part of&nbsp;the&nbsp;Astrasana Holding AG, Bogen Pharma AG works with carefully selected, specialised partner pharmacies in&nbsp;Switzerland.</p>
     <div class="body up">
-      <p class="small">They receive THC flowers, standardised extracts and dronabinol for compounding, expert advice and reliable supply through Bogen Pharma’s distribution network.</p>
+      <p class="small">They receive THC flowers, standardised extracts and dronabinol for&nbsp;compounding, expert advice and reliable supply through Bogen Pharma’s distribution network.</p>
     </div>
     <div class="pat up">
-      <h3>How patients in Switzerland access their medical cannabis</h3>
-      <p class="small intro">Since August 2022, physicians in Switzerland can prescribe medical cannabis directly. No special federal permit is required.</p>
+      <h3>How patients in&nbsp;Switzerland access their medical cannabis</h3>
+      <p class="small intro">Since August 2022, physicians in&nbsp;Switzerland can prescribe medical cannabis directly. No special federal permit is required.</p>
       <ol class="steps">
-        <li><span class="cap">01</span><b>Doctor consultation</b><p>The treating physician evaluates whether medical cannabis is an appropriate treatment option based on the patient's condition and history.</p></li>
-        <li><span class="cap">02</span><b>Prescription</b><p>The physician issues a narcotics prescription (Betäubungsmittelrezept) specifying the product, dosage, and treatment plan.</p></li>
-        <li><span class="cap">03</span><b>Pharmacy dispensing</b><p>The patient fills their prescription at a licensed pharmacy that carries pharmaceutical-grade medical cannabis products.</p></li>
-        <li><span class="cap">04</span><b>Ongoing treatment</b><p>Regular follow-ups with the prescribing physician ensure optimal dosing, monitor efficacy, and adjust the treatment plan as needed.</p></li>
+        <li><span class="cap">01</span><b>Doctor consultation</b><p>The&nbsp;treating physician evaluates whether medical cannabis is an&nbsp;appropriate treatment option based on&nbsp;the&nbsp;patient's condition and history.</p></li>
+        <li><span class="cap">02</span><b>Prescription</b><p>The&nbsp;physician issues a&nbsp;narcotics prescription (Betäubungsmittelrezept) specifying the&nbsp;product, dosage, and treatment plan.</p></li>
+        <li><span class="cap">03</span><b>Pharmacy dispensing</b><p>The&nbsp;patient fills their prescription at&nbsp;a&nbsp;licensed pharmacy that carries pharmaceutical-grade medical cannabis products.</p></li>
+        <li><span class="cap">04</span><b>Ongoing treatment</b><p>Regular follow-ups with the&nbsp;prescribing physician ensure optimal dosing, monitor efficacy, and adjust the&nbsp;treatment plan as needed.</p></li>
       </ol>
     </div>
   </section>
@@ -524,17 +530,17 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <section class="pr sec rv" id="products" aria-labelledby="t-pr">
     <div class="grid head">
       <h2 id="t-pr" class="up">Pharmaceutical-grade across every category</h2>
-      <p class="lede up">Rigorous quality control from prescription cannabinoids to consumer wellness products.</p>
+      <p class="lede up">Rigorous quality control from prescription cannabinoids to&nbsp;consumer wellness products.</p>
     </div>
     <div class="grid">
       <figure class="ph band"><img src="land/site/products-whitelabel.webp" alt="Filling line with product boxes and bottles" width="1184" height="864" loading="lazy" style="object-position:50% 60%"></figure>
       <ol class="list up">
-        <li><b>Pharmaceuticals</b><span>Medical-grade products for pharmacies and clinics across our network.</span></li>
-        <li><b>Cannabinoids</b><span>THC and CBD formulations for therapeutic applications.</span></li>
-        <li><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
-        <li><b>White Label</b><span>Contract manufacturing and private-label solutions for B2B partners.</span></li>
-        <li><b>Wellness</b><span>Bridging pharmaceutical science and everyday health.</span></li>
-        <li><b>Animal Health</b><span>ASTRAVET &amp; Cansuna: CBD products for animals, from vet practice to everyday life.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" /><path d="m8.5 8.5 7 7" /></svg><b>Pharmaceuticals</b><span>Medical-grade products for&nbsp;pharmacies and clinics across our network.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-4" /><path d="M7 12c-1.5 0-4.5 1.5-5 3 3.5 1.5 6 1 6 1-1.5 1.5-2 3.5-2 5 2.5 0 4.5-1.5 6-3 1.5 1.5 3.5 3 6 3 0-1.5-.5-3.5-2-5 0 0 2.5.5 6-1-.5-1.5-3.5-3-5-3 1.5-1 4-4 4-6-2.5 0-5.5 1.5-7 3 0-2.5-.5-5-2-7-1.5 2-2 4.5-2 7-1.5-1.5-4.5-3-7-3 0 2 2.5 5 4 6" /></svg><b>Cannabinoids</b><span>THC and CBD formulations for&nbsp;therapeutic applications.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" /><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" /></svg><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></svg><b>White Label</b><span>Contract manufacturing and private-label solutions for&nbsp;B2B partners.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" /></svg><b>Wellness</b><span>Bridging pharmaceutical science and everyday health.</span></li>
+        <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="4" r="2" /><circle cx="18" cy="8" r="2" /><circle cx="20" cy="16" r="2" /><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" /></svg><b>Animal Health</b><span>ASTRAVET &amp; Cansuna: CBD products for&nbsp;animals, from vet practice to&nbsp;everyday life.</span></li>
       </ol>
     </div>
   </section>
@@ -546,14 +552,14 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
         <p class="label up">About Us</p>
         <h2 id="t-3d" class="up">Discover our world</h2>
       </div>
-      <p class="txt up">Astrasana Holding is a Swiss group with companies in Switzerland, the Czech Republic, Japan, the United Kingdom and Belgium. The interactive story follows our structure, production in Tagelswangen, the warehouse in Kloten and the route to our partner pharmacies across the map.</p>
+      <p class="txt up">Astrasana Holding is a&nbsp;Swiss group with companies in&nbsp;Switzerland, the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and Belgium. The&nbsp;interactive story follows our structure, production in&nbsp;Tagelswangen, the&nbsp;warehouse in&nbsp;Kloten and the&nbsp;route to&nbsp;our partner pharmacies across the&nbsp;map.</p>
       <div class="pv">
         <img src="corporate/img/3d-europe.webp" srcset="corporate/img/3d-europe-800.webp 800w, corporate/img/3d-europe.webp 1600w" sizes="(min-width:1100px) 58vw, 100vw" alt="" width="1600" height="910" loading="lazy">
         <span class="tag">Interactive 3D</span>
       </div>
       <div class="go up">
-        <a class="btn3d" href="about-us/" data-3d>Explore Astrasana in 3D<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
-        <span class="note">Best viewed on desktop.</span>
+        <a class="btn3d" href="about-us/" data-3d>Explore Astrasana in&nbsp;3D<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
+        <span class="note">Best viewed on&nbsp;desktop.</span>
       </div>
     </div>
   </section>
@@ -562,7 +568,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <section class="pa sec rv" id="partners" aria-labelledby="t-pa">
     <div class="grid head">
       <h2 id="t-pa" class="up">Strong partnerships</h2>
-      <p class="up">Strong partnerships for shared growth and innovation in the healthcare industry. Each partnership extends our capabilities across research, distribution and product development.</p>
+      <p class="up">Strong partnerships for&nbsp;shared growth and innovation in&nbsp;the&nbsp;healthcare industry. Each partnership extends our capabilities across research, distribution and product development.</p>
     </div>
     <div class="grid">
       <div class="mq up" id="mq">
@@ -593,13 +599,13 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <section class="nw sec rv" id="news" aria-labelledby="t-nw">
     <div class="grid head">
       <h2 id="t-nw" class="up">News &amp; Insights</h2>
-      <a class="tlink up" href="https://www.astrasana.ch/en/newsroom" target="_blank" rel="noopener"><span>View all articles</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg><span class="vh"> (opens in a new tab)</span></a>
+      <a class="tlink up" href="https://www.astrasana.ch/en/newsroom" target="_blank" rel="noopener"><span>View all articles</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a>
     </div>
     <div class="grid">
       <ol>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/green-karat-exclusive-distribution" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-greenkarat.png" alt="Green Karat" loading="lazy"></span><span class="cap">3 August 2026</span><h3>Astrasana becomes exclusive distribution partner of Green Karat in Switzerland</h3><p>Astrasana has signed an exclusive distribution agreement with Canadian producer Green Karat for the Swiss market.</p><span class="vh"> (opens in a new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/sanity-group-avaay-partnership" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-sanity.png" alt="Sanity Group" loading="lazy"></span><span class="cap">15 June 2026</span><h3>Partnership with Sanity Group: avaay Medical in Switzerland</h3><p>Bogen Pharma, a subsidiary of Astrasana Holding AG, partners with Berlin-based Sanity Group to bring the avaay Medical product line to Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/graeub-astravet-vertrieb" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-graeub.png" alt="GRAEUB" loading="lazy"></span><span class="cap">16 March 2026</span><h3>GRAEUB distributes ASTRAVET in Switzerland</h3><p>GRAEUB, part of the LIVISTO Group, takes over exclusive distribution of the ASTRAVET veterinary product line in Switzerland.</p><span class="vh"> (opens in a new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/green-karat-exclusive-distribution" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-greenkarat.png" alt="Green Karat" loading="lazy"></span><span class="cap">3 August 2026</span><h3>Astrasana becomes exclusive distribution partner of&nbsp;Green Karat in&nbsp;Switzerland</h3><p>Astrasana has signed an&nbsp;exclusive distribution agreement with Canadian producer Green Karat for&nbsp;the&nbsp;Swiss market.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/sanity-group-avaay-partnership" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-sanity.png" alt="Sanity Group" loading="lazy"></span><span class="cap">15 June 2026</span><h3>Partnership with Sanity Group: avaay Medical in&nbsp;Switzerland</h3><p>Bogen Pharma, a&nbsp;subsidiary of&nbsp;Astrasana Holding AG, partners with Berlin-based Sanity Group to&nbsp;bring the&nbsp;avaay Medical product line to&nbsp;Switzerland.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/graeub-astravet-vertrieb" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-graeub.png" alt="GRAEUB" loading="lazy"></span><span class="cap">16 March 2026</span><h3>GRAEUB distributes ASTRAVET in&nbsp;Switzerland</h3><p>GRAEUB, part of&nbsp;the&nbsp;LIVISTO Group, takes over exclusive distribution of&nbsp;the&nbsp;ASTRAVET veterinary product line in&nbsp;Switzerland.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
       </ol>
     </div>
   </section>
@@ -607,7 +613,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   <!-- contact -->
   <section class="ct grid sec rv" id="contact" aria-labelledby="t-ct">
     <h2 id="t-ct" class="up">Let's discuss what Astrasana can build together</h2>
-    <p class="lede up">Pharmacies, clinics, distributors and partners can arrange a non-binding consultation with our team in Kloten.</p>
+    <p class="lede up">Pharmacies, clinics, distributors and partners can arrange a&nbsp;non-binding consultation with our team in&nbsp;Kloten.</p>
     <div class="addr up">
       <table>
         <tbody>
@@ -619,14 +625,14 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       </table>
     </div>
     <form id="cform" class="up">
-      <h3>Send us a message</h3>
-      <p class="sub">Your message goes to our team in Kloten.</p>
+      <h3>Send us a&nbsp;message</h3>
+      <p class="sub">Your message goes to&nbsp;our team in&nbsp;Kloten.</p>
       <label><span>Name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" placeholder="Your full name" required></label>
       <label><span>Email <i aria-hidden="true">*</i></span><input name="email" type="email" autocomplete="email" placeholder="name@company.com" required></label>
-      <label class="wide"><span>Your role</span><select name="who"><option value="" selected disabled>Select your role</option><option>A pharmacy</option><option>A clinic or doctor</option><option>A distributor</option><option>A potential partner</option><option>An investor</option><option>An authority</option><option>A patient or member of the public</option></select></label>
+      <label class="wide"><span>Your role</span><select name="who"><option value="" selected disabled>Select your role</option><option>A&nbsp;pharmacy</option><option>A&nbsp;clinic or doctor</option><option>A&nbsp;distributor</option><option>A&nbsp;potential partner</option><option>An&nbsp;investor</option><option>An&nbsp;authority</option><option>A&nbsp;patient or member of&nbsp;the&nbsp;public</option></select></label>
       <label class="wide"><span>Message <i aria-hidden="true">*</i></span><textarea name="msg" rows="4" placeholder="How can we help?" required></textarea></label>
       <button class="send" type="submit">Open email draft<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-      <p class="fnote">* Required. The button opens a ready-made draft in your email app, addressed to info@astrasana.com; you send it from there.</p>
+      <p class="fnote">* Required. The&nbsp;button opens a&nbsp;ready-made draft in&nbsp;your email app, addressed to&nbsp;info@astrasana.com; you send it from there.</p>
     </form>
   </section>
 </main>
@@ -634,13 +640,13 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <footer class="ft">
   <div class="grid">
     <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img src="corporate/img/brand/logo-color.svg" alt="" width="168" height="32"></a>
-    <p class="about">A vertically integrated Swiss pharmaceutical and cannabis company. From cultivation to pharmacy.</p>
+    <p class="about">A&nbsp;vertically integrated Swiss pharmaceutical and cannabis company. From cultivation to&nbsp;pharmacy.</p>
     <div class="col"><h2 class="fh">Company</h2><ul><li><a href="#about">About Us</a></li><li><a href="#companies">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
     <div class="col"><h2 class="fh">Business</h2><ul><li><a href="#cultivation">Pharma</a></li><li><a href="#pharmacies">Pharmacies</a></li><li><a href="#products">Products</a></li></ul></div>
     <div class="col wide"><h2 class="fh">Contact</h2><ul><li><span>Gerbegasse 2, 8302 Kloten</span></li><li><a href="tel:+41445452850">+41 44 545 28 50</a></li><li><a href="mailto:info@astrasana.com">info@astrasana.com</a></li></ul></div>
     <div class="base">
       <span>© 2026 Astrasana Holding AG. All rights reserved.</span>
-      <nav aria-label="Legal"><a href="download.html">Licences</a><a href="https://www.astrasana.ch/en/privacy" target="_blank" rel="noopener">Privacy<span class="vh"> (opens in a new tab)</span></a><a href="https://www.astrasana.ch/en/imprint" target="_blank" rel="noopener">Legal notice<span class="vh"> (opens in a new tab)</span></a></nav>
+      <nav aria-label="Legal"><a href="download.html">Licences</a><a href="https://www.astrasana.ch/en/privacy" target="_blank" rel="noopener">Privacy<span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a><a href="https://www.astrasana.ch/en/imprint" target="_blank" rel="noopener">Legal notice<span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></nav>
     </div>
   </div>
 </footer>
@@ -668,7 +674,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   /* hero title: split into words that rise once */
   var h1=document.getElementById('t-hero');
   if(h1&&!reduce){ var k=0; (function wrap(node){ [].slice.call(node.childNodes).forEach(function(c){
-      if(c.nodeType===3){ var frag=document.createDocumentFragment(); c.textContent.split(/(\s+)/).forEach(function(t){ if(!t) return; if(/^\s+$/.test(t)){ frag.appendChild(document.createTextNode(t)); return; }
+      if(c.nodeType===3){ var frag=document.createDocumentFragment(); c.textContent.split(/([ \t\n\r]+)/).forEach(function(t){ if(!t) return; if(/^[ \t\n\r]+$/.test(t)){ frag.appendChild(document.createTextNode(t)); return; }
           var w=document.createElement('span'); w.className='w'; var i=document.createElement('span'); i.textContent=t; i.style.setProperty('--k',k++); w.appendChild(i); frag.appendChild(w); }); c.parentNode.replaceChild(frag,c); }
       else if(c.nodeType===1) wrap(c); }); })(h1);
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ h1.classList.add('go'); }); }); }
@@ -689,17 +695,20 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 
   /* the chain: the line fills while the section crosses the screen; a stop lights when the fill reaches it */
   var chol=document.querySelector('.ch ol');
-  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), played=false;
-    /* the line runs once on its own when the row reaches the middle of the screen; each stop lights as the line passes it */
-    function setFill(f){ var r=chol.getBoundingClientRect(), vert=innerWidth<=1100; chol.style.setProperty('--fill',f.toFixed(3));
-      stops.forEach(function(li){ var d=li.querySelector('.dot').getBoundingClientRect(), at=vert?(d.top+d.height/2-r.top)/Math.max(1,r.height):(d.left+d.width/2-r.left)/Math.max(1,r.width); li.classList.toggle('lit',f>=at-.001); }); }
+  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), track=chol.querySelector('.track'), played=false;
+    function vert(){ return innerWidth<=1100; }
+    /* on phones the line runs from the first badge to the last one */
+    function size(){ if(!vert()){ track.style.removeProperty('--trackh'); return; } var a=stops[0].querySelector('.badge').getBoundingClientRect(), z=stops[stops.length-1].querySelector('.badge').getBoundingClientRect(); track.style.setProperty('--trackh',Math.round(z.top-a.top)+'px'); }
+    /* the parcel runs the line once when the row reaches the middle of the screen; each badge fills as the parcel reaches it */
+    function setFill(f){ chol.style.setProperty('--fill',f.toFixed(3)); var t=track.getBoundingClientRect(), v=vert();
+      stops.forEach(function(li){ var d=li.querySelector('.badge').getBoundingClientRect(), at=v?(d.top+d.height/2-t.top)/Math.max(1,t.height):(d.left+d.width/2-t.left)/Math.max(1,t.width); li.classList.toggle('lit',f>=at-.002); }); }
     function play(){ if(played) return; played=true; removeEventListener('scroll',check);
       if(reduce){ setFill(1); return; }
-      var t0=null, dur=innerWidth<=1100?2200:1400;
-      (function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; setFill(e); if(p<1) requestAnimationFrame(step); })(performance.now()); requestAnimationFrame(function(){}); }
-    function check(){ var r=chol.getBoundingClientRect(), vh=innerHeight, vert=innerWidth<=1100;
-      if(vert?r.top<=vh*.55:r.top+r.height/2<=vh*.55) play(); }
-    setFill(0); addEventListener('scroll',check,{passive:true}); check(); }
+      var t0=null, dur=vert()?2400:1700; chol.classList.add('running');
+      (function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; setFill(e);
+        if(p<1) requestAnimationFrame(step); else setTimeout(function(){ chol.classList.remove('running'); },250); })(performance.now()); }
+    function check(){ var r=chol.getBoundingClientRect(), vh=innerHeight; if(vert()?r.top<=vh*.55:r.top+r.height/2<=vh*.55) play(); }
+    size(); setFill(0); addEventListener('resize',function(){ size(); setFill(played?1:0); }); addEventListener('scroll',check,{passive:true}); check(); }
 
   /* entering the 3D story from About Us: settle into dark, then go (same tab) */
   document.addEventListener('click',function(e){

@@ -19,3 +19,4 @@ Serve the folder with any static server (the About Us page needs the pages on on
 
 - Buildings and terrain in Tagelswangen and Kloten: ©swisstopo (swissBUILDINGS3D 3.0, swissALTI3D), open government data.
 - Regional map around Zurich (lakes, canton and municipal borders): swisstopo / FSO generalised boundaries via [swiss-maps](https://github.com/interactivethings/swiss-maps) 4.7.0. Rivers, motorways, railways and urban areas: Natural Earth 10m (public domain).
+- Icons: [Lucide](https://lucide.dev) (ISC licence), © Lucide Icons and Contributors.
