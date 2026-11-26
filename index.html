@@ -149,6 +149,10 @@ p+p{margin-top:1em}
 .hero .meta p+p{margin-top:12px}
 .hero .ph{grid-column:1/13;grid-row:3;aspect-ratio:16/6.2;margin-top:clamp(40px,4vw,64px)}
 .hero .ph img{object-position:60% 30%}
+.rise .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.rise .w>span{display:inline-block;transform:translateY(108%);transition:transform 1s var(--ease);transition-delay:calc(var(--k) * 55ms + 120ms)}
+.rise.go .w>span{transform:none}
+@media (prefers-reduced-motion:reduce){ .rise .w>span{transform:none;transition:none} }
 .hero .intro{grid-column:5/10;grid-row:2;margin-top:clamp(28px,3vw,48px)}
 .hero .intro .tlink{margin-top:20px}
 .hero .idx{grid-column:10/13;grid-row:2;align-self:start;margin-top:clamp(28px,3vw,48px)}
@@ -181,6 +185,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .fig dl{display:grid;gap:clamp(28px,3.4vw,52px);margin-left:clamp(0px,9vw,160px)}
 .fig dt{font:400 var(--t-l)/1.2 var(--display);color:var(--ink);letter-spacing:-.01em}
 .fig dd{font:300 var(--t-fig)/.9 var(--display);color:var(--ink);letter-spacing:-.045em;margin-top:6px}
+.fig dd .n{display:inline-block;text-align:left}
 .fig dd small{font:400 clamp(20px,1.7vw,28px)/1 var(--display);letter-spacing:-.01em;margin-left:.35em}
 .fig .ph{grid-column:7/13;min-height:100%}
 .fig .ph figcaption{position:absolute;left:clamp(24px,3vw,48px);bottom:clamp(24px,3vw,48px);max-width:250px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
@@ -249,8 +254,18 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 /* ---------- partners: a hairline grid of marks ---------- */
 .pa .head h2{grid-column:1/6}
 .pa .head p{grid-column:7/12;align-self:end}
-.pa .logos{grid-column:1/13;margin-top:clamp(48px,5vw,80px);display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule);border-left:1px solid var(--rule);list-style:none}
-.pa .logos li{display:grid;place-items:center;aspect-ratio:5/3;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:clamp(18px,2.4vw,40px)}
+/* partners run as one slow band; it stops under the pointer, on keyboard focus and with its pause button */
+.pa .mq{grid-column:1/13;margin-top:clamp(48px,5vw,80px);position:relative;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.pa .mq-track{display:flex;width:max-content;animation:mq 60s linear infinite}
+.pa .mq:hover .mq-track,.pa .mq:focus-within .mq-track,.pa .mq.paused .mq-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+.pa .logos{display:flex;list-style:none}
+.pa .logos li{flex:none;width:clamp(160px,15vw,230px);height:clamp(96px,8.5vw,128px);display:grid;place-items:center;padding:20px 28px}
+.pa .mq-ctl{grid-column:1/13;justify-self:end;margin-top:12px;display:inline-flex;align-items:center;gap:8px;min-height:44px;border:0;background:none;cursor:pointer;font:500 14px/1 var(--text);color:var(--ink-3)}
+.pa .mq-ctl:hover{color:var(--ink)}
+.pa .mq-ctl svg{width:14px;height:14px;fill:currentColor}
+@media (prefers-reduced-motion:reduce){ .pa .mq{-webkit-mask-image:none;mask-image:none} .pa .mq-track{animation:none;width:auto} .pa .logos{flex-wrap:wrap;justify-content:center} .pa .logos[aria-hidden],.pa .mq-ctl{display:none} }
 .pa .logos img{max-height:56px;max-width:80%;width:auto;object-fit:contain;filter:grayscale(1);opacity:.72;transition:opacity .3s ease,filter .3s ease}
 .pa .logos li:hover img{filter:none;opacity:1}
 
@@ -323,7 +338,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .x3d-sec .hd2,.x3d-sec .txt,.x3d-sec .go,.x3d-sec .chap{grid-column:1/13;grid-row:auto} .x3d-sec h2{grid-column:1/13}
   .x3d-sec .pv{grid-column:1/13;grid-row:2;margin:8px 0 32px}
   .pa .head h2,.pa .head p{grid-column:1/13} .pa .head p{margin-top:24px}
-  .pa .logos{grid-template-columns:repeat(3,1fr)}
   .nw .head h2{grid-column:1/13} .nw .head .tlink{grid-column:1/13;justify-self:start;margin-top:12px}
   .ct h2,.ct .lede,.ct .addr,.ct form{grid-column:1/13;grid-row:auto}
   .ft .about{grid-column:3/13} .ft .col,.ft .col.wide{grid-column:span 4;margin-top:40px}
@@ -350,7 +364,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .steps{grid-template-columns:1fr}
   .pr .list{grid-template-columns:1fr} .pr .band{aspect-ratio:4/3;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1)}
   .x3d-sec .chap{grid-template-columns:1fr}
-  .pa .logos{grid-template-columns:repeat(2,1fr)}
   .nw li a{row-gap:10px} .nw li .cap,.nw li h3,.nw li p{grid-column:1/13}
   .ct form{grid-template-columns:1fr} .ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
   .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
@@ -381,7 +394,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
 <main id="main">
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
-    <h1 id="t-hero" class="up">Swiss medical cannabis. From cultivation to pharmacy.</h1>
+    <h1 id="t-hero" class="rise">Swiss medical cannabis. From cultivation to pharmacy.</h1>
     <div class="meta up">
       <p class="cap">Astrasana Holding AG</p>
       <p class="small">Kloten, Switzerland<br>Europe and Japan</p>
@@ -550,7 +563,9 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       <p class="up">Strong partnerships for shared growth and innovation in the healthcare industry. Each partnership extends our capabilities across research, distribution and product development.</p>
     </div>
     <div class="grid">
-      <ul class="logos up" aria-label="Partners">
+      <div class="mq up" id="mq">
+        <div class="mq-track">
+      <ul class="logos" aria-label="Partners">
         <li><img src="land/partners/partner-gsi-creos.svg" alt="GSI Creos" loading="lazy"></li>
         <li><img src="land/partners/partner-evidena-care.svg" alt="evidena.care" loading="lazy"></li>
         <li><img src="land/partners/partner-zahw.svg" alt="ZHAW" loading="lazy"></li>
@@ -567,6 +582,9 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
         <li><img src="land/partners/partner-sumiswald.webp" alt="Apotheke Sumiswald" loading="lazy"></li>
         <li><img src="land/partners/partner-stauffacher.svg" alt="Stauffacher-Apotheke" loading="lazy"></li>
       </ul>
+        </div>
+      </div>
+      <button class="mq-ctl" type="button" aria-controls="mq" aria-pressed="false"><svg viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2" width="3" height="10"/><rect x="8" y="2" width="3" height="10"/></svg><span>Pause logos</span></button>
     </div>
   </section>
 
@@ -643,6 +661,30 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
     var io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{rootMargin:'0px 0px -12% 0px'});
     document.querySelectorAll('.rv,.rv .up').forEach(function(el){ io.observe(el); });
   } else document.querySelectorAll('.rv,.up').forEach(function(el){ el.classList.add('in'); });
+
+  /* hero title: split into words that rise once */
+  var h1=document.getElementById('t-hero');
+  if(h1&&!reduce){ var k=0; (function wrap(node){ [].slice.call(node.childNodes).forEach(function(c){
+      if(c.nodeType===3){ var frag=document.createDocumentFragment(); c.textContent.split(/(\s+)/).forEach(function(t){ if(!t) return; if(/^\s+$/.test(t)){ frag.appendChild(document.createTextNode(t)); return; }
+          var w=document.createElement('span'); w.className='w'; var i=document.createElement('span'); i.textContent=t; i.style.setProperty('--k',k++); w.appendChild(i); frag.appendChild(w); }); c.parentNode.replaceChild(frag,c); }
+      else if(c.nodeType===1) wrap(c); }); })(h1);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ h1.classList.add('go'); }); }); }
+
+  /* figures: count up once when the section arrives; the width is set to the final number so nothing shifts */
+  var figs=[].slice.call(document.querySelectorAll('.fig dd'));
+  figs.forEach(function(dd){ var t=dd.firstChild; if(!t||t.nodeType!==3) return; var m=/^(\D*)(\d+)$/.exec(t.textContent.trim()); if(!m) return;
+    var n=document.createElement('span'); n.className='n'; n.textContent=t.textContent.trim(); dd.replaceChild(n,t); dd._n={el:n,pre:m[1],to:+m[2]}; });
+  function countUp(){ figs.forEach(function(dd,idx){ var d=dd._n; if(!d) return; d.el.style.minWidth=d.el.getBoundingClientRect().width+'px'; var t0=null, dur=1300+idx*150;
+      function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=1-Math.pow(1-p,3); d.el.textContent=d.pre+Math.round(d.to*e); if(p<1) requestAnimationFrame(step); }
+      d.el.textContent=d.pre+'0'; requestAnimationFrame(step); }); }
+  var figSec=document.querySelector('.fig');
+  if(figSec&&!reduce&&'IntersectionObserver' in window){ var fo=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ fo.disconnect(); countUp(); } },{threshold:.35}); fo.observe(figSec); }
+
+  /* partners: a second copy makes the band seamless; the button pauses it */
+  var mq=document.getElementById('mq');
+  if(mq){ var ul=mq.querySelector('.logos'), dup=ul.cloneNode(true); dup.setAttribute('aria-hidden','true'); dup.removeAttribute('aria-label'); dup.querySelectorAll('img').forEach(function(i){ i.alt=''; }); ul.parentNode.appendChild(dup);
+    var ctl=document.querySelector('.mq-ctl'); ctl.addEventListener('click',function(){ var on=mq.classList.toggle('paused'); ctl.setAttribute('aria-pressed',on); ctl.querySelector('span').textContent=on?'Play logos':'Pause logos';
+      ctl.querySelector('svg').innerHTML=on?'<path d="M3 2l9 5-9 5z"/>':'<rect x="3" y="2" width="3" height="10"/><rect x="8" y="2" width="3" height="10"/>'; }); }
 
   /* entering the 3D story: remember where the visitor was, settle into dark, then go */
   var KEY='astrasana:return';
