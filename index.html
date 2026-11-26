@@ -291,11 +291,11 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 .x3d-sec .pv img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease),opacity .6s ease}
 .x3d-sec .pv .tag{position:absolute;left:20px;bottom:18px;font:500 14px/1 var(--text);color:#fff}
 /* the globe from the 3D story replaces the still once it has loaded; the still stays for browsers without WebGL */
-.x3d-sec .pv.globe{background:radial-gradient(60% 60% at 50% 50%,#1b1628 0%,#121116 70%)}
+.x3d-sec .pv.globe{background:transparent;overflow:visible}
 .x3d-sec .pv.globe img{transition:opacity .6s ease} .x3d-sec .pv.globe.live img{opacity:0}
-.globe-cv{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+.globe-cv{position:absolute;inset:-14%;width:128%;height:128%;display:block;cursor:grab;touch-action:pan-y}
 .globe.drag .globe-cv{cursor:grabbing}
-.globe-tags{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.globe-tags{position:absolute;inset:-14%;pointer-events:none;overflow:hidden}
 .globe-tags .gtag{position:absolute;left:0;top:0;padding:6px 10px;border-radius:8px;font:400 12px/1.3 var(--text);white-space:nowrap;color:rgba(243,238,235,.72);background:rgba(14,14,17,.78);box-shadow:inset 0 0 0 1px rgba(164,156,240,.55);opacity:0;will-change:transform}
 .globe-tags .gtag b{font-weight:500;color:#f3eeeb}
 .globe-tags .gtag.hq{background:#a49cf0;color:#fff;box-shadow:none} .globe-tags .gtag.hq b{color:#fff}
@@ -396,7 +396,7 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   .pr .head h2{grid-column:1/13} .pr .head .lede{grid-column:1/10;margin-top:24px}
   .pr .list{grid-template-columns:repeat(2,minmax(0,1fr))} .pr .band{aspect-ratio:16/8}
   .x3d-sec .hd2,.x3d-sec .txt,.x3d-sec .go{grid-column:1/13;grid-row:auto} .x3d-sec h2{grid-column:1/13}
-  .x3d-sec .pv{grid-column:1/13;grid-row:2;margin:8px 0 32px} .x3d-sec .pv.globe{aspect-ratio:1/1}
+  .x3d-sec .pv{grid-column:1/13;grid-row:2;margin:8px 0 32px} .x3d-sec .pv.globe{aspect-ratio:1/1} .globe-cv,.globe-tags{inset:0;width:100%;height:100%}
   .pa .head h2,.pa .head p{grid-column:1/13} .pa .head p{margin-top:24px}
   .nw .head h2{grid-column:1/13} .nw .head .tlink{grid-column:1/13;justify-self:start;margin-top:12px}
   .ct h2,.ct .lede,.ct .addr,.ct form{grid-column:1/13;grid-row:auto}

@@ -44,8 +44,8 @@
       var el=document.createElement('span'); el.className='gtag'+(a[3]?' hq':''); el.innerHTML=a[0]; tagsEl.appendChild(el); return {m:m,el:el,dx:a[4],dy:a[5],hq:!!a[3]}; });
 
     /* size: the shell fits the frame */
-    var W=1,H=1; function size(){ W=box.clientWidth; H=box.clientHeight; if(!W||!H) return; ren.setSize(W,H,false); cam.aspect=W/H;
-      var fit=GR*1.1, v=fit/Math.tan(cam.fov*Math.PI/360), h=v/Math.min(1,cam.aspect); cam.position.set(0,0,Math.max(v,h)); cam.lookAt(0,0,0); cam.updateProjectionMatrix(); }
+    var W=1,H=1; function size(){ W=canvas.clientWidth; H=canvas.clientHeight; if(!W||!H) return; ren.setSize(W,H,false); cam.aspect=W/H;
+      var fit=GR*1.2, v=fit/Math.tan(cam.fov*Math.PI/360), h=v/Math.min(1,cam.aspect); cam.position.set(0,0,Math.max(v,h)); cam.lookAt(0,0,0); cam.updateProjectionMatrix(); }
     size(); if('ResizeObserver' in window) new ResizeObserver(size).observe(box); else addEventListener('resize',size);
 
     /* drag to turn, with inertia; a slow idle spin when left alone */
