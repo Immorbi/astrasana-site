@@ -6,14 +6,14 @@
   var BASE=box.getAttribute('data-globe'), reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function gl(){ try{ var c=document.createElement('canvas'); return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))); }catch(e){ return false; } }
   if(!gl()||!('IntersectionObserver' in window)) return;
-  function load(src){ return new Promise(function(ok,no){ var s=document.createElement('script'); s.src=src; s.async=true; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
+  function load(src){ return new Promise(function(ok,no){ var s=document.createElement('script'); s.src=src; s.async=false; /* fetched in parallel, run in order */ s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
   var io=new IntersectionObserver(function(es){ if(!es[0].isIntersecting) return; io.disconnect();
     (window.THREE?Promise.resolve():load(BASE+'three.min.js')).then(function(){ return window.LANDMASK?null:load(BASE+'landmask.js'); })
       .then(function(){ /* the story's glow: three.js post-processing, loaded in order; without it the globe simply has no glow */
         var FX=BASE+'fx/', list=['CopyShader.js','LuminosityHighPassShader.js','EffectComposer.js','RenderPass.js','ShaderPass.js','UnrealBloomPass.js']; /* three.js r128 examples, MIT */
         if(window.THREE.UnrealBloomPass) return null;
-        return list.reduce(function(p,f){ return p.then(function(){ return load(FX+f); }); },Promise.resolve()).catch(function(){}); })
-      .then(start).catch(function(){}); },{rootMargin:'400px 0px'});
+        return Promise.all(list.map(function(f){ return load(FX+f); })).catch(function(){}); })
+      .then(start).catch(function(){}); },{rootMargin:'1400px 0px'});
   io.observe(box);
 
   function start(){
