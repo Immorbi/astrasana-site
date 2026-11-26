@@ -254,7 +254,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 /* ---------- partners: a hairline grid of marks ---------- */
 .pa .head h2{grid-column:1/6}
 .pa .head p{grid-column:7/12;align-self:end}
-/* partners run as one slow band; it stops under the pointer, on keyboard focus and with its pause button */
+/* partners run as one slow band; it stops under the pointer and on keyboard focus */
 .pa .mq{grid-column:1/13;margin-top:clamp(48px,5vw,80px);position:relative;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 .pa .mq-track{display:flex;width:max-content;animation:mq 60s linear infinite}
@@ -262,10 +262,7 @@ td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-righ
 @keyframes mq{to{transform:translateX(-50%)}}
 .pa .logos{display:flex;list-style:none}
 .pa .logos li{flex:none;width:clamp(160px,15vw,230px);height:clamp(96px,8.5vw,128px);display:grid;place-items:center;padding:20px 28px}
-.pa .mq-ctl{grid-column:1/13;justify-self:end;margin-top:12px;display:inline-flex;align-items:center;gap:8px;min-height:44px;border:0;background:none;cursor:pointer;font:500 14px/1 var(--text);color:var(--ink-3)}
-.pa .mq-ctl:hover{color:var(--ink)}
-.pa .mq-ctl svg{width:14px;height:14px;fill:currentColor}
-@media (prefers-reduced-motion:reduce){ .pa .mq{-webkit-mask-image:none;mask-image:none} .pa .mq-track{animation:none;width:auto} .pa .logos{flex-wrap:wrap;justify-content:center} .pa .logos[aria-hidden],.pa .mq-ctl{display:none} }
+@media (prefers-reduced-motion:reduce){ .pa .mq{-webkit-mask-image:none;mask-image:none} .pa .mq-track{animation:none;width:auto} .pa .logos{flex-wrap:wrap;justify-content:center} .pa .logos[aria-hidden]{display:none} }
 .pa .logos img{max-height:56px;max-width:80%;width:auto;object-fit:contain;filter:grayscale(1);opacity:.72;transition:opacity .3s ease,filter .3s ease}
 .pa .logos li:hover img{filter:none;opacity:1}
 
@@ -584,7 +581,6 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
       </ul>
         </div>
       </div>
-      <button class="mq-ctl" type="button" aria-controls="mq" aria-pressed="false"><svg viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2" width="3" height="10"/><rect x="8" y="2" width="3" height="10"/></svg><span>Pause logos</span></button>
     </div>
   </section>
 
@@ -680,11 +676,9 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   var figSec=document.querySelector('.fig');
   if(figSec&&!reduce&&'IntersectionObserver' in window){ var fo=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ fo.disconnect(); countUp(); } },{threshold:.35}); fo.observe(figSec); }
 
-  /* partners: a second copy makes the band seamless; the button pauses it */
+  /* partners: a second copy makes the band seamless */
   var mq=document.getElementById('mq');
-  if(mq){ var ul=mq.querySelector('.logos'), dup=ul.cloneNode(true); dup.setAttribute('aria-hidden','true'); dup.removeAttribute('aria-label'); dup.querySelectorAll('img').forEach(function(i){ i.alt=''; }); ul.parentNode.appendChild(dup);
-    var ctl=document.querySelector('.mq-ctl'); ctl.addEventListener('click',function(){ var on=mq.classList.toggle('paused'); ctl.setAttribute('aria-pressed',on); ctl.querySelector('span').textContent=on?'Play logos':'Pause logos';
-      ctl.querySelector('svg').innerHTML=on?'<path d="M3 2l9 5-9 5z"/>':'<rect x="3" y="2" width="3" height="10"/><rect x="8" y="2" width="3" height="10"/>'; }); }
+  if(mq){ var ul=mq.querySelector('.logos'), dup=ul.cloneNode(true); dup.setAttribute('aria-hidden','true'); dup.removeAttribute('aria-label'); dup.querySelectorAll('img').forEach(function(i){ i.alt=''; }); ul.parentNode.appendChild(dup); }
 
   /* entering the 3D story: remember where the visitor was, settle into dark, then go */
   var KEY='astrasana:return';
