@@ -51,7 +51,7 @@ h2{font-size:var(--t-h2);line-height:1.02}
 h3{font-size:var(--t-h3);line-height:1.15;letter-spacing:-.015em}
 .lede{font-size:var(--t-l);line-height:1.45;color:var(--ink);text-wrap:pretty}
 .cap{font:500 var(--t-cap)/1.5 var(--text);color:var(--purple);letter-spacing:.005em}
-.label{font:600 12px/1.3 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.label{font:500 15px/1.4 var(--text);color:var(--ink-3)}
 .small{font-size:var(--t-s);line-height:1.6}
 p+p{margin-top:1em}
 .cols2{columns:2;column-gap:var(--gut)}
@@ -91,7 +91,7 @@ p+p{margin-top:1em}
 .hd nav a:hover,.hd nav a.on{color:var(--ink)}
 .hd nav a::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
 .hd nav a:hover::after{transform:scaleX(1)}
-.hd nav .x3d sup{font:600 9px/1 var(--display);letter-spacing:.08em;color:var(--purple);margin-left:5px;transform:translateY(-6px)}
+.hd nav .x3d sup{font:600 10px/1 var(--display);color:var(--purple);margin-left:5px;transform:translateY(-6px)}
 .hd nav .contact{color:var(--purple);font-weight:600}
 .hd nav .contact::after{background:var(--purple)}
 .menu-btn{display:none;grid-column:12/13;justify-self:end;width:44px;height:44px;border:0;background:none;cursor:pointer}
@@ -119,7 +119,7 @@ p+p{margin-top:1em}
 .hero .idx{grid-column:1/4;grid-row:3;align-self:end;margin-top:32px}
 .hero .idx li{list-style:none;display:flex;gap:14px;padding:10px 0;border-top:1px solid var(--rule);font-size:var(--t-s)}
 .hero .idx li:last-child{border-bottom:1px solid var(--rule)}
-.hero .idx b{font:600 12px/1.9 var(--display);color:var(--purple);letter-spacing:.06em}
+.hero .idx b{font:600 12px/1.9 var(--display);color:var(--purple)}
 .hero .idx a:hover{color:var(--ink)}
 
 /* ---------- company (brochure p.6: title left and lower, photo top right, compact columns, a quiet table) ---------- */
@@ -135,7 +135,7 @@ th,td{text-align:left;vertical-align:top;padding:11px 16px 11px 0;border-top:1px
 tr:last-child th,tr:last-child td{border-bottom:1px solid var(--ink)}
 th{font:600 14px/1.5 var(--display);color:var(--ink);width:34%;letter-spacing:-.005em}
 td{color:var(--ink-2)}
-td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width:3em;text-align:right;padding-right:0}
+td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-right:0}
 
 /* ---------- figures (brochure p.3-4: two planes, numbers on a quiet colour, a large photograph) ---------- */
 .fig .plane{grid-column:1/7;background:var(--lav-1);min-height:clamp(560px,52vw,860px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(28px,4vw,64px)}
@@ -181,7 +181,7 @@ td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width
 .pr .list{grid-column:1/8;margin-top:clamp(48px,5vw,80px);list-style:none}
 .pr .list li{display:grid;grid-template-columns:3.5em 1fr 1.25fr;column-gap:var(--gut);align-items:baseline;padding:22px 0;border-top:1px solid var(--rule)}
 .pr .list li:last-child{border-bottom:1px solid var(--rule)}
-.pr .list i{font:600 13px/1 var(--display);font-style:normal;color:var(--purple);letter-spacing:.06em}
+.pr .list i{font:600 13px/1 var(--display);font-style:normal;color:var(--purple)}
 .pr .list b{font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
 .pr .list span{font-size:var(--t-s)}
 .pr .pics{grid-column:9/13;margin-top:clamp(48px,5vw,80px);display:grid;gap:var(--gut);align-content:start}
@@ -198,7 +198,7 @@ td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width
 .x3d-sec .pv{grid-column:6/13;grid-row:1/4;position:relative;display:block;overflow:hidden;aspect-ratio:16/10;background:#121116}
 .x3d-sec .pv img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease),opacity .6s ease}
 .x3d-sec .pv:hover img{transform:scale(1.03)}
-.x3d-sec .pv .tag{position:absolute;left:20px;bottom:18px;font:600 12px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.x3d-sec .pv .tag{position:absolute;left:20px;bottom:18px;font:500 14px/1 var(--text);color:#fff}
 .btn3d{display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 22px;border:1px solid rgba(243,238,235,.5);color:#fff;font:600 15px/1 var(--display);transition:background-color .3s ease,color .3s ease,border-color .3s ease}
 .btn3d:hover,.btn3d:focus-visible{background:#fff;color:var(--night);border-color:#fff}
 .btn3d svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
@@ -206,7 +206,7 @@ td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width
 .x3d-sec .chap{grid-column:1/6;grid-row:4;margin-top:56px;list-style:none;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gut)}
 .x3d-sec .chap a{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-top:1px solid rgba(243,238,235,.16);font-size:var(--t-s);color:rgba(243,238,235,.82);transition:color .2s ease}
 .x3d-sec .chap a:hover{color:#fff}
-.x3d-sec .chap a b{font:600 11px/1 var(--display);letter-spacing:.08em;color:var(--night-acc)}
+.x3d-sec .chap a b{font:600 12px/1 var(--display);color:var(--night-acc)}
 
 /* ---------- partners: a hairline grid of marks ---------- */
 .pa .head h2{grid-column:1/6}
@@ -232,7 +232,7 @@ td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width
 .ct .lede{grid-column:1/6;margin-top:28px}
 .ct .addr{grid-column:1/6;margin-top:56px}
 .ct form{grid-column:7/13;grid-row:2/4;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gut);row-gap:28px;align-content:start}
-.ct label{display:grid;gap:6px;font:600 12px/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.ct label{display:grid;gap:6px;font:500 14px/1.3 var(--text);color:var(--ink-3)}
 .ct label.wide{grid-column:1/3}
 .ct input,.ct select,.ct textarea{border:0;border-bottom:1px solid var(--rule-2);background:transparent;padding:10px 0;font:400 var(--t-m)/1.4 var(--text);color:var(--ink);text-transform:none;letter-spacing:0;border-radius:0;min-height:44px}
 .ct textarea{resize:vertical;min-height:110px}
@@ -248,7 +248,7 @@ td.n{font-variant-numeric:tabular-nums;color:var(--purple);font-weight:500;width
 .ft .about{grid-column:3/6;color:var(--ink-3)}
 .ft .col{grid-column:span 2}
 .ft .col.wide{grid-column:span 3}
-.ft h4{font:600 12px/1.3 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:14px}
+.ft h4{font:600 15px/1.3 var(--display);color:var(--ink);margin-bottom:14px}
 .ft ul{list-style:none} .ft li{padding:3px 0}
 .ft a:hover{color:var(--purple)}
 .ft .base{grid-column:1/13;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-top:64px;padding-top:20px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
