@@ -118,12 +118,12 @@ p+p{margin-top:1em}
 /* ---------- header ---------- */
 .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);-webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);transition:box-shadow .3s ease}
 .hd.scrolled{box-shadow:0 1px 0 var(--rule)}
-.hd .grid{height:84px;align-items:center}
+.hd .grid{height:64px;align-items:center}
 .logo{position:relative;display:block;width:max-content;line-height:0}
 .logo img{display:block;height:100%;width:auto}
 .logo .l-white{position:absolute;inset:0;opacity:0}
 .logo img{transition:opacity .42s cubic-bezier(.4,0,.2,1)}
-.hd .logo{grid-column:1/4;height:24px}
+.hd .logo{grid-column:1/4;height:21px}
 .hd nav{grid-column:4/13;display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,1.45vw,24px)}
 .hd nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 14px/1 var(--text);color:var(--ink-2);transition:color .2s ease}
 .hd nav a:hover,.hd nav a.on{color:var(--ink)}
@@ -136,9 +136,9 @@ p+p{margin-top:1em}
 .menu-btn i{display:block;width:22px;height:1.5px;background:var(--ink);margin:6px auto;transition:transform .3s var(--ease)}
 .hd.open .menu-btn i:first-child{transform:translateY(3.75px) rotate(45deg)} .hd.open .menu-btn i:last-child{transform:translateY(-3.75px) rotate(-45deg)}
 @media (max-width:980px){
-  .hd .grid{height:68px} .hd .logo{grid-column:1/7;height:20px}
+  .hd .grid{height:56px} .hd .logo{grid-column:1/7;height:18px}
   .menu-btn{display:block}
-  .hd nav{position:fixed;inset:68px 0 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:0;padding:24px var(--pad) 40px;background:var(--paper);
+  .hd nav{position:fixed;inset:56px 0 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:0;padding:24px var(--pad) 40px;background:var(--paper);
     opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s ease,transform .3s var(--ease),visibility 0s .3s}
   .hd.open nav{opacity:1;visibility:visible;transform:none;transition:opacity .3s ease,transform .3s var(--ease)}
   .hd nav a{width:100%;min-height:60px;font:600 26px/1 var(--display);color:var(--ink);letter-spacing:-.02em;border-bottom:1px solid var(--rule)}
