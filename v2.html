@@ -730,6 +730,14 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 .hero h1{color:#fff} .hero .meta p{color:rgba(255,255,255,.66)} .hero .intro .lede{color:rgba(255,255,255,.88)}
 .hero .pill{color:#fff;--bb:rgba(255,255,255,.12);--bs:inset 0 0 0 1px rgba(255,255,255,.45)} .hero .pill:hover{--bb:rgba(255,255,255,.24);color:#fff}
 .hero .pill.solid{color:var(--deep);--bb:#fff;--bs:none} .hero .pill.solid:hover{--bb:#E6DDF6}
+
+/* no pale lilac grounds: bands are white; panels and cards are white with a fine line */
+.ch::before,.hw::before{background:#fff!important}
+.hero .chm,.fig .pm,.ph-sec .ph.phm,.ph-sec .pat,.pa .logos li{background:#fff!important;box-shadow:inset 0 0 0 1px var(--rule)!important}
+.gs .hero .reveal .chm{background:#fff!important;box-shadow:none!important}
+.ch li,.hw-step{box-shadow:inset 0 0 0 1px var(--rule)}
+.ch li.lit{box-shadow:none}
+.hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bs:inset 0 0 0 1px rgba(20,16,31,.12)}
 </style>
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
