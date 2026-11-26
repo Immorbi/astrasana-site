@@ -835,6 +835,10 @@ h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
 /* header pills on a light ground: a translucent white fill with a blur under the violet outline */
 .hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bb:rgba(255,255,255,.62);--bf:blur(14px) saturate(160%)}
 .hd:not(.dark):not(.tint) nav a:not(.contact):hover{--bb:rgba(255,255,255,.92)}
+/* header pills: no outline, only the blurred translucent fill (white on light grounds, a faint white veil on dark ones) */
+.hd nav a:not(.contact),.hd .vtog,.hd .menu-btn{--bs:none!important;--bf:blur(14px) saturate(160%)!important}
+.hd.dark nav a:not(.contact),.hd.tint nav a:not(.contact),.hd.dark .vtog,.hd.tint .vtog,.hd.dark .menu-btn,.hd.tint .menu-btn{--bb:rgba(255,255,255,.14)}
+.hd.dark nav a:not(.contact):hover,.hd.tint nav a:not(.contact):hover{--bb:rgba(255,255,255,.26)}
 /* one clean violet, no grain: the noise is switched off everywhere; the hero map ends in the colour the Companies band starts with */
 :root{--grain:none;--grain-k:none;--grain-l:none}
 /* no light under the cursor on the violet cards */
