@@ -73,7 +73,11 @@ p+p{margin-top:1em}
 /* photographs: rectangles, cool neutral grade, a slow reveal */
 .ph{position:relative;overflow:hidden;background:var(--paper-2);border-radius:var(--r-photo)}
 .ph img{width:100%;height:100%;object-fit:cover}
-.ph.cool img{filter:saturate(.72) contrast(1.03) brightness(1.02) hue-rotate(-6deg)}
+.ph:not(.tint) img{filter:saturate(.74) contrast(1.04) brightness(1.01)}
+.ph.cool img{filter:saturate(.62) contrast(1.05) brightness(1.02) hue-rotate(-8deg)}
+.ph:not(.tint)::after{content:"";position:absolute;inset:0;background:#d9d0ea;mix-blend-mode:multiply;opacity:.14;pointer-events:none}
+.fig .ph::after{opacity:.08}
+.img-sec .ph::after{display:none}
 .ph.tint{background:var(--lav-1)} .ph.tint img{mix-blend-mode:multiply}
 .rv .ph,.ph.rv{clip-path:inset(0 0 100% 0 round var(--r-photo));transition:clip-path .9s var(--ease)}
 .rv .ph img,.ph.rv img{transform:scale(1.04);transition:transform 1.1s var(--ease)}
@@ -82,6 +86,28 @@ p+p{margin-top:1em}
 .up{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .in .up,.up.in{opacity:1;transform:none}
 .rule{height:1px;background:var(--rule);transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease)}
+/* the chain: one line drawn once when the section arrives, the five stops light up along it */
+.ch .head h2{grid-column:1/7}
+.ch .head p{grid-column:8/12;align-self:end}
+.ch ol{grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gut);position:relative}
+.ch ol::before{content:"";position:absolute;left:0;right:0;top:6px;height:1px;background:var(--ink);transform-origin:left;transform:scaleX(0);transition:transform 1.4s cubic-bezier(.65,0,.35,1)}
+.ch li{position:relative;padding-top:40px}
+.ch li::before{content:"";position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--ink);transition:background-color .4s ease,box-shadow .4s ease;transition-delay:calc(var(--i) * 220ms + 300ms)}
+.ch li .cap{display:block;margin-bottom:10px}
+.ch li b{display:block;font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
+.ch li .co{display:block;margin-top:6px;font:500 14px/1.4 var(--text);color:var(--purple)}
+.ch li p{margin-top:14px;font-size:var(--t-s);max-width:24em}
+.ch li>*{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i) * 220ms + 380ms)}
+.ch.in ol::before{transform:none}
+.ch.in li::before{background:var(--purple);box-shadow:inset 0 0 0 1.5px var(--purple)}
+.ch.in li>*{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){ .ch ol::before,.ch li::before,.ch li>*{transition:none!important} .ch ol::before{transform:none} .ch li>*{opacity:1;transform:none} }
+@media (max-width:1100px){
+  .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
+  .ch ol{grid-template-columns:1fr;row-gap:36px;padding-left:36px}
+  .ch ol::before{left:6px;right:auto;top:6px;bottom:6px;width:1px;height:auto;transform-origin:top;transform:scaleY(0)}
+  .ch li{padding-top:0} .ch li::before{left:-36px;top:4px}
+}
 .in .rule,.rule.in{transform:none}
 @media (prefers-reduced-motion:reduce){ .rv .ph,.ph.rv,.up,.rule{clip-path:none!important;opacity:1!important;transform:none!important;transition:none!important} .rv .ph img,.ph.rv img{transform:none!important;transition:none!important} }
 
@@ -415,6 +441,23 @@ body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s
   </section>
 
   <!-- cultivation, one photograph with text in its free area -->
+  <!-- the chain: every step from cultivation to pharmacy inside one group -->
+  <section class="ch sec rv" aria-labelledby="t-ch">
+    <div class="grid head">
+      <h2 id="t-ch" class="up">One group, every step of the chain</h2>
+      <p class="up">From cultivation in Switzerland to the pharmacy counter and markets abroad, each step sits with a company of the Astrasana group.</p>
+    </div>
+    <div class="grid">
+      <ol aria-label="From cultivation to pharmacy">
+        <li style="--i:0"><span class="cap">01</span><b>Cultivation</b><span class="co">Astrasana Pharma AG</span><p>Around 1,000&nbsp;m² in Switzerland under a Swissmedic licence, following GACP.</p></li>
+        <li style="--i:1"><span class="cap">02</span><b>Production</b><span class="co">Tagelswangen, Canton Zurich</span><p>Processing and packaging, an in-house quality control laboratory and GDP-standard storage.</p></li>
+        <li style="--i:2"><span class="cap">03</span><b>Distribution</b><span class="co">Bogen Pharma AG</span><p>Import and distribution of medical cannabis to pharmacies and clinics in Switzerland and the Czech Republic.</p></li>
+        <li style="--i:3"><span class="cap">04</span><b>Pharmacies</b><span class="co">Partner pharmacies</span><p>THC flowers, standardised extracts and dronabinol for compounding, with expert advice.</p></li>
+        <li style="--i:4"><span class="cap">05</span><b>International</b><span class="co">Group companies abroad</span><p>Products distributed in over 18 countries, with companies in the Czech Republic, Japan, the UK and Belgium.</p></li>
+      </ol>
+    </div>
+  </section>
+
   <section class="img-sec grid sec rv" id="cultivation" aria-labelledby="t-cu">
     <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="100vw" alt="Seedlings breaking through the soil" width="1800" height="2609" loading="lazy">
       <figcaption class="over">
