@@ -967,3 +967,11 @@ html.gs main section.fig.zoom.zoom{max-width:none}
 html:not(.gs) .cu-steps li{position:static;opacity:1;transform:none;margin-bottom:24px} html:not(.gs) .cu-steps{min-height:0}
 @media (max-width:760px){ .cu-v{right:50%;transform:translateX(50%);max-width:none;height:70%;top:auto} .cu::after{background:linear-gradient(180deg,rgba(26,6,58,.85) 0%,rgba(26,6,58,.6) 45%,rgba(26,6,58,0) 70%)} .cu-txt{top:calc(64px + 24px);transform:none;width:auto;right:var(--pad)} }
 @media (max-width:760px){ .cu-steps{min-height:150px} .cu-more{margin-top:16px} }
+/* cultivation: the dropper as a macro filling the whole screen (cover, a little to the right so the text has the left side) */
+.cu-bg{display:none}
+.cu-v{inset:0 -34% 0 auto!important;left:auto!important;right:-34%!important;width:134%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:50% 46%;-webkit-mask-image:none!important;mask-image:none!important;transform:none!important}
+@media (max-width:760px){ .cu-v{right:0!important;width:100%!important;object-position:50% 55%} }
+/* cultivation: the site's own title stays, the two sentences of its text change with the scroll */
+.cu-txt h2{font:700 clamp(36px,4.4vw,76px)/1 var(--display)!important;letter-spacing:-.04em;color:#fff!important;margin:0}
+.cu-steps{margin-top:24px;min-height:clamp(150px,20vh,220px)}
+.cu-steps p{margin-top:0;font:500 clamp(19px,1.6vw,26px)/1.4 var(--text);max-width:24em}
