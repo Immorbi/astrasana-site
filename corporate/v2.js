@@ -106,7 +106,7 @@
   }
 
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
-  $('main h2').forEach(function(h){ if(h.closest('.hero')||h.closest('.sg')) return; own(h);
+  $('main h2').forEach(function(h){ if(h.closest('.hero')||h.closest('.sg')||(h.closest('.fig')&&innerWidth>980)) return; own(h);
     Split.create(keep(h),{type:'lines',mask:'lines',autoSplit:true,onSplit:function(s){
       return g.from(s.lines,{yPercent:110,duration:.8,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:h,start:'top 80%',once:true}}); }}); });
 
@@ -222,20 +222,22 @@
         fig.style.setProperty('--zk',Math.max(0,Math.min(1,(t-.55)/.4)).toFixed(3)); }
       ST.addEventListener('refresh',measure);
       var others=['uk','be','cz','jp'], jpBox=[q('.jp .box'),q('.jp .jt')].filter(Boolean);
-      var words=[fig.querySelector('h2')].concat($('dl>div',fig));
-      g.set(land,{opacity:0}); g.set(words,{autoAlpha:0,y:24}); measure();
-      /* the finale is built paused: its "from" tweens hide the countries, dots, lines and plates until it plays */
-      var played=false, finale=g.timeline({paused:true});
-      finale.fromTo(jpBox,{autoAlpha:0},{autoAlpha:1,duration:.5},0);
-      drops(finale,['ch'].concat(others),.1);
-      finale.to(words,{autoAlpha:1,y:0,duration:.8,stagger:.12,ease:'expo.out'},.2);
-      finale.progress(0).pause();
-      var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=170%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
-        onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); },
-        onUpdate:function(self){ if(self.progress>.86&&!played){ played=true; finale.play(0); } else if(self.progress<.6&&played){ played=false; finale.pause(0); } }}});
+      /* the title word by word, then each figure row: all scrubbed, so the map stands still while the text builds up */
+      var h2=fig.querySelector('h2'); h2.innerHTML=h2.innerHTML.split(/(\s+|&nbsp;)/).map(function(t){ return !t||/^(\s+|&nbsp;)$/.test(t)?t:'<span class="fw">'+t+'</span>'; }).join('');
+      var hw=$('.fw',h2), rows=$('dl>div',fig);
+      g.set(land,{opacity:0}); measure();
+      var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=420%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+        onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); }}});
+      /* 0 to 1: the camera pulls back from Switzerland to Europe */
       zt.to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
-        .to(land,{opacity:1,duration:.35,stagger:{amount:.35,from:'center'}},.25)
-        .to({},{duration:.3});
+        .to(land,{opacity:1,duration:.35,stagger:{amount:.35,from:'center'}},.25);
+      /* 1 to 2.6: the group's countries land one after another, with dot, line and plate; Japan's inset comes in */
+      zt.fromTo(jpBox,{autoAlpha:0},{autoAlpha:1,duration:.3},1.6);
+      drops(zt,['ch'].concat(others),1.05);
+      /* 2.6 to 3.8: the title word by word, then the figures one row at a time */
+      zt.fromTo(hw,{autoAlpha:0,yPercent:40},{autoAlpha:1,yPercent:0,duration:.25,stagger:.12,ease:'power2.out'},2.6)
+        .fromTo(rows,{autoAlpha:0,y:30},{autoAlpha:1,y:0,duration:.3,stagger:.28,ease:'power2.out'},3.0)
+        .to({},{duration:.4});
     } else {
       var tl=g.timeline({scrollTrigger:{trigger:pm,start:'top 72%',once:true}});
       tl.from(land,{autoAlpha:0,duration:.5,stagger:{amount:.8},ease:'power1.out'},0)
@@ -257,6 +259,13 @@
       .fromTo(big,{autoAlpha:0,y:60},{autoAlpha:1,y:0,ease:'power3.out',duration:.3},.72)
       .fromTo(ws,{opacity:.12},{opacity:1,stagger:.035,duration:.12},.9)
       .to({},{duration:.25}); } ST.sort(); ST.refresh();
+
+  /* 20. cultivation: the flowering plant turns with the scroll (the video is scrubbed while the photo frame crosses the screen) */
+  var cv=document.querySelector('.cv'); if(cv){ cv.pause(); var cw=0, cs=false;
+    var cseek=function(){ var d=cv.duration; if(!d||!isFinite(d)) return; if(!cs&&Math.abs(cv.currentTime-cw)>.03){ cs=true; cv.currentTime=cw; } };
+    cv.addEventListener('seeked',function(){ cs=false; cseek(); });
+    var cun=function(){ cv.removeAttribute('poster'); }; if(cv.readyState>=2) cun(); else cv.addEventListener('loadeddata',cun,{once:true});
+    ST.create({trigger:cv.parentNode,start:'top bottom',end:'bottom top',scrub:true,onUpdate:function(self){ var d=cv.duration; if(d&&isFinite(d)){ cw=Math.min(d-.05,self.progress*d); cseek(); } }}); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
