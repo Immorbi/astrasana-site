@@ -65,6 +65,8 @@
     hv.pause(); hv.muted=true;
     var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
     if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
+    /* Safari shows the poster for a moment while a paused video seeks: drop it once the first frame is decoded, so no other frame flashes during the scrub */
+    var unposter=function(){ hv.removeAttribute('poster'); }; if(hv.readyState>=2) unposter(); else hv.addEventListener('loadeddata',unposter,{once:true});
     var vt={t:0}, want=0, seeking=false;
     function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; }}
     hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
@@ -102,7 +104,7 @@
   }
 
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
-  $('main h2').forEach(function(h){ if(h.closest('.hero')) return; own(h);
+  $('main h2').forEach(function(h){ if(h.closest('.hero')||h.closest('.sg')) return; own(h);
     Split.create(keep(h),{type:'lines',mask:'lines',autoSplit:true,onSplit:function(s){
       return g.from(s.lines,{yPercent:110,duration:.8,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:h,start:'top 80%',once:true}}); }}); });
 
@@ -197,6 +199,18 @@
     g.fromTo(q('.pm-land'),{y:-6},{y:6,ease:'none',scrollTrigger:{trigger:pm,start:'top bottom',end:'bottom top',scrub:true}}); }
   /* 18. team cards rise one after another; partner dots on the pharmacy map are already staggered in CSS */
   var tml=document.querySelector('.tm-list'); if(tml){ own(tml); g.from($('li',tml),{y:40,autoAlpha:0,duration:.9,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:tml,start:'top 80%',once:true}}); }
+
+  /* 19. statement: the signifier grows from a small mark into a wide arc on the left, as on the reference; then the title
+         rises and the words of the line fill in, all scrubbed while the section is pinned */
+  var sg=document.querySelector('.sg'); if(sg){ var mk=sg.querySelector('.sg-mark'), big=sg.querySelector('.sg-big'), lede=sg.querySelector('.sg-lede');
+    var ws=[]; lede.innerHTML=lede.innerHTML.split(/(\s+)/).map(function(t){ return /^\s+$/.test(t)||!t?t:'<span class="w">'+t+'</span>'; }).join(''); ws=$('.w',lede);
+    g.set(mk,{xPercent:-50,yPercent:-50,transformOrigin:'50% 50%'});
+    var st=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:sg,start:'top top',end:'+=220%',pin:true,scrub:.6,anticipatePin:1}});
+    st.fromTo(mk,{scale:.22,x:0},{scale:4.4,x:function(){ return -innerWidth*.52; },ease:'power2.inOut',duration:1},0)
+      .fromTo(lede,{autoAlpha:0},{autoAlpha:1,duration:.05},.85)
+      .fromTo(big,{autoAlpha:0,y:60},{autoAlpha:1,y:0,ease:'power3.out',duration:.3},.72)
+      .fromTo(ws,{opacity:.12},{opacity:1,stagger:.035,duration:.12},.9)
+      .to({},{duration:.25}); } ST.sort(); ST.refresh();
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
