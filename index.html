@@ -10,7 +10,7 @@
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="corporate/img/brand/logo-color.svg" type="image/svg+xml">
-<link rel="stylesheet" href="corporate/v2.css?v=1eb7501">
+<link rel="stylesheet" href="corporate/v2.css?v=854016b">
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
 <script>document.documentElement.classList.add('js');
@@ -106,22 +106,17 @@
     </div>
   </section>
 
-  <!-- the chain: every step from cultivation to pharmacy inside one group -->
-  <section class="ch sec rv" id="chain" aria-labelledby="t-ch">
-    <div class="grid head">
-      <h2 id="t-ch" class="up">One group, every step of&nbsp;the&nbsp;chain</h2>
+  <!-- how we work: the steps change with the scroll beside an object turning in a round frame -->
+  <section class="ob" id="how" aria-labelledby="t-ob">
+    <div class="ob-txt">
+      <h2 id="t-ob">From&nbsp;seed to&nbsp;pharmacy in&nbsp;one group</h2>
+      <ol class="ob-steps"><li class="on"><h3>Cultivation</h3><ul><li>Around 1,000&nbsp;m² in&nbsp;Switzerland</li><li>Operating under a&nbsp;Swissmedic licence</li><li>Every batch traceable from&nbsp;seed to&nbsp;harvest</li></ul></li><li><h3>Production</h3><ul><li>Pharmaceutical processing and&nbsp;packaging</li><li>In&#8209;house quality control laboratory</li><li>Under one roof in&nbsp;Tagelswangen, Canton Zurich</li></ul></li><li><h3>Distribution</h3><ul><li>Import and&nbsp;distribution through Bogen Pharma&nbsp;AG</li><li>Supply to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic</li><li>Expert advice for&nbsp;partner pharmacies</li></ul></li><li><h3>International</h3><ul><li>Companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and&nbsp;Belgium</li><li>Products distributed in&nbsp;over 18&nbsp;countries</li><li>Exclusive partnership with&nbsp;GSI Creos for&nbsp;CBD products</li></ul></li></ol>
+      <a class="tlink more" href="pharma.html"><span>How we work</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
-    <div class="grid">
-      <ol aria-label="From cultivation to pharmacy">
-        <span class="track" aria-hidden="true"><i></i><b></b></span>
-        <li><span class="num" aria-hidden="true">01</span><b>Cultivation</b></li>
-        <li><span class="num" aria-hidden="true">02</span><b>Production</b></li>
-        <li><span class="num" aria-hidden="true">03</span><b>Distribution</b></li>
-        <li><span class="num" aria-hidden="true">04</span><b>Pharmacies</b></li>
-        <li><span class="num" aria-hidden="true">05</span><b>International</b></li>
-      </ol>
-    </div>
+    <figure class="ob-fig" aria-hidden="true"><video class="ob-v" poster="corporate/img/steps-bubbles-poster.webp" muted playsinline preload="auto"><source src="corporate/video/steps-bubbles.mp4" type="video/mp4"><source src="corporate/video/steps-bubbles.webm" type="video/webm"></video></figure>
+    <div class="ob-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
   </section>
+
 
 
   <section class="cu" id="cultivation" aria-labelledby="t-cu">
@@ -224,6 +219,11 @@
     </div>
   </section>
 
+  <!-- finale: the production line opens from a small window to the whole screen before the contact -->
+  <section class="fin" aria-hidden="true">
+    <div class="fin-win"><img class="fin-l" src="corporate/img/hero-line-light.webp" alt="" width="1672" height="941" loading="lazy"><img class="fin-d" src="corporate/img/hero-line-dark.webp" alt="" width="1672" height="941" loading="lazy"></div>
+  </section>
+
   <!-- contact -->
   <section class="ct grid sec rv" id="contact" aria-labelledby="t-ct">
     <h2 id="t-ct" class="up">Let's discuss what Astrasana can build together</h2>
@@ -247,7 +247,7 @@
 </footer>
 <div class="veil" aria-hidden="true"></div>
 
-<script src="corporate/v2-page.js?v=1eb7501"></script>
+<script src="corporate/v2-page.js?v=854016b"></script>
 <script>
 /* V2 hero stage: the purple reaches the middle of the map panel; the header is purple while the stage is under it */
 (function(){ var hero=document.querySelector('.hero'), chm=document.querySelector('.hero .chm'), hd=document.getElementById('hd'); if(!hero||!chm) return;
@@ -294,7 +294,7 @@
 <script src="land/vendor/motion/CustomEase.min.js" defer></script>
 <script src="land/vendor/motion/Flip.min.js" defer></script>
 <script src="land/vendor/motion/lenis.min.js" defer></script>
-<script src="corporate/motion.js?v=1eb7501" defer></script>
-<script src="corporate/v2.js?v=1eb7501" defer></script>
+<script src="corporate/motion.js?v=854016b" defer></script>
+<script src="corporate/v2.js?v=854016b" defer></script>
 </body>
 </html>

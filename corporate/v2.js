@@ -171,6 +171,7 @@
   function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); if(!(r.top<=64&&r.bottom>64)) return false;
       /* the pinned About Us band counts only while the Pharmacies block has not yet slid over the header */
       if(e.classList.contains('x3d-sec')){ var ps=document.querySelector('.ph-sec'); if(ps&&ps.getBoundingClientRect().top<=72) return false; } return true; });
+    if(!on){ var fe=document.querySelector('.fin'); if(fe&&!fe.classList.contains('lit')){ var fr2=fe.getBoundingClientRect(); on=fr2.top<=64&&fr2.bottom>64; } }
     if(!on){ var fz=document.querySelector('.fig.zoom.on.hd-dark'); if(fz){ var zr=fz.getBoundingClientRect(); on=zr.top<=64&&zr.bottom>64; } }
     if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
     hd.classList.toggle('dark',on); }
@@ -284,6 +285,17 @@
       .fromTo(ws,{opacity:.12},{opacity:1,stagger:.035,duration:.12},.9)
       .to({},{duration:.25}); } ST.sort(); ST.refresh();
 
+  /* 26. how we work: pinned; the bubbles turn in a round frame (the video is scrubbed) while the four steps change in turn,
+         with dots below the frame; after the reference's rotating object beside stepped text */
+  var ob=document.querySelector('.ob'); if(ob){ var ov=ob.querySelector('.ob-v'), osteps=$('.ob-steps>li',ob), odots=$('.ob-dots i',ob), ow=0, os=false, ocur=0;
+    ov.pause(); function og(){ var d=ov.duration; if(!d||!isFinite(d)) return; if(!os&&Math.abs(ov.currentTime-ow)>.03){ os=true; ov.currentTime=ow; } }
+    ov.addEventListener('seeked',function(){ os=false; og(); }); var oun=function(){ ov.removeAttribute('poster'); }; if(ov.readyState>=2) oun(); else ov.addEventListener('loadeddata',oun,{once:true});
+    function ostep(i){ if(i===ocur) return; ocur=i; osteps.forEach(function(li,k){ li.classList.toggle('on',k===i); li.classList.toggle('past',k<i); }); odots.forEach(function(d,k){ d.classList.toggle('on',k===i); }); }
+    var ofr=ob.querySelector('.ob-fig');
+    ST.create({trigger:ob,start:'top top',end:'+='+(osteps.length*70)+'%',pin:true,scrub:true,anticipatePin:1,
+      onUpdate:function(self){ var p=self.progress, d=ov.duration; if(d&&isFinite(d)){ ow=Math.min(d-.05,p*d); og(); }
+        ofr.style.setProperty('--rot',(p*90-45).toFixed(1)+'deg'); ostep(Math.min(osteps.length-1,Math.floor(p*osteps.length))); }}); }
+
   /* 20. cultivation: the scene stands still while the scroll moves through it. The dropper bottle, centred and close, is
          scrubbed and the view travels down it from the dropper's bulb to the base of the bottle; the first text rises
          through the left side and leaves, then the second rises through the right side */
@@ -354,6 +366,13 @@
   /* 25. partners: the logo cells come in one after another, row by row */
   var lw=document.querySelector('.pa .logos:not([aria-hidden])'); if(lw){ own(lw); var lc=$('li',lw); lc.forEach(own);
     g.from(lc,{autoAlpha:0,y:24,duration:.8,stagger:{each:.06,grid:'auto',from:'start'},ease:'expo.out',scrollTrigger:{trigger:lw,start:'top 85%',once:true}}); }
+
+  /* 27. finale: on the dark band, the dark production line opens from a small rounded window to the whole screen and turns light as it fills it */
+  var fn=document.querySelector('.fin'); if(fn){ var fw=fn.querySelector('.fin-win'), fd=fn.querySelector('.fin-d');
+    g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fn,start:'top top',end:'+=120%',pin:true,scrub:.5,anticipatePin:1}})
+      .fromTo(fw,{'--fs':'34%'},{'--fs':'1400%',duration:1,ease:'power3.in',onUpdate:function(){ fw.classList.toggle('full',parseFloat(getComputedStyle(fw).getPropertyValue('--fs'))>1200); }},0)
+      .fromTo(fw.querySelectorAll('img'),{scale:1.25},{scale:1,duration:1,ease:'power2.out'},0)
+      .fromTo(fd,{opacity:1},{opacity:0,duration:.5,onUpdate:function(){ var lit=+fd.style.opacity<.5; if(lit!==fn.classList.contains('lit')){ fn.classList.toggle('lit',lit); if(window.__hdTone) window.__hdTone(); } }},.5); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
