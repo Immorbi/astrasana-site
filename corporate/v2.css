@@ -963,3 +963,31 @@ html:not(.gs) .cu{height:auto;min-height:100svh} html:not(.gs) .cu-txt{position:
 @media (max-width:760px){ .cu-txt{width:auto;left:var(--pad);right:var(--pad);top:auto;bottom:10vh;margin:0}
   .cu::before,.cu::after{background:linear-gradient(0deg,rgba(26,6,58,.88) 0%,rgba(26,6,58,.55) 40%,rgba(26,6,58,0) 65%)} }
 .cu .cu-v{z-index:-2}
+
+/* ---------- Companies, light: lilac ground, deep violet type, violet brackets, and two large signifier outlines drifting
+   behind at their own speeds (parallax) ---------- */
+.co::before{background:linear-gradient(180deg,#F6F2FD 0%,#E6DDF6 100%)!important}
+.co h2{color:#1A063A!important;font-weight:600}
+.co .ttl .lede{color:#280A58!important}
+.co .tlink.more{color:#431291} .co .tlink.more svg{stroke:#431291}
+.co .ttl .brk{filter:brightness(0) saturate(100%) invert(14%) sepia(60%) saturate(4000%) hue-rotate(258deg);opacity:.5}
+.co{overflow:hidden}
+.co-par{position:absolute;inset:0;z-index:-1;pointer-events:none;left:50%;width:100vw;transform:translateX(-50%)}
+.co-par svg{position:absolute;height:auto;fill:none;stroke:#A688E0;stroke-width:.25;opacity:.55}
+.co-m1{width:min(46vw,620px);left:-8vw;top:-10%}
+.co-m2{width:min(36vw,480px);right:-6vw;bottom:-14%;opacity:.35!important}
+/* news cards: shorter */
+.nw li a{min-height:clamp(300px,26vw,400px)!important}
+@media (max-width:980px){ .nw li a{min-height:280px!important} }
+/* space between the news cards and the dark contact band */
+main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
+
+/* Pharmacies slides up over the pinned About Us band: a white sheet with rounded top corners and a soft shadow */
+.ph-sec{position:relative;z-index:3;isolation:isolate;padding-top:clamp(72px,7vw,120px)}
+.ph-sec::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:#fff;
+  border-radius:36px 36px 0 0;box-shadow:0 -24px 60px -18px rgba(13,2,32,.55)}
+.x3d-sec .grid{will-change:transform,opacity}
+/* About Us fills the screen, so it can stay pinned whole while the Pharmacies sheet covers it; the section after the sheet
+   is opaque too, so nothing of the pinned band shows below */
+.gs .x3d-sec{min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+.gs .pr{position:relative;z-index:3;background:#fff;box-shadow:0 0 0 100vmax #fff;clip-path:inset(0 -100vmax)}

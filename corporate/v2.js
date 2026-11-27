@@ -117,7 +117,7 @@
     ST.create({trigger:el,start:'top 85%',end:'top 35%',scrub:true,onUpdate:function(self){ var head=self.progress*w.length;
       w.forEach(function(word,i){ g.set(word,{color:g.utils.interpolate(muted,active,g.utils.clamp(0,1,head-i))}); }); }}); }
   $('.ph-sec .lede').forEach(function(el){ highlight(el,'rgba(35,31,32,.18)','#231f20'); });
-  $('.co .ttl .lede').forEach(function(el){ highlight(el,'rgba(255,255,255,.2)','rgba(255,255,255,.9)'); });
+  $('.co .ttl .lede').forEach(function(el){ highlight(el,'rgba(26,6,58,.2)','#1A063A'); });
   $('.x3d-sec .txt').forEach(function(el){ highlight(el,'rgba(243,238,235,.18)','rgba(243,238,235,.86)'); });
 
   /* 4. photographs settle from a slight zoom as they come in */
@@ -159,8 +159,10 @@
   var hd=document.getElementById('hd');
   /* the header is dark exactly while a dark band is under it */
   /* the hero video is light: over the hero the header turns dark only once the dark map panel has opened over it */
-  var darkEls=$('.co,.x3d-sec,.ct,.cu'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
-  function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; });
+  var darkEls=$('.x3d-sec,.ct,.cu'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
+  function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); if(!(r.top<=64&&r.bottom>64)) return false;
+      /* the pinned About Us band counts only while the Pharmacies block has not yet slid over the header */
+      if(e.classList.contains('x3d-sec')){ var ps=document.querySelector('.ph-sec'); if(ps&&ps.getBoundingClientRect().top<=72) return false; } return true; });
     if(!on){ var fz=document.querySelector('.fig.zoom.on.hd-dark'); if(fz){ var zr=fz.getBoundingClientRect(); on=zr.top<=64&&zr.bottom>64; } }
     if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
     hd.classList.toggle('dark',on); }
@@ -281,6 +283,23 @@
       .to(ca,{yPercent:-60,autoAlpha:0,duration:.2},.34)
       .fromTo(cb,{yPercent:60,autoAlpha:0},{yPercent:0,autoAlpha:1,duration:.2},.5)
       .to({},{duration:.3},.7); }
+
+  /* 21. Companies, light: two large outlines of the signifier drift at their own speeds behind the statement, the title a
+         little slower than the page and the corner brackets a little faster (parallax depth) */
+  var co=document.querySelector('.co'); if(co){ var pr={trigger:co,start:'top bottom',end:'bottom top',scrub:true};
+    g.fromTo(co.querySelector('.co-m1'),{yPercent:-18,rotate:-4},{yPercent:22,rotate:4,ease:'none',scrollTrigger:pr});
+    g.fromTo(co.querySelector('.co-m2'),{yPercent:30,rotate:6},{yPercent:-30,rotate:-6,ease:'none',scrollTrigger:pr});
+    g.fromTo(co.querySelector('.ttl h2'),{y:60},{y:-60,ease:'none',scrollTrigger:pr});
+    g.fromTo(co.querySelector('.ttl .lede'),{y:30},{y:-30,ease:'none',scrollTrigger:pr});
+    g.fromTo(co.querySelector('.brk'),{scale:.94},{scale:1.06,ease:'none',scrollTrigger:pr}); }
+
+  /* 22. About Us stays pinned when its end is reached and the Pharmacies block slides up over it, while the band beneath
+         sinks back (slight scale-down and darkening); the globe drifts slower than the page (parallax) */
+  var ax=document.querySelector('.x3d-sec'), px=document.querySelector('.ph-sec');
+  if(ax&&px){ var axi=ax.querySelector('.grid');
+    ST.create({trigger:ax,start:'bottom bottom',end:function(){ return '+='+innerHeight; },pin:true,pinSpacing:false});
+    g.to(axi,{scale:.92,opacity:.35,ease:'none',transformOrigin:'50% 100%',scrollTrigger:{trigger:px,start:'top bottom',end:'top top',scrub:true}});
+    var gl=ax.querySelector('.pv'); if(gl) g.fromTo(gl,{y:90},{y:-90,ease:'none',scrollTrigger:{trigger:ax,start:'top bottom',end:'bottom top',scrub:true}}); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

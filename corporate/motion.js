@@ -1,4 +1,4 @@
-/* Motion environment for the second version of the site (v2.html).
+/* Motion environment for the site.
    Tools, served from land/vendor/motion/ (fixed versions, no build step):
      GSAP 3.15.0 with ScrollTrigger, SplitText, CustomEase and Flip (GreenSock standard licence, free for commercial use)
      Lenis 1.3.27 smooth scrolling (MIT)
