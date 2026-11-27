@@ -106,7 +106,7 @@
   }
 
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
-  $('main h2').forEach(function(h){ if(h.closest('.hero')||h.closest('.sg')||(h.closest('.fig')&&innerWidth>980)) return; own(h);
+  $('main h2').forEach(function(h){ if(h.closest('.hero')||h.closest('.sg')||h.closest('.cu')||(h.closest('.fig')&&innerWidth>980)) return; own(h);
     Split.create(keep(h),{type:'lines',mask:'lines',autoSplit:true,onSplit:function(s){
       return g.from(s.lines,{yPercent:110,duration:.8,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:h,start:'top 80%',once:true}}); }}); });
 
@@ -159,7 +159,7 @@
   var hd=document.getElementById('hd');
   /* the header is dark exactly while a dark band is under it */
   /* the hero video is light: over the hero the header turns dark only once the dark map panel has opened over it */
-  var darkEls=$('.co,.x3d-sec,.ct'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
+  var darkEls=$('.co,.x3d-sec,.ct,.cu'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
   function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; });
     if(!on){ var fz=document.querySelector('.fig.zoom.on.hd-dark'); if(fz){ var zr=fz.getBoundingClientRect(); on=zr.top<=64&&zr.bottom>64; } }
     if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
@@ -210,14 +210,20 @@
       function heroCH(){ var st=document.querySelector('.hero .stage'); if(!heroCn||!st) return null;
         var a=heroCn.getBoundingClientRect(), b=st.getBoundingClientRect(), m=/scale\(([\d.]+)/.exec(heroCn.style.transform||''), sc=m?+m[1]:1, w=a.width/sc, h=a.height/sc;
         return {cx:a.left-b.left-(w-a.width)*.5+w/2, cy:a.top-b.top-(h-a.height)*.6+h/2, w:w}; }
-      var VW=1000, AR=.62, V0={x:0,y:0,w:VW}, v={t:0};
+      var VW=1000, AR=.62, V0={x:0,y:0,w:VW}, V1={x:0,y:0,w:VW}, v={t:0};
+      /* the end view fits on any screen: the group's part of the map (UK to Czechia, Japan's inset) sits whole in the left
+         part of the screen, below the header, whatever the screen's proportions */
+      var RC={x:30,y:150,w:620,h:452};
+      function endView(){ var W=innerWidth, H=innerHeight, aw=W*.6, top=80, ah=H-top-24, sc=Math.min(aw/RC.w,ah/RC.h);
+        V1.w=W/sc; V1.h=H/sc; V1.x=RC.x+RC.w/2-(W*.31)/sc; V1.y=RC.y+RC.h/2-(top+ah/2)/sc; }
       /* the start view: Switzerland on screen exactly where and as large as the hero map leaves it (viewBox with "slice") */
       function measure(){ fitChd(); var R=heroCH(), fb=chHl.getBBox(), vw=innerWidth, vh=innerHeight;
         if(!R){ R={cx:vw*.62,cy:vh*.52,w:vw*.4}; }
-        var s=R.w/fb.width, w=Math.max(vw/s,vh/s/AR), cx=fb.x+fb.width/2, cy=fb.y+fb.height/2;
-        V0.w=w; V0.x=cx-(R.cx-(vw-w*s)/2)/s; V0.y=cy-(R.cy-(vh-w*AR*s)/2)/s; vb(); }
-      function vb(){ var t=v.t, w=Math.exp(Math.log(V0.w)+(Math.log(VW)-Math.log(V0.w))*t), k=(w-V0.w)/(VW-V0.w);
-        pm.setAttribute('viewBox',(V0.x*(1-k)).toFixed(2)+' '+(V0.y*(1-k)).toFixed(2)+' '+w.toFixed(2)+' '+(w*AR).toFixed(2));
+        var s=R.w/fb.width, cx=fb.x+fb.width/2, cy=fb.y+fb.height/2;
+        /* viewBox with the screen's own proportions, so one map unit is the same size across and down */
+        V0.w=vw/s; V0.h=vh/s; V0.x=cx-R.cx/s; V0.y=cy-R.cy/s; endView(); vb(); }
+      function vb(){ var t=v.t, w=Math.exp(Math.log(V0.w)+(Math.log(V1.w)-Math.log(V0.w))*t), k=(w-V0.w)/(V1.w-V0.w||1), h=w*(V0.h/V0.w);
+        pm.setAttribute('viewBox',(V0.x+(V1.x-V0.x)*k).toFixed(2)+' '+(V0.y+(V1.y-V0.y)*k).toFixed(2)+' '+w.toFixed(2)+' '+h.toFixed(2));
         var x=Math.max(0,Math.min(1,(t-.6)/.2)); if(chd) chd.style.opacity=1-x; chHl.style.opacity=x;
         fig.style.setProperty('--zk',Math.max(0,Math.min(1,(t-.55)/.4)).toFixed(3)); }
       ST.addEventListener('refresh',measure);
@@ -260,12 +266,17 @@
       .fromTo(ws,{opacity:.12},{opacity:1,stagger:.035,duration:.12},.9)
       .to({},{duration:.25}); } ST.sort(); ST.refresh();
 
-  /* 20. cultivation: the flowering plant turns with the scroll (the video is scrubbed while the photo frame crosses the screen) */
-  var cv=document.querySelector('.cv'); if(cv){ cv.pause(); var cw=0, cs=false;
-    var cseek=function(){ var d=cv.duration; if(!d||!isFinite(d)) return; if(!cs&&Math.abs(cv.currentTime-cw)>.03){ cs=true; cv.currentTime=cw; } };
-    cv.addEventListener('seeked',function(){ cs=false; cseek(); });
+  /* 20. cultivation: a full-screen pinned scene. The dropper bottle video is scrubbed by the scroll (a blurred, enlarged copy
+         fills the screen behind it) and the three short lines change in step, with a small progress bar */
+  var cu=document.querySelector('.cu'); if(cu){ var cv=cu.querySelector('.cu-v'), cb=cu.querySelector('.cu-bg'), steps=$('.cu-steps li',cu), bars=$('.cu-bar i',cu);
+    [cv,cb].forEach(function(vd){ vd.pause(); vd._w=0; vd._s=false; vd.addEventListener('seeked',function(){ vd._s=false; go(vd); }); });
+    function go(vd){ var d=vd.duration; if(!d||!isFinite(d)) return; if(!vd._s&&Math.abs(vd.currentTime-vd._w)>.03){ vd._s=true; vd.currentTime=vd._w; } }
     var cun=function(){ cv.removeAttribute('poster'); }; if(cv.readyState>=2) cun(); else cv.addEventListener('loadeddata',cun,{once:true});
-    ST.create({trigger:cv.parentNode,start:'top bottom',end:'bottom top',scrub:true,onUpdate:function(self){ var d=cv.duration; if(d&&isFinite(d)){ cw=Math.min(d-.05,self.progress*d); cseek(); } }}); }
+    var cur=-1; function step(i){ if(i===cur) return; cur=i; steps.forEach(function(li,k){ li.classList.toggle('on',k===i); li.classList.toggle('past',k<i); }); bars.forEach(function(b,k){ b.classList.toggle('on',k<=i); }); }
+    step(0);
+    ST.create({trigger:cu,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,
+      onUpdate:function(self){ var p=self.progress; [cv,cb].forEach(function(vd){ var d=vd.duration; if(d&&isFinite(d)){ vd._w=Math.min(d-.05,p*d); go(vd); } });
+        step(p<.34?0:p<.67?1:2); }}); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

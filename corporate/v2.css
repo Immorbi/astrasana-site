@@ -943,3 +943,27 @@ main .co.sec{margin-top:0!important}
 .gs .fig.zoom h2{font-weight:600!important;letter-spacing:-.035em;font-size:clamp(44px,5.4vw,96px)!important;line-height:.98}
 /* cultivation: the violet plant video fills the photo frame */
 .img-sec .cv{display:block;width:100%;height:100%;object-fit:cover;background:#2A0E5C}
+html.gs main section.fig.zoom.zoom{max-width:none}
+
+/* ---------- cultivation: a full-screen scene; the dropper video stands whole in the centre-right, a blurred copy of it fills
+   the screen, and three short lines change with the scroll ---------- */
+.cu{position:relative;height:100svh;min-height:600px;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;background:#2A1650;isolation:isolate}
+.cu-bg{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(40px) saturate(1.1);opacity:.9;z-index:-2}
+.cu-v{position:absolute;top:0;bottom:0;right:max(4vw,calc(50% - 46vh));height:100%;width:auto;max-width:60vw;object-fit:contain;z-index:-1;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%)}
+.cu::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(26,6,58,.82) 0%,rgba(26,6,58,.55) 34%,rgba(26,6,58,0) 58%)}
+.cu-txt{position:absolute;left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));top:50%;transform:translateY(-50%);width:min(40vw,560px);color:#fff}
+.cu-k{font:600 13px/1 var(--text);letter-spacing:.12em;text-transform:uppercase;color:#CBB9EE}
+.cu-steps{list-style:none;position:relative;margin:22px 0 0;min-height:clamp(220px,30vh,300px)}
+.cu-steps li{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(28px);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.cu-steps li.past{transform:translateY(-28px)}
+.cu-steps li.on{opacity:1;transform:none}
+.cu-steps h2,.cu-steps h3{font:700 clamp(36px,4.4vw,76px)/1 var(--display)!important;letter-spacing:-.04em;color:#fff!important;margin:0}
+.cu-steps p{margin-top:18px;max-width:22em;font:500 clamp(17px,1.4vw,22px)/1.4 var(--text);color:rgba(255,255,255,.86)}
+.cu-bar{display:flex;gap:8px;margin-top:8px}
+.cu-bar i{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);transition:background-color .4s ease}
+.cu-bar i.on{background:#fff}
+.cu-more{margin-top:28px;color:#fff} .cu-more svg{stroke:#fff}
+html:not(.gs) .cu-steps li{position:static;opacity:1;transform:none;margin-bottom:24px} html:not(.gs) .cu-steps{min-height:0}
+@media (max-width:760px){ .cu-v{right:50%;transform:translateX(50%);max-width:none;height:70%;top:auto} .cu::after{background:linear-gradient(180deg,rgba(26,6,58,.85) 0%,rgba(26,6,58,.6) 45%,rgba(26,6,58,0) 70%)} .cu-txt{top:calc(64px + 24px);transform:none;width:auto;right:var(--pad)} }
+@media (max-width:760px){ .cu-steps{min-height:150px} .cu-more{margin-top:16px} }
