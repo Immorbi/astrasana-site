@@ -1076,3 +1076,30 @@ main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
   .pr.stacked .list.stack li span{font-size:clamp(16px,1.25vw,20px)}
 }
 @media (min-width:981px){ .pr.stacked .head{grid-column:1/7} .pr.stacked .head h2{max-width:11em} }
+
+/* ---------- partners: a calm logo wall instead of the moving pills. A 5-column grid of equal cells divided by hairlines,
+   logos in one violet-grey tone that take their own colours on hover; the cells come in one after another ---------- */
+.pa .mq{overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important;border:0!important;margin-top:clamp(40px,4vw,64px)}
+.pa .mq-track{animation:none!important;width:auto!important;display:block!important}
+.pa .logos[aria-hidden="true"]{display:none!important}
+.pa .logos{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:0!important;padding:0!important;
+  border-top:1px solid rgba(67,18,145,.14);border-left:1px solid rgba(67,18,145,.14)}
+.pa .logos li{width:auto!important;height:clamp(110px,9vw,150px)!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;
+  border-right:1px solid rgba(67,18,145,.14);border-bottom:1px solid rgba(67,18,145,.14);padding:24px 32px!important;transform:none!important;transition:background-color .35s ease}
+.pa .logos img{max-height:52px;max-width:72%;filter:grayscale(1) sepia(.35) hue-rotate(220deg) saturate(1.6) brightness(.55)!important;opacity:.75!important;transition:filter .35s ease,opacity .35s ease,transform .5s var(--ease)}
+@media (hover:hover){ .pa .logos li:hover{background:#F6F2FD!important} .pa .logos li:hover img{filter:none!important;opacity:1!important;transform:scale(1.06)} }
+@media (max-width:980px){ .pa .logos{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:560px){ .pa .logos{grid-template-columns:repeat(2,minmax(0,1fr))} .pa .logos li{height:96px!important;padding:16px!important} }
+/* the twin's box reaches below the last line, so its mask does not cut the descenders (y, p, g) */
+.hero h1.h1w{padding-bottom:.35em!important;box-sizing:content-box}
+/* figures over the map: no closing rule under the last row */
+.gs .fig.zoom dl>div:last-child{border-bottom:0!important}
+/* product cards carry pictures: the dropper on the deep violet cards, the drops on the light ones (objects top right, text bottom left) */
+.pr .list li{background:#431291 url(img/card-dropper-dark.webp) right top/cover no-repeat!important}
+.pr .list li:nth-child(even){background:#E6DDF6 url(img/card-drops-light.webp) right top/cover no-repeat!important}
+@media (min-width:981px){ .pr .list.stack li{background:#431291 url(img/card-dropper-dark.webp) right top/cover no-repeat!important}
+  .pr .list.stack li:nth-child(even){background:#E6DDF6 url(img/card-drops-light.webp) right top/cover no-repeat!important} }
+.pr .list li::after{display:none!important}
+/* own pictures: Wellness gets the ripple (dark), Animal Health the paw (light) */
+.pr .list li:nth-child(5),.pr .list.stack li:nth-child(5){background:#431291 url(img/card-ripple-dark.webp) right top/cover no-repeat!important}
+.pr .list li:nth-child(6),.pr .list.stack li:nth-child(6){background:#E6DDF6 url(img/card-paw-light.webp) right top/cover no-repeat!important}

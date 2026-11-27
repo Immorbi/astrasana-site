@@ -334,16 +334,18 @@
   /* 24. products: the six categories as a stack of large cards. The list is pinned and each card in turn slides up over the
          one before, which sinks back (smaller, darker); the count on the side follows. Desktop only; phones keep the grid */
   var pl=document.querySelector('.pr .list'); if(pl&&innerWidth>980){ own(pl); var cards=$('li',pl), n=cards.length;
-    pl.classList.add('stack'); var cnt=document.createElement('p'); cnt.className='pr-count'; cnt.setAttribute('aria-hidden','true'); pl.closest('.pr').querySelector('.head').appendChild(cnt);
-    cards.forEach(function(li,i){ own(li); var k=document.createElement('i'); k.className='pr-n'; k.textContent=String(i+1).padStart(2,'0'); li.insertBefore(k,li.firstChild); li.style.zIndex=i+1; });
-    function count(i){ cnt.innerHTML='<b>'+String(i+1).padStart(2,'0')+'</b> / '+String(n).padStart(2,'0'); }
-    count(0); g.set(cards.slice(1),{y:function(){ return innerHeight; }});
+    pl.classList.add('stack');
+    cards.forEach(function(li,i){ own(li); li.style.zIndex=i+1; });
+    g.set(cards.slice(1),{y:function(){ return innerHeight; }});
     var prs=pl.closest('.pr'); prs.classList.add('stacked');
-    var pt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:prs,start:'top top',end:'+='+(n-1)*55+'%',pin:true,scrub:.5,anticipatePin:1,
-      onUpdate:function(self){ count(Math.min(n-1,Math.round(self.progress*(n-1)))); }}});
+    var pt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:prs,start:'top top',end:'+='+(n-1)*55+'%',pin:true,scrub:.5,anticipatePin:1}});
     cards.forEach(function(li,i){ if(!i) return; var at=i-1;
       pt.to(li,{y:0,duration:1,ease:'power2.out'},at);
       for(var j=0;j<i;j++) pt.to(cards[j],{scale:1-.05*(i-j),yPercent:-3.2*(i-j),duration:1,ease:'power2.out'},at); }); }
+
+  /* 25. partners: the logo cells come in one after another, row by row */
+  var lw=document.querySelector('.pa .logos:not([aria-hidden])'); if(lw){ own(lw); var lc=$('li',lw); lc.forEach(own);
+    g.from(lc,{autoAlpha:0,y:24,duration:.8,stagger:{each:.06,grid:'auto',from:'start'},ease:'expo.out',scrollTrigger:{trigger:lw,start:'top 85%',once:true}}); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
