@@ -266,17 +266,21 @@
       .fromTo(ws,{opacity:.12},{opacity:1,stagger:.035,duration:.12},.9)
       .to({},{duration:.25}); } ST.sort(); ST.refresh();
 
-  /* 20. cultivation: a full-screen pinned scene. The dropper bottle video is scrubbed by the scroll (a blurred, enlarged copy
-         fills the screen behind it) and the three short lines change in step, with a small progress bar */
-  var cu=document.querySelector('.cu'); if(cu){ var cv=cu.querySelector('.cu-v'), cb=cu.querySelector('.cu-bg'), steps=$('.cu-steps li',cu), bars=[];
-    [cv,cb].forEach(function(vd){ vd.pause(); vd._w=0; vd._s=false; vd.addEventListener('seeked',function(){ vd._s=false; go(vd); }); });
-    function go(vd){ var d=vd.duration; if(!d||!isFinite(d)) return; if(!vd._s&&Math.abs(vd.currentTime-vd._w)>.03){ vd._s=true; vd.currentTime=vd._w; } }
+  /* 20. cultivation: the scene stands still while the scroll moves through it. The dropper bottle, centred and close, is
+         scrubbed and the view travels down it from the dropper's bulb to the base of the bottle; the first text rises
+         through the left side and leaves, then the second rises through the right side */
+  var cu=document.querySelector('.cu'); if(cu){ var cv=cu.querySelector('.cu-v'), ca=cu.querySelector('.cu-a'), cb=cu.querySelector('.cu-b');
+    cv.pause(); var cw=0, cs=false;
+    function go(){ var d=cv.duration; if(!d||!isFinite(d)) return; if(!cs&&Math.abs(cv.currentTime-cw)>.03){ cs=true; cv.currentTime=cw; } }
+    cv.addEventListener('seeked',function(){ cs=false; go(); });
     var cun=function(){ cv.removeAttribute('poster'); }; if(cv.readyState>=2) cun(); else cv.addEventListener('loadeddata',cun,{once:true});
-    var cur=-1; function step(i){ if(i===cur) return; cur=i; steps.forEach(function(li,k){ li.classList.toggle('on',k===i); li.classList.toggle('past',k<i); }); bars.forEach(function(b,k){ b.classList.toggle('on',k<=i); }); }
-    step(0);
-    ST.create({trigger:cu,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,
-      onUpdate:function(self){ var p=self.progress; [cv,cb].forEach(function(vd){ var d=vd.duration; if(d&&isFinite(d)){ vd._w=Math.min(d-.05,p*d); go(vd); } });
-        step(p<.5?0:1); }}); }
+    var ct=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:cu,start:'top top',end:'+=320%',pin:true,scrub:.5,anticipatePin:1,
+      onUpdate:function(self){ var p=self.progress, d=cv.duration; if(d&&isFinite(d)){ cw=Math.min(d-.05,p*d); go(); }
+        cv.style.objectPosition='50% '+(14+72*p).toFixed(2)+'%'; cu.style.setProperty('--side',p.toFixed(3)); }}});
+    ct.fromTo(ca,{yPercent:60,autoAlpha:0},{yPercent:0,autoAlpha:1,duration:.18},0)
+      .to(ca,{yPercent:-60,autoAlpha:0,duration:.2},.34)
+      .fromTo(cb,{yPercent:60,autoAlpha:0},{yPercent:0,autoAlpha:1,duration:.2},.5)
+      .to({},{duration:.3},.7); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

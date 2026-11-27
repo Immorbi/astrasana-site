@@ -945,33 +945,21 @@ main .co.sec{margin-top:0!important}
 .img-sec .cv{display:block;width:100%;height:100%;object-fit:cover;background:#2A0E5C}
 html.gs main section.fig.zoom.zoom{max-width:none}
 
-/* ---------- cultivation: a full-screen scene; the dropper video stands whole in the centre-right, a blurred copy of it fills
-   the screen, and three short lines change with the scroll ---------- */
+/* ---------- cultivation: a full-screen scene that stands still while the scroll moves through it: the dropper bottle centred
+   and close, the view travelling down it; the first text on the left, then the second on the right ---------- */
 .cu{position:relative;height:100svh;min-height:600px;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;background:#2A1650;isolation:isolate}
-.cu-bg{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(40px) saturate(1.1);opacity:.9;z-index:-2}
-.cu-v{position:absolute;top:0;bottom:0;right:max(4vw,calc(50% - 46vh));height:100%;width:auto;max-width:60vw;object-fit:contain;z-index:-1;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%)}
-.cu::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(26,6,58,.82) 0%,rgba(26,6,58,.55) 34%,rgba(26,6,58,0) 58%)}
-.cu-txt{position:absolute;left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));top:50%;transform:translateY(-50%);width:min(40vw,560px);color:#fff}
-.cu-k{font:600 13px/1 var(--text);letter-spacing:.12em;text-transform:uppercase;color:#CBB9EE}
-.cu-steps{list-style:none;position:relative;margin:22px 0 0;min-height:clamp(220px,30vh,300px)}
-.cu-steps li{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(28px);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
-.cu-steps li.past{transform:translateY(-28px)}
-.cu-steps li.on{opacity:1;transform:none}
-.cu-steps h2,.cu-steps h3{font:700 clamp(36px,4.4vw,76px)/1 var(--display)!important;letter-spacing:-.04em;color:#fff!important;margin:0}
-.cu-steps p{margin-top:18px;max-width:22em;font:500 clamp(17px,1.4vw,22px)/1.4 var(--text);color:rgba(255,255,255,.86)}
-.cu-bar{display:flex;gap:8px;margin-top:8px}
-.cu-bar i{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);transition:background-color .4s ease}
-.cu-bar i.on{background:#fff}
-.cu-more{margin-top:28px;color:#fff} .cu-more svg{stroke:#fff}
-html:not(.gs) .cu-steps li{position:static;opacity:1;transform:none;margin-bottom:24px} html:not(.gs) .cu-steps{min-height:0}
-@media (max-width:760px){ .cu-v{right:50%;transform:translateX(50%);max-width:none;height:70%;top:auto} .cu::after{background:linear-gradient(180deg,rgba(26,6,58,.85) 0%,rgba(26,6,58,.6) 45%,rgba(26,6,58,0) 70%)} .cu-txt{top:calc(64px + 24px);transform:none;width:auto;right:var(--pad)} }
-@media (max-width:760px){ .cu-steps{min-height:150px} .cu-more{margin-top:16px} }
-/* cultivation: the dropper as a macro filling the whole screen (cover, a little to the right so the text has the left side) */
-.cu-bg{display:none}
-.cu-v{inset:0 -34% 0 auto!important;left:auto!important;right:-34%!important;width:134%!important;height:100%!important;max-width:none!important;object-fit:cover;object-position:50% 46%;-webkit-mask-image:none!important;mask-image:none!important;transform:none!important}
-@media (max-width:760px){ .cu-v{right:0!important;width:100%!important;object-position:50% 55%} }
-/* cultivation: the site's own title stays, the two sentences of its text change with the scroll */
-.cu-txt h2{font:700 clamp(36px,4.4vw,76px)/1 var(--display)!important;letter-spacing:-.04em;color:#fff!important;margin:0}
-.cu-steps{margin-top:24px;min-height:clamp(150px,20vh,220px)}
-.cu-steps p{margin-top:0;font:500 clamp(19px,1.6vw,26px)/1.4 var(--text);max-width:24em}
+.cu-v{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:max(100%,56.25vh*1.9);object-fit:cover;object-position:50% 14%;z-index:-1}
+/* a soft dark side behind whichever text is on screen (--side 0..1 moves it from the left to the right) */
+.cu::before,.cu::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none}
+.cu::before{background:linear-gradient(90deg,rgba(26,6,58,.88) 0%,rgba(26,6,58,.7) 26%,rgba(26,6,58,0) 50%);opacity:clamp(0,calc(1 - (var(--side,0) - .3) * 4),1)}
+.cu::after{background:linear-gradient(270deg,rgba(26,6,58,.88) 0%,rgba(26,6,58,.7) 26%,rgba(26,6,58,0) 50%);opacity:clamp(0,calc((var(--side,0) - .42) * 4),1)}
+.cu-txt{position:absolute;top:50%;margin-top:-6em;width:min(30vw,460px);color:#fff}
+.cu-a{left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)))}
+.cu-b{right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)))}
+.cu-txt h2{font:700 clamp(36px,4vw,72px)/1 var(--display)!important;letter-spacing:-.04em;color:#fff!important;margin:0 0 22px}
+.cu-txt p{font:500 clamp(18px,1.5vw,24px)/1.45 var(--text);color:rgba(255,255,255,.9)}
+.cu-more{margin-top:24px;color:#fff} .cu-more svg{stroke:#fff}
+html:not(.gs) .cu{height:auto;min-height:100svh} html:not(.gs) .cu-txt{position:relative;top:auto;margin:0;padding:12vh var(--pad);width:auto;max-width:560px}
+@media (max-width:760px){ .cu-txt{width:auto;left:var(--pad);right:var(--pad);top:auto;bottom:10vh;margin:0}
+  .cu::before,.cu::after{background:linear-gradient(0deg,rgba(26,6,58,.88) 0%,rgba(26,6,58,.55) 40%,rgba(26,6,58,0) 65%)} }
+.cu .cu-v{z-index:-2}
