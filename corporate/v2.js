@@ -199,28 +199,31 @@
       if(lb) tl.from(lb,{autoAlpha:0,x:c==='uk'||c==='ch'?10:-10,duration:.6,ease:'expo.out'},at+.7); }); }
     var fig=pm.closest('.fig'), card=pm.closest('.pm'), zoom=fig&&card&&innerWidth>980;
     if(zoom){
-      own(fig); $('.up',fig).forEach(own); fig.classList.add('zoom');
-      /* where Switzerland sits on the hero map once it fills the screen (its build-up scale undone) */
-      function heroCH(){ var p=document.querySelector('.hero .chmap .cn'), st=document.querySelector('.hero .stage'); if(!p||!st) return null;
-        var a=p.getBoundingClientRect(), b=st.getBoundingClientRect(), m=/scale\(([\d.]+)/.exec(p.style.transform||''), sc=m?+m[1]:1, w=a.width/sc, h=a.height/sc;
+      own(fig); $('.up',fig).forEach(own); fig.classList.add('zoom','hd-dark'); pm.setAttribute('preserveAspectRatio','xMidYMid slice');
+      /* Switzerland as the hero map draws it (detailed), laid over the figures map in its place: the camera pulls back from
+         this very shape, and only once the whole of Europe is in view does it give way to the map's own outline */
+      var heroCn=document.querySelector('.hero .chmap .cn'), chHl=q('.hl[data-c="ch"]'), chd=null;
+      if(heroCn&&chHl){ chd=document.createElementNS('http://www.w3.org/2000/svg','path'); chd.setAttribute('class','chd'); chd.setAttribute('d',heroCn.getAttribute('d')); chHl.parentNode.insertBefore(chd,chHl.nextSibling); }
+      function fitChd(){ if(!chd) return; var hb=heroCn.getBBox(), fb=chHl.getBBox(), sx=fb.width/hb.width, sy=fb.height/hb.height;
+        chd.setAttribute('transform','translate('+fb.x+' '+fb.y+') scale('+sx+' '+sy+') translate('+(-hb.x)+' '+(-hb.y)+')'); }
+      /* where Switzerland sits on screen when the hero map fills it (its build-up scale undone) */
+      function heroCH(){ var st=document.querySelector('.hero .stage'); if(!heroCn||!st) return null;
+        var a=heroCn.getBoundingClientRect(), b=st.getBoundingClientRect(), m=/scale\(([\d.]+)/.exec(heroCn.style.transform||''), sc=m?+m[1]:1, w=a.width/sc, h=a.height/sc;
         return {cx:a.left-b.left-(w-a.width)*.5+w/2, cy:a.top-b.top-(h-a.height)*.6+h/2, w:w}; }
-      function figCH(){ var a=q('.hl[data-c="ch"]').getBoundingClientRect(), b=fig.getBoundingClientRect(); return {cx:a.left-b.left+a.width/2, cy:a.top-b.top+a.height/2, w:a.width}; }
-      var VB={x0:308-52,y0:233-59.3,w0:104,x1:0,y1:0,w1:500}, AR=570/500, v={t:0};
-      function vb(){ var w=Math.exp(Math.log(VB.w0)+(Math.log(VB.w1)-Math.log(VB.w0))*v.t), k=(w-VB.w0)/(VB.w1-VB.w0);
-        pm.setAttribute('viewBox',(VB.x0+(VB.x1-VB.x0)*k).toFixed(2)+' '+(VB.y0+(VB.y1-VB.y0)*k).toFixed(2)+' '+w.toFixed(2)+' '+(w*AR).toFixed(2)); }
-      /* the card starts covering the screen, with Switzerland a little right of centre as in the hero map; the start is
-         measured with the card's own transform cleared, again on every refresh */
-      var S0={x:0,y:0,s:1}, cp={p:0};
-      function measure(){ var keep=card.style.transform; card.style.transform='none'; var r=card.getBoundingClientRect(), fr=fig.getBoundingClientRect(), top=r.top-fr.top;
-        S0.s=Math.max(innerWidth/r.width,innerHeight/r.height)*1.3; S0.x=innerWidth*.62-(r.left+r.width/2); S0.y=innerHeight*.52-(top+r.height/2);
-        /* then match the start to the hero: same size and place of Switzerland, so one map hands over to the other unseen */
-        var H=heroCH(), kp=cp.p, kt=v.t; if(H){ cp.p=0; v.t=0; vb(); place(); var F=figCH(); if(F.w>0){ S0.s*=H.w/F.w; place(); F=figCH(); S0.x+=H.cx-F.cx; S0.y+=H.cy-F.cy; } cp.p=kp; v.t=kt; vb(); }
-        card.style.transform=keep; place(); }
-      function place(){ var k=cp.p, s=S0.s+(1-S0.s)*k; fig.style.setProperty('--zk',Math.max(0,Math.min(1,(k-.3)/.45)).toFixed(3)); card.style.transformOrigin='50% 50%'; card.style.transform='translate('+(S0.x*(1-k)).toFixed(1)+'px,'+(S0.y*(1-k)).toFixed(1)+'px) scale('+s.toFixed(4)+')'; }
-      ST.addEventListener('refreshInit',function(){ card.style.transform='none'; }); ST.addEventListener('refresh',measure);
+      var VW=1000, AR=.62, V0={x:0,y:0,w:VW}, v={t:0};
+      /* the start view: Switzerland on screen exactly where and as large as the hero map leaves it (viewBox with "slice") */
+      function measure(){ fitChd(); var R=heroCH(), fb=chHl.getBBox(), vw=innerWidth, vh=innerHeight;
+        if(!R){ R={cx:vw*.62,cy:vh*.52,w:vw*.4}; }
+        var s=R.w/fb.width, w=Math.max(vw/s,vh/s/AR), cx=fb.x+fb.width/2, cy=fb.y+fb.height/2;
+        V0.w=w; V0.x=cx-(R.cx-(vw-w*s)/2)/s; V0.y=cy-(R.cy-(vh-w*AR*s)/2)/s; vb(); }
+      function vb(){ var t=v.t, w=Math.exp(Math.log(V0.w)+(Math.log(VW)-Math.log(V0.w))*t), k=(w-V0.w)/(VW-V0.w);
+        pm.setAttribute('viewBox',(V0.x*(1-k)).toFixed(2)+' '+(V0.y*(1-k)).toFixed(2)+' '+w.toFixed(2)+' '+(w*AR).toFixed(2));
+        var x=Math.max(0,Math.min(1,(t-.6)/.2)); if(chd) chd.style.opacity=1-x; chHl.style.opacity=x;
+        fig.style.setProperty('--zk',Math.max(0,Math.min(1,(t-.55)/.4)).toFixed(3)); }
+      ST.addEventListener('refresh',measure);
       var others=['uk','be','cz','jp'], jpBox=[q('.jp .box'),q('.jp .jt')].filter(Boolean);
       var words=[fig.querySelector('h2')].concat($('dl>div',fig));
-      g.set(land,{opacity:0}); g.set(words,{autoAlpha:0,y:24}); vb();
+      g.set(land,{opacity:0}); g.set(words,{autoAlpha:0,y:24}); measure();
       /* the finale is built paused: its "from" tweens hide the countries, dots, lines and plates until it plays */
       var played=false, finale=g.timeline({paused:true});
       finale.fromTo(jpBox,{autoAlpha:0},{autoAlpha:1,duration:.5},0);
@@ -229,11 +232,8 @@
       finale.progress(0).pause();
       var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=170%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
         onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); },
-        onUpdate:function(self){ var dk=self.progress<.4; if(dk!==fig.classList.contains('hd-dark')){ fig.classList.toggle('hd-dark',dk); if(window.__hdTone) window.__hdTone(); }
-          if(self.progress>.86&&!played){ played=true; finale.play(0); } else if(self.progress<.6&&played){ played=false; finale.pause(0); } }}});
-      measure();
-      zt.to(cp,{p:1,duration:1,ease:'power2.inOut',onUpdate:place},0)
-        .to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
+        onUpdate:function(self){ if(self.progress>.86&&!played){ played=true; finale.play(0); } else if(self.progress<.6&&played){ played=false; finale.pause(0); } }}});
+      zt.to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
         .to(land,{opacity:1,duration:.35,stagger:{amount:.35,from:'center'}},.25)
         .to({},{duration:.3});
     } else {

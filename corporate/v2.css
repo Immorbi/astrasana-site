@@ -917,12 +917,22 @@ html:not(.gs) .sg-mark{transform:translate(-96%,-50%) scale(3)}
 /* figures map: borders keep their hairline width while the camera pulls back from Switzerland */
 .pmap path{vector-effect:non-scaling-stroke}
 
-/* figures map, seamless hand-over from the hero: tucked under the end of the hero and hidden until its own pin takes over;
-   it starts on the hero map's ground and fades to white as the card settles (--zk 0..1) */
-.gs .fig.zoom{position:relative;z-index:6;margin-top:-100svh;isolation:isolate}
+/* figures map on desktop: a full-screen dark map (no card), tucked under the end of the hero and hidden until its own pin
+   takes over; the title and figures sit in white over the right side on a darkening veil that comes in with --zk */
+.gs .fig.zoom{display:block;position:relative;z-index:6;height:100svh;min-height:600px;width:100vw;padding:0!important;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)}
 .gs .fig.zoom:not(.on){visibility:hidden}
-.gs .fig.zoom::before{content:"";position:absolute;z-index:-1;left:50%;width:100vw;transform:translateX(-50%);top:0;height:100svh;pointer-events:none;
-  background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%);opacity:calc(1 - var(--zk,1))}
-.gs .fig.zoom .pm{position:relative;background:transparent!important;isolation:isolate}
-.gs .fig.zoom .pm::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(160deg,#1A063A 0%,#280A58 50%,#431291 100%);opacity:var(--zk,1)}
+.gs .fig.zoom .pm{position:absolute;inset:0;width:100%;height:100%;margin:0;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.gs .fig.zoom .pmap{width:100%;height:100%}
+.gs .fig.zoom::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--zk,1);
+  background:linear-gradient(90deg,rgba(26,6,58,0) 48%,rgba(26,6,58,.78) 72%,rgba(26,6,58,.92) 100%)}
+.gs .fig.zoom h2,.gs .fig.zoom dl{position:absolute;z-index:2;right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));width:min(32vw,500px);margin:0}
+.gs .fig.zoom h2{top:calc(64px + 9vh);color:#fff}
+.gs .fig.zoom dl{bottom:9vh}
+.gs .fig.zoom dl>div{border-color:rgba(255,255,255,.28)!important}
+.gs .fig.zoom dd,.gs .fig.zoom dt{color:#fff!important}
+.gs .fig.zoom dd{font-size:clamp(44px,4.2vw,72px)}
+.pmap .chd{fill:url(#pm-hl);stroke:#fff;stroke-width:1.2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .pmap .ln{vector-effect:none}
+/* the overlap with the hero as a plain margin (no !important), so the pin can move it onto its spacer */
+html.gs main section.fig.zoom.zoom{margin:-100svh 0 0 calc(50% - 50vw)}
