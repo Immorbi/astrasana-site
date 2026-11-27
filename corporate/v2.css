@@ -894,3 +894,8 @@ h2{font-size:clamp(32px,3.6vw,58px)}
 .ct .send.go svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8}
 .gs .ch.hscroll li{min-height:clamp(280px,42svh,420px)}
 @media (max-width:980px){ .ph-sec .tlink.more,.ct .send.go{grid-column:1/13;grid-row:auto} }
+
+/* hero: the video's white melts into the page (multiply), so the flask reads as cut out on white; a narrower headline */
+.hero .stage{background:#fff!important}
+.hero .hv{mix-blend-mode:multiply}
+@media (min-width:981px){ .hero h1{font-size:clamp(36px,3.9vw,74px)!important;max-width:8.6em} .hero .hv{transform:none!important} }

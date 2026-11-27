@@ -22,7 +22,7 @@
     ts.forEach(function(t){ var b=t.getBBox(); x0=Math.min(x0,b.x); y0=Math.min(y0,b.y); x1=Math.max(x1,b.x+b.width); y1=Math.max(y1,b.y+b.height); });
     if(x1<x0) return; var px=9, py=6, X0=x0-px, Y0=y0-py, X1=x1+px, Y1=y1+py; r.setAttribute('x',X0); r.setAttribute('y',Y0); r.setAttribute('width',X1-X0); r.setAttribute('height',Y1-Y0);
     }); }
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(plates); plates(); addEventListener('resize',plates);
+  window.__plates=plates;   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(plates); plates(); addEventListener('resize',plates);
 
   /* hero title: split into words that rise once */
   var h1=document.getElementById('t-hero');

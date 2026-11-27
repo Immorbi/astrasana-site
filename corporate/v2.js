@@ -60,6 +60,7 @@
   var stage=document.querySelector('.hero .stage'), hv=stage&&stage.querySelector('.hv'), chm=document.querySelector('.hero .chm');
   if(stage&&hv&&chm){
     var sw=stage.querySelector('.sweep'); if(sw) sw.remove();
+    var logoEl=document.querySelector('.hd .logo'), lgW=logoEl&&logoEl.querySelector('.l-white');
     var rv=document.createElement('div'); rv.className='reveal'; chm.classList.add('revealed'); rv.appendChild(chm); stage.appendChild(rv);
     hv.pause(); hv.muted=true;
     var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
@@ -78,8 +79,15 @@
       else { S=S0*Math.exp(Math.log(S1/S0)*rb); px=W/2; py=yB+(H/2-yB)*Math.min(1,rb*1.4); }
       rv.style.setProperty('--rs',S.toFixed(1)+'px'); rv.style.setProperty('--rx',(px-AX*S).toFixed(1)+'px'); rv.style.setProperty('--ry',(py-AY*S*AR).toFixed(1)+'px');
       rv.classList.toggle('open',rb>=.999); rv.classList.toggle('on',ra>0||rb>0);
-      /* the dark map covers the header once it has grown past about half way: the header (logo included) turns white */
-      rv.classList.toggle('cover',rb>=.5); if(window.__hdTone) window.__hdTone();
+      /* the header turns white once the dark map fills the screen */
+      rv.classList.toggle('cover',rb>=.999); if(window.__hdTone) window.__hdTone();
+      /* while the window grows, the white logo shows only inside it: the same signifier mask, placed relative to the logo */
+      if(lgW){ var part=(ra>0||rb>0)&&rb<.999, st=lgW.style;
+        if(part){ var lr=logoEl.getBoundingClientRect(), sr=stage.getBoundingClientRect(), mi=getComputedStyle(rv).webkitMaskImage||getComputedStyle(rv).maskImage;
+          st.opacity='1'; st.webkitMaskImage=st.maskImage=mi; st.webkitMaskRepeat=st.maskRepeat='no-repeat';
+          st.webkitMaskSize=st.maskSize=S.toFixed(1)+'px auto';
+          st.webkitMaskPosition=st.maskPosition=(sr.left+px-AX*S-lr.left).toFixed(1)+'px '+(sr.top+py-AY*S*AR-lr.top).toFixed(1)+'px'; }
+        else if(st.opacity){ st.opacity=''; st.webkitMaskImage=st.maskImage=''; } }
       /* the header is dark over the video and light once the white map has taken most of the screen */
       
       /* the map builds up as the window opens */
