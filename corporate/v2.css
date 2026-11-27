@@ -991,3 +991,29 @@ main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
    is opaque too, so nothing of the pinned band shows below */
 .gs .x3d-sec{min-height:100svh;display:flex;flex-direction:column;justify-content:center}
 .gs .pr{position:relative;z-index:3;background:#fff;box-shadow:0 0 0 100vmax #fff;clip-path:inset(0 -100vmax)}
+
+/* ---------- hero picture with a cursor lens: the light line, and its dark twin shown only inside a soft circle around the
+   cursor (--mx --my --mr, eased in JS); the headline has a white twin masked the same way ---------- */
+.hero .hpic{position:absolute;inset:0;z-index:-1;mix-blend-mode:normal!important;transform:none!important}
+.hero .hpic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.hero .hpic .hp-d,.hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0,#000 72%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0,#000 72%,transparent 100%)}
+.hero .h1w{position:absolute;z-index:2;margin:0;color:#fff;pointer-events:none;
+  -webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0,#000 72%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0,#000 72%,transparent 100%)}
+.hero .stage{background:#fff!important}
+@media (max-width:980px){ .hero .hpic img{object-position:78% 50%} }
+/* the light hero: no negative on the headline; the white twin carries the same type as the headline */
+.hero h1{mix-blend-mode:normal!important;color:#431291!important}
+.hero h1.h1w{grid-column:auto!important;color:#fff!important;font-weight:700!important;letter-spacing:-.04em!important;margin:0!important;padding:0}
+.hero h1.h1w *{color:#fff!important;opacity:1!important;transform:none!important;visibility:visible!important}
+/* softer lens: a long feathered edge instead of a firm circle */
+.hero .hpic .hp-d{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%)}
+.hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%)}
+/* softest lens: the dark shows fully only at the very centre and fades out over almost the whole radius */
+.hero .hpic .hp-d{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%)}
+.hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%)}

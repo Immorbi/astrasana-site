@@ -10,7 +10,7 @@
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="corporate/img/brand/logo-color.svg" type="image/svg+xml">
-<link rel="stylesheet" href="corporate/v2.css?v=10acb81-2">
+<link rel="stylesheet" href="corporate/v2.css?v=12bde0a">
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
 <script>document.documentElement.classList.add('js');
@@ -47,7 +47,10 @@
   <!-- hero -->
   <section class="hero grid rv" aria-labelledby="t-hero">
     <div class="stage">
-      <video class="hv" poster="corporate/img/hero-vial-2-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-vial-2.mp4" type="video/mp4"><source src="corporate/video/hero-vial-2.webm" type="video/webm"></video>
+      <div class="hv hpic" aria-hidden="true">
+        <img class="hp-l" src="corporate/img/hero-line-light.webp" alt="" width="1672" height="941" fetchpriority="high">
+        <img class="hp-d" src="corporate/img/hero-line-dark.webp" alt="" width="1672" height="941">
+      </div>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
       <svg class="sweep" viewBox="0 0.3 60.1 53.6" aria-hidden="true"><defs><linearGradient id="sw-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6DDF6"/><stop offset=".55" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs><path class="sw-fill" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/><path class="sw-edge" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/></svg>
     </div>
@@ -244,7 +247,7 @@
 </footer>
 <div class="veil" aria-hidden="true"></div>
 
-<script src="corporate/v2-page.js?v=10acb81-2"></script>
+<script src="corporate/v2-page.js?v=12bde0a"></script>
 <script>
 /* V2 hero stage: the purple reaches the middle of the map panel; the header is purple while the stage is under it */
 (function(){ var hero=document.querySelector('.hero'), chm=document.querySelector('.hero .chm'), hd=document.getElementById('hd'); if(!hero||!chm) return;
@@ -271,14 +274,15 @@
       var d=pos(pins[i]), ym=y0+h/2, xs=i===0?x0+w:x0, xk=i===0?xs+20:xs-20; leads[i].setAttribute('points',xs+','+ym+' '+xk+','+ym+' '+d[0]+','+d[1]);
       var len=leads[i].getTotalLength(); leads[i].style.strokeDasharray=len; leads[i].dataset.len=len; }); apply(); }
   /* build-up: the country grows in, then the dots, the leader lines and the labels */
-  var prog=1, cn=svg.querySelector('.cn');
+  var prog=1, lk=1, cn=svg.querySelector('.cn');
   function cl(a,b,x){ return Math.max(0,Math.min(1,(x-a)/(b-a))); }
-  function apply(){ var p=prog, a=cl(0,.45,p), b=cl(.4,.6,p), c=cl(.55,.85,p), d=cl(.75,1,p);
+  /* the country follows the window (prog); the dots, leader lines and town plates come in on their own, later (lk) */
+  function apply(){ var p=prog, a=cl(0,.45,p), b=cl(0,.35,lk), c=cl(.2,.7,lk), d=cl(.45,1,lk);
     cn.style.transformOrigin='50% 60%'; cn.style.transformBox='fill-box'; cn.style.transform='scale('+(.86+.14*a)+')'; cn.style.opacity=a;
     pins.forEach(function(pn){ pn.style.opacity=b; });
-    leads.forEach(function(ld){ var len=+ld.dataset.len||0; ld.style.strokeDashoffset=len*(1-c); });
+    leads.forEach(function(ld){ var len=+ld.dataset.len||0; ld.style.strokeDashoffset=-len*(1-c); });
     L.forEach(function(l){ l.g.style.opacity=d; l.g.style.transform='translateY('+(10*(1-d))+'px)'; }); }
-  window.__mapProgress=function(p){ prog=p; apply(); };
+  window.__mapProgress=function(p){ prog=p; apply(); }; window.__mapLabels=function(k){ lk=k; apply(); };
   var go=function(){ requestAnimationFrame(draw); }; if(document.fonts&&document.fonts.ready) document.fonts.ready.then(go); addEventListener('load',go); addEventListener('resize',go); go(); })();
 </script>
 <script src="corporate/globe.js" defer></script>
@@ -290,7 +294,7 @@
 <script src="land/vendor/motion/CustomEase.min.js" defer></script>
 <script src="land/vendor/motion/Flip.min.js" defer></script>
 <script src="land/vendor/motion/lenis.min.js" defer></script>
-<script src="corporate/motion.js?v=10acb81-2" defer></script>
-<script src="corporate/v2.js?v=10acb81-2" defer></script>
+<script src="corporate/motion.js?v=12bde0a" defer></script>
+<script src="corporate/v2.js?v=12bde0a" defer></script>
 </body>
 </html>

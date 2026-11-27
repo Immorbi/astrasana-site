@@ -62,14 +62,13 @@
     var sw=stage.querySelector('.sweep'); if(sw) sw.remove();
     var logoEl=document.querySelector('.hd .logo'), lgW=logoEl&&logoEl.querySelector('.l-white');
     var rv=document.createElement('div'); rv.className='reveal'; chm.classList.add('revealed'); rv.appendChild(chm); stage.appendChild(rv);
-    hv.pause(); hv.muted=true;
-    var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
-    if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
-    /* Safari shows the poster for a moment while a paused video seeks: drop it once the first frame is decoded, so no other frame flashes during the scrub */
-    var unposter=function(){ hv.removeAttribute('poster'); }; if(hv.readyState>=2) unposter(); else hv.addEventListener('loadeddata',unposter,{once:true});
-    var vt={t:0}, want=0, seeking=false;
-    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; }}
-    hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
+    var isV=hv.tagName==='VIDEO', vt={t:0}, want=0, seeking=false;
+    function seek(){ if(!isV) return; var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; }}
+    if(isV){ hv.pause(); hv.muted=true;
+      var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
+      if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
+      var unposter=function(){ hv.removeAttribute('poster'); }; if(hv.readyState>=2) unposter(); else hv.addEventListener('loadeddata',unposter,{once:true});
+      hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }); }
     /* the window: size S, and the point (AX,AY) of the shape (inside its right stroke) placed at screen point P */
     var AR=53.6/60.1, AX=.727, AY=.616, m={a:0,b:0};
     function place(){ var W=stage.clientWidth, H=stage.clientHeight, S0=Math.min(W*.46,H*.62,640), S1=Math.hypot(W,H)*5.2;
@@ -96,12 +95,15 @@
       if(window.__mapProgress) window.__mapProgress(Math.min(1,ra*.25+rb*1.05)); }
     place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
-    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=290%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
+    var mlk={k:0}; if(window.__mapLabels) window.__mapLabels(0);
+    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=340%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
     tl.to(vt,{t:1,duration:.56,onUpdate:seek},0)
       .to(m,{a:1,duration:.2,ease:'power2.out',onUpdate:place},.5)
       .to(words,{autoAlpha:0,yPercent:-8,duration:.12,ease:'power1.in'},.7)
       .to(m,{b:1,duration:.28,ease:'power2.in',onUpdate:place},.72)
-      .to($('.hero .mapt,.hero .chmap .lbl,.hero .chmap .lead,.hero .chmap .pin'),{autoAlpha:0,duration:.1,ease:'power1.in'},1.02)
+      /* once the map fills the screen, the town dots, lines and plates come in softly, stay a while, then leave before the hand-over */
+      .to(mlk,{k:1,duration:.16,ease:'power1.out',onUpdate:function(){ if(window.__mapLabels) window.__mapLabels(mlk.k); }},1.04)
+      .to($('.hero .mapt,.hero .chmap .lbl,.hero .chmap .lead,.hero .chmap .pin'),{autoAlpha:0,duration:.1,ease:'power1.in'},1.34)
       .to({},{duration:.04});
   }
 
@@ -300,6 +302,24 @@
     ST.create({trigger:ax,start:'bottom bottom',end:function(){ return '+='+innerHeight; },pin:true,pinSpacing:false});
     g.to(axi,{scale:.92,opacity:.35,ease:'none',transformOrigin:'50% 100%',scrollTrigger:{trigger:px,start:'top bottom',end:'top top',scrub:true}});
     var gl=ax.querySelector('.pv'); if(gl) g.fromTo(gl,{y:90},{y:-90,ease:'none',scrollTrigger:{trigger:ax,start:'top bottom',end:'bottom top',scrub:true}}); }
+
+  /* 23. hero picture: the dark version shows through a soft circle that follows the cursor (eased); the headline has a white
+         twin inside the same circle, so it stays legible on the dark */
+  var hp=document.querySelector('.hero .hpic'); if(hp){ var st2=hp.closest('.stage'), h1=st2.querySelector('h1'), tw=null;
+    if(h1){ tw=h1.cloneNode(true); tw.removeAttribute('id'); tw.className='h1w'; tw.setAttribute('aria-hidden','true'); st2.appendChild(tw); }
+    function fitTw(){ if(!tw) return; var a=h1.getBoundingClientRect(), b=st2.getBoundingClientRect(), cs=getComputedStyle(h1);
+      tw.style.cssText='left:'+(a.left-b.left)+'px;top:'+(a.top-b.top)+'px;width:'+(a.width+2)+'px;max-width:none;font-size:'+cs.fontSize+';line-height:'+cs.lineHeight;
+      /* correct for whatever box the twin is placed against: measure it and shift by the difference */
+      var t2=tw.getBoundingClientRect(), dx=a.left-t2.left, dy=a.top-t2.top; tw.style.left=(a.left-b.left+dx)+'px'; tw.style.top=(a.top-b.top+dy)+'px';
+      tw.style.setProperty('--ox',(a.left-b.left)+'px'); tw.style.setProperty('--oy',(a.top-b.top)+'px'); }
+    var tgt={x:0,y:0,r:0}, cur={x:0,y:0,r:0}, R=Math.max(220,Math.min(innerWidth,innerHeight)*.4), raf=0;
+    function tick(){ cur.x+=(tgt.x-cur.x)*.07; cur.y+=(tgt.y-cur.y)*.07; cur.r+=(tgt.r-cur.r)*.06;
+      st2.style.setProperty('--mx',cur.x.toFixed(1)+'px'); st2.style.setProperty('--my',cur.y.toFixed(1)+'px'); st2.style.setProperty('--mr',cur.r.toFixed(1)+'px');
+      raf=(Math.abs(tgt.x-cur.x)+Math.abs(tgt.y-cur.y)+Math.abs(tgt.r-cur.r)>.5)?requestAnimationFrame(tick):0; }
+    function kick(){ if(!raf) raf=requestAnimationFrame(tick); }
+    st2.addEventListener('pointermove',function(e){ var b=st2.getBoundingClientRect(); tgt.x=e.clientX-b.left; tgt.y=e.clientY-b.top; if(cur.r<1){ cur.x=tgt.x; cur.y=tgt.y; } tgt.r=R; kick(); });
+    st2.addEventListener('pointerleave',function(){ tgt.r=0; kick(); });
+    fitTw(); addEventListener('resize',function(){ R=Math.max(220,Math.min(innerWidth,innerHeight)*.4); fitTw(); }); if(document.fonts) document.fonts.ready.then(fitTw); ST.addEventListener('refresh',fitTw); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
