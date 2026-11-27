@@ -97,7 +97,7 @@
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
     var mlk={k:0}; if(window.__mapLabels) window.__mapLabels(0);
     var mtx=document.querySelector('.hero .mapt'); if(mtx) g.set(mtx,{autoAlpha:0,y:24});
-    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=340%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
+    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=200%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
     tl.to(vt,{t:1,duration:.56,onUpdate:seek},0)
       .to(m,{a:1,duration:.2,ease:'power2.out',onUpdate:place},.5)
       .to(words,{autoAlpha:0,yPercent:-8,duration:.12,ease:'power1.in'},.7)
@@ -106,7 +106,10 @@
       /* the caption waits until the map fills the screen, then rises in softly with the town labels */
       .to(mtx,{autoAlpha:1,y:0,duration:.14,ease:'power2.out'},1.02)
       .to(mlk,{k:1,duration:.16,ease:'power1.out',onUpdate:function(){ if(window.__mapLabels) window.__mapLabels(mlk.k); }},1.04)
-      .to($('.hero .mapt,.hero .chmap .lbl,.hero .chmap .lead,.hero .chmap .pin'),{autoAlpha:0,duration:.1,ease:'power1.in'},1.34)
+      /* before the hand-over the labels go back the way they came (plates, then lines, then dots) and the caption fades;
+         the labels are driven only through __mapLabels, never tweened directly, so scrolling back restores them */
+      .to(mlk,{k:0,duration:.1,ease:'power1.in',onUpdate:function(){ if(window.__mapLabels) window.__mapLabels(mlk.k); }},1.34)
+      .to(mtx,{autoAlpha:0,duration:.1,ease:'power1.in'},1.34)
       .to({},{duration:.04});
   }
 
@@ -145,7 +148,7 @@
     g.fromTo(ln,{scaleX:0},{scaleX:1,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:row,start:'top 90%',once:true}}); });
 
   /* 7. cards and rows arrive one after another */
-  [['#chain ol','li'],['.pr .list','li'],['.nw ol','li'],['.steps','li']].forEach(function(p){ var box=document.querySelector(p[0]); if(!box) return; own(box);
+  [['#chain ol','li'],['.pr .list','li'],['.nw ol','li'],['.steps','li']].forEach(function(p){ var box=document.querySelector(p[0]); if(!box) return; if(p[0]==='.pr .list'&&innerWidth>980) return; own(box);
     g.from($(p[1],box).map(function(li){ own(li); return li; }),{autoAlpha:0,y:32,duration:.9,stagger:.08,ease:'expo.out',scrollTrigger:{trigger:box,start:'top 85%',once:true}}); });
 
   /* 8. the footer slides out from under the page */
@@ -239,7 +242,7 @@
       var h2=fig.querySelector('h2'); h2.innerHTML=h2.innerHTML.split(/(\s+|&nbsp;)/).map(function(t){ return !t||/^(\s+|&nbsp;)$/.test(t)?t:'<span class="fw">'+t+'</span>'; }).join('');
       var hw=$('.fw',h2), rows=$('dl>div',fig);
       g.set(land,{opacity:0}); measure();
-      var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=420%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+      var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=300%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
         onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); }}});
       /* 0 to 1: the camera pulls back from Switzerland to Europe */
       zt.to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
@@ -327,6 +330,20 @@
     addEventListener('scroll',function(){ var on=still(); if(tw) tw.style.display=on?'':'none'; if(!on&&tgt.r){ tgt.r=0; cur.r=Math.min(cur.r,R*.4); kick(); } },{passive:true});
     st2.addEventListener('pointerleave',function(){ tgt.r=0; kick(); });
     fitTw(); addEventListener('resize',function(){ R=Math.max(150,Math.min(innerWidth,innerHeight)*.27); fitTw(); }); if(document.fonts) document.fonts.ready.then(fitTw); ST.addEventListener('refresh',fitTw); }
+
+  /* 24. products: the six categories as a stack of large cards. The list is pinned and each card in turn slides up over the
+         one before, which sinks back (smaller, darker); the count on the side follows. Desktop only; phones keep the grid */
+  var pl=document.querySelector('.pr .list'); if(pl&&innerWidth>980){ own(pl); var cards=$('li',pl), n=cards.length;
+    pl.classList.add('stack'); var cnt=document.createElement('p'); cnt.className='pr-count'; cnt.setAttribute('aria-hidden','true'); pl.closest('.pr').querySelector('.head').appendChild(cnt);
+    cards.forEach(function(li,i){ own(li); var k=document.createElement('i'); k.className='pr-n'; k.textContent=String(i+1).padStart(2,'0'); li.insertBefore(k,li.firstChild); li.style.zIndex=i+1; });
+    function count(i){ cnt.innerHTML='<b>'+String(i+1).padStart(2,'0')+'</b> / '+String(n).padStart(2,'0'); }
+    count(0); g.set(cards.slice(1),{y:function(){ return innerHeight; }});
+    var prs=pl.closest('.pr'); prs.classList.add('stacked');
+    var pt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:prs,start:'top top',end:'+='+(n-1)*55+'%',pin:true,scrub:.5,anticipatePin:1,
+      onUpdate:function(self){ count(Math.min(n-1,Math.round(self.progress*(n-1)))); }}});
+    cards.forEach(function(li,i){ if(!i) return; var at=i-1;
+      pt.to(li,{y:0,duration:1,ease:'power2.out'},at);
+      for(var j=0;j<i;j++) pt.to(cards[j],{scale:1-.05*(i-j),yPercent:-3.2*(i-j),duration:1,ease:'power2.out'},at); }); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

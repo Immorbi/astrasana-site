@@ -10,7 +10,7 @@
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="corporate/img/brand/logo-color.svg" type="image/svg+xml">
-<link rel="stylesheet" href="corporate/v2.css?v=dd2652f">
+<link rel="stylesheet" href="corporate/v2.css?v=c603db3">
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
 <script>document.documentElement.classList.add('js');
@@ -169,12 +169,12 @@
     <div class="grid">
       <figure class="ph band"><img src="corporate/img/bottling-line.webp" alt="Filling line with bottles and the Astrasana Holding AG sign" width="1536" height="1024" loading="lazy" style="object-position:80% 30%"></figure>
       <ol class="list up">
-        <li><b>Pharmaceuticals</b></li>
-        <li><b>Cannabinoids</b></li>
-        <li><b>Cosmetics</b></li>
-        <li><b>White Label</b></li>
-        <li><b>Wellness</b></li>
-        <li><b>Animal Health</b></li>
+        <li><b>Pharmaceuticals</b><span>Medical-grade products for&nbsp;pharmacies and&nbsp;clinics across our&nbsp;network.</span></li>
+        <li><b>Cannabinoids</b><span>THC and&nbsp;CBD formulations for&nbsp;therapeutic applications.</span></li>
+        <li><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
+        <li><b>White Label</b><span>Contract manufacturing and&nbsp;private-label solutions for&nbsp;B2B partners.</span></li>
+        <li><b>Wellness</b><span>Bridging pharmaceutical science and&nbsp;everyday health.</span></li>
+        <li><b>Animal Health</b><span>ASTRAVET &amp;&nbsp;Cansuna: CBD products for&nbsp;animals, from&nbsp;vet practice to&nbsp;everyday life.</span></li>
       </ol>
     </div>
   </section>
@@ -247,7 +247,7 @@
 </footer>
 <div class="veil" aria-hidden="true"></div>
 
-<script src="corporate/v2-page.js?v=dd2652f"></script>
+<script src="corporate/v2-page.js?v=c603db3"></script>
 <script>
 /* V2 hero stage: the purple reaches the middle of the map panel; the header is purple while the stage is under it */
 (function(){ var hero=document.querySelector('.hero'), chm=document.querySelector('.hero .chm'), hd=document.getElementById('hd'); if(!hero||!chm) return;
@@ -277,10 +277,10 @@
   var prog=1, lk=1, cn=svg.querySelector('.cn');
   function cl(a,b,x){ return Math.max(0,Math.min(1,(x-a)/(b-a))); }
   /* the country follows the window (prog); the dots, leader lines and town plates come in on their own, later (lk) */
-  function apply(){ var p=prog, a=cl(0,.45,p), b=cl(0,.35,lk), c=cl(.2,.7,lk), d=cl(.45,1,lk);
+  function apply(){ var p=prog, a=cl(0,.45,p), b=cl(0,.3,lk), c=cl(.15,.6,lk), d=cl(.65,1,lk);
     cn.style.transformOrigin='50% 60%'; cn.style.transformBox='fill-box'; cn.style.transform='scale('+(.86+.14*a)+')'; cn.style.opacity=a;
     pins.forEach(function(pn){ pn.style.opacity=b; });
-    leads.forEach(function(ld){ var len=+ld.dataset.len||0; ld.style.strokeDashoffset=-len*(1-c); });
+    leads.forEach(function(ld){ var len=+ld.dataset.len||ld.getTotalLength(); ld.style.strokeDasharray=len; ld.style.strokeDashoffset=-len*(1-c); ld.style.opacity=c>0?1:0; });
     L.forEach(function(l){ l.g.style.opacity=d; l.g.style.transform='translateY('+(10*(1-d))+'px)'; }); }
   window.__mapProgress=function(p){ prog=p; apply(); }; window.__mapLabels=function(k){ lk=k; apply(); };
   var go=function(){ requestAnimationFrame(draw); }; if(document.fonts&&document.fonts.ready) document.fonts.ready.then(go); addEventListener('load',go); addEventListener('resize',go); go(); })();
@@ -294,7 +294,7 @@
 <script src="land/vendor/motion/CustomEase.min.js" defer></script>
 <script src="land/vendor/motion/Flip.min.js" defer></script>
 <script src="land/vendor/motion/lenis.min.js" defer></script>
-<script src="corporate/motion.js?v=dd2652f" defer></script>
-<script src="corporate/v2.js?v=dd2652f" defer></script>
+<script src="corporate/motion.js?v=c603db3" defer></script>
+<script src="corporate/v2.js?v=c603db3" defer></script>
 </body>
 </html>

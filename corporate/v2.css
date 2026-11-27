@@ -1025,3 +1025,54 @@ main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
 /* headline over the lens: fully white where the ground is dark, violet where it is light (a firmer edge than the lens) */
 .hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,#000 46%,transparent 60%)!important;
   mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,#000 46%,transparent 60%)!important}
+.hero h1.h1w,.hero h1.h1w *{overflow:visible!important;clip-path:none!important}
+/* the hero map's dots, lines and plates are driven by the scroll only: the old CSS entrance animations would override them */
+.chmap .lbl,.chmap .lead,.chmap .pin,.chmap .dot{animation:none!important;transition:none!important}
+
+/* ---------- products as a stack of large cards (desktop): the list is pinned, each card slides up over the one before ---------- */
+@media (min-width:981px){
+  .pr .grid:has(.list.stack){height:100svh;align-content:center;position:relative}
+  .pr .list.stack{position:relative;display:block;height:min(62vh,560px);margin-top:0}
+  .pr .list.stack li{position:absolute;inset:0;margin:0;min-height:0;border-radius:28px;padding:clamp(36px,4vw,64px);transform-origin:50% 0;
+    display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 -18px 50px -24px rgba(13,2,32,.6)}
+  .pr .list.stack li b{font:700 clamp(44px,5.6vw,96px)/1 var(--display)!important;letter-spacing:-.04em;order:2}
+  .pr .list.stack li .pr-n{order:1;font:600 15px/1 var(--display);font-style:normal;color:rgba(255,255,255,.7);letter-spacing:.06em}
+  .pr .list.stack li::after{width:clamp(160px,16vw,260px)!important;right:clamp(36px,4vw,64px)!important;top:clamp(36px,4vw,64px);bottom:auto!important}
+  .pr .list.stack li:hover{transform:none}
+  .pr-count{position:absolute;right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));top:calc(64px + 3vh);font:500 15px/1 var(--display);color:var(--ink-2);letter-spacing:.04em}
+  .pr-count b{font-weight:700;color:#431291}
+  .pr .band{display:none}
+}
+@media (min-width:981px){ .pr .grid:has(.list.stack){overflow:hidden} }
+/* product cards alternate: dark violet, then light lilac with deep violet type */
+.pr .list li:nth-child(even){background:linear-gradient(180deg,#F1EAFB 0%,#D9CBF3 60%,#C3AEEA 100%)!important;color:#1A063A}
+.pr .list li:nth-child(even) b{color:#1A063A!important}
+.pr .list li:nth-child(even) .pr-n{color:rgba(26,6,58,.6)!important}
+.pr .list li:nth-child(even)::after{border-color:rgba(67,18,145,.35)!important;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.7),rgba(166,136,224,.25) 70%)!important;box-shadow:inset 0 0 18px rgba(67,18,145,.12)!important}
+/* product cards: flat fills, alternating deep violet and light lilac; the line of text under each name */
+@media (min-width:981px){
+  .pr .list.stack li{background:#431291!important}
+  .pr .list.stack li:nth-child(even){background:#E6DDF6!important}
+  .pr .list.stack li::after{display:none!important}
+  .pr .list.stack li span{order:3;display:block;margin-top:20px;max-width:26em;font:500 clamp(18px,1.5vw,24px)/1.4 var(--text);color:rgba(255,255,255,.85)!important}
+  .pr .list.stack li:nth-child(even) span{color:#280A58!important}
+  .pr .list.stack li b{margin-top:auto}
+}
+@media (min-width:981px){ .pr .list.stack li{box-shadow:none!important;filter:none!important} }
+
+/* products, desktop: the section is one pinned screen; title, line and count on the left, the card stack on the right */
+@media (min-width:981px){
+  .pr.stacked{position:relative;height:100svh;padding:0!important;margin-top:0!important;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:center;
+    padding-left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)))!important;padding-right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)))!important;
+    width:100vw;margin-left:calc(50% - 50vw)!important;overflow:hidden;background:#fff}
+  .pr.stacked>.grid{display:contents}
+  .pr.stacked .head{grid-column:1/6;grid-row:1;align-self:center;display:block}
+  .pr.stacked .head h2{font-size:clamp(36px,3.6vw,60px)!important}
+  .pr.stacked .head .lede{margin-top:24px;max-width:22em}
+  .pr.stacked .pr-count{position:static;margin-top:40px;font-size:16px}
+  .pr.stacked .list.stack{grid-column:7/13;grid-row:1;align-self:center;height:min(64vh,580px);overflow:visible}
+  .pr.stacked .list.stack li{padding:clamp(30px,3vw,48px)}
+  .pr.stacked .list.stack li b{font-size:clamp(36px,3.8vw,64px)!important}
+  .pr.stacked .list.stack li span{font-size:clamp(16px,1.25vw,20px)}
+}
+@media (min-width:981px){ .pr.stacked .head{grid-column:1/7} .pr.stacked .head h2{max-width:11em} }
