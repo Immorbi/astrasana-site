@@ -96,12 +96,15 @@
     place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
     var mlk={k:0}; if(window.__mapLabels) window.__mapLabels(0);
+    var mtx=document.querySelector('.hero .mapt'); if(mtx) g.set(mtx,{autoAlpha:0,y:24});
     var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=340%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
     tl.to(vt,{t:1,duration:.56,onUpdate:seek},0)
       .to(m,{a:1,duration:.2,ease:'power2.out',onUpdate:place},.5)
       .to(words,{autoAlpha:0,yPercent:-8,duration:.12,ease:'power1.in'},.7)
       .to(m,{b:1,duration:.28,ease:'power2.in',onUpdate:place},.72)
       /* once the map fills the screen, the town dots, lines and plates come in softly, stay a while, then leave before the hand-over */
+      /* the caption waits until the map fills the screen, then rises in softly with the town labels */
+      .to(mtx,{autoAlpha:1,y:0,duration:.14,ease:'power2.out'},1.02)
       .to(mlk,{k:1,duration:.16,ease:'power1.out',onUpdate:function(){ if(window.__mapLabels) window.__mapLabels(mlk.k); }},1.04)
       .to($('.hero .mapt,.hero .chmap .lbl,.hero .chmap .lead,.hero .chmap .pin'),{autoAlpha:0,duration:.1,ease:'power1.in'},1.34)
       .to({},{duration:.04});
@@ -312,14 +315,18 @@
       /* correct for whatever box the twin is placed against: measure it and shift by the difference */
       var t2=tw.getBoundingClientRect(), dx=a.left-t2.left, dy=a.top-t2.top; tw.style.left=(a.left-b.left+dx)+'px'; tw.style.top=(a.top-b.top+dy)+'px';
       tw.style.setProperty('--ox',(a.left-b.left)+'px'); tw.style.setProperty('--oy',(a.top-b.top)+'px'); }
-    var tgt={x:0,y:0,r:0}, cur={x:0,y:0,r:0}, R=Math.max(220,Math.min(innerWidth,innerHeight)*.4), raf=0;
+    var tgt={x:0,y:0,r:0}, cur={x:0,y:0,r:0}, R=Math.max(150,Math.min(innerWidth,innerHeight)*.27), raf=0;
     function tick(){ cur.x+=(tgt.x-cur.x)*.07; cur.y+=(tgt.y-cur.y)*.07; cur.r+=(tgt.r-cur.r)*.06;
       st2.style.setProperty('--mx',cur.x.toFixed(1)+'px'); st2.style.setProperty('--my',cur.y.toFixed(1)+'px'); st2.style.setProperty('--mr',cur.r.toFixed(1)+'px');
       raf=(Math.abs(tgt.x-cur.x)+Math.abs(tgt.y-cur.y)+Math.abs(tgt.r-cur.r)>.5)?requestAnimationFrame(tick):0; }
     function kick(){ if(!raf) raf=requestAnimationFrame(tick); }
-    st2.addEventListener('pointermove',function(e){ var b=st2.getBoundingClientRect(); tgt.x=e.clientX-b.left; tgt.y=e.clientY-b.top; if(cur.r<1){ cur.x=tgt.x; cur.y=tgt.y; } tgt.r=R; kick(); });
+    /* the lens belongs to the resting first screen: once the scroll starts the stage (headline fading, window opening) it closes
+       quickly and the white twin is hidden, so nothing is left doubled over the moving headline */
+    var still=function(){ return scrollY<24; };
+    st2.addEventListener('pointermove',function(e){ if(!still()) return; var b=st2.getBoundingClientRect(); tgt.x=e.clientX-b.left; tgt.y=e.clientY-b.top; if(cur.r<1){ cur.x=tgt.x; cur.y=tgt.y; } tgt.r=R; kick(); });
+    addEventListener('scroll',function(){ var on=still(); if(tw) tw.style.display=on?'':'none'; if(!on&&tgt.r){ tgt.r=0; cur.r=Math.min(cur.r,R*.4); kick(); } },{passive:true});
     st2.addEventListener('pointerleave',function(){ tgt.r=0; kick(); });
-    fitTw(); addEventListener('resize',function(){ R=Math.max(220,Math.min(innerWidth,innerHeight)*.4); fitTw(); }); if(document.fonts) document.fonts.ready.then(fitTw); ST.addEventListener('refresh',fitTw); }
+    fitTw(); addEventListener('resize',function(){ R=Math.max(150,Math.min(innerWidth,innerHeight)*.27); fitTw(); }); if(document.fonts) document.fonts.ready.then(fitTw); ST.addEventListener('refresh',fitTw); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });

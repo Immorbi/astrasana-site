@@ -1006,7 +1006,7 @@ main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
 /* the light hero: no negative on the headline; the white twin carries the same type as the headline */
 .hero h1{mix-blend-mode:normal!important;color:#431291!important}
 .hero h1.h1w{grid-column:auto!important;color:#fff!important;font-weight:700!important;letter-spacing:-.04em!important;margin:0!important;padding:0}
-.hero h1.h1w *{color:#fff!important;opacity:1!important;transform:none!important;visibility:visible!important}
+.hero h1.h1w *{color:#fff!important;opacity:1!important;transform:none!important}
 /* softer lens: a long feathered edge instead of a firm circle */
 .hero .hpic .hp-d{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%);
   mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.85) 22%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.18) 75%,transparent 100%)}
@@ -1017,3 +1017,11 @@ main .nw{padding-bottom:clamp(64px,7vw,120px)!important}
   mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%)}
 .hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%);
   mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 18%,rgba(0,0,0,.42) 42%,rgba(0,0,0,.18) 66%,rgba(0,0,0,.05) 86%,transparent 100%)}
+/* the lens a little denser: a fuller centre, still a long soft edge */
+.hero .hpic .hp-d{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.9) 22%,rgba(0,0,0,.62) 46%,rgba(0,0,0,.3) 68%,rgba(0,0,0,.08) 87%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.9) 22%,rgba(0,0,0,.62) 46%,rgba(0,0,0,.3) 68%,rgba(0,0,0,.08) 87%,transparent 100%)}
+.hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,rgba(0,0,0,.9) 22%,rgba(0,0,0,.62) 46%,rgba(0,0,0,.3) 68%,rgba(0,0,0,.08) 87%,transparent 100%);
+  mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,rgba(0,0,0,.9) 22%,rgba(0,0,0,.62) 46%,rgba(0,0,0,.3) 68%,rgba(0,0,0,.08) 87%,transparent 100%)}
+/* headline over the lens: fully white where the ground is dark, violet where it is light (a firmer edge than the lens) */
+.hero .h1w{-webkit-mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,#000 46%,transparent 60%)!important;
+  mask-image:radial-gradient(circle var(--mr,0px) at calc(var(--mx,50%) - var(--ox,0px)) calc(var(--my,50%) - var(--oy,0px)),#000 0%,#000 46%,transparent 60%)!important}
