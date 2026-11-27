@@ -214,7 +214,7 @@
          this very shape, and only once the whole of Europe is in view does it give way to the map's own outline */
       var heroCn=document.querySelector('.hero .chmap .cn'), chHl=q('.hl[data-c="ch"]'), chd=null;
       if(heroCn&&chHl){ chd=document.createElementNS('http://www.w3.org/2000/svg','path'); chd.setAttribute('class','chd'); chd.setAttribute('d',heroCn.getAttribute('d')); chHl.parentNode.insertBefore(chd,chHl.nextSibling); }
-      function fitChd(){ if(!chd) return; var hb=heroCn.getBBox(), fb=chHl.getBBox(), sx=fb.width/hb.width, sy=fb.height/hb.height;
+      function fitChd(){ if(!chd) return; var hb=heroCn.getBBox(), fb=chHl.getBBox(), sx=fb.width/hb.width, sy=sx; /* one scale for both axes: the same shape as on the hero map */
         chd.setAttribute('transform','translate('+fb.x+' '+fb.y+') scale('+sx+' '+sy+') translate('+(-hb.x)+' '+(-hb.y)+')'); }
       /* where Switzerland sits on screen when the hero map fills it (its build-up scale undone) */
       function heroCH(){ var st=document.querySelector('.hero .stage'); if(!heroCn||!st) return null;
@@ -231,7 +231,15 @@
         if(!R){ R={cx:vw*.62,cy:vh*.52,w:vw*.4}; }
         var s=R.w/fb.width, cx=fb.x+fb.width/2, cy=fb.y+fb.height/2;
         /* viewBox with the screen's own proportions, so one map unit is the same size across and down */
-        V0.w=vw/s; V0.h=vh/s; V0.x=cx-R.cx/s; V0.y=cy-R.cy/s; endView(); vb(); }
+        V0.w=vw/s; V0.h=vh/s; V0.x=cx-R.cx/s; V0.y=cy-R.cy/s; endView(); vb(); match(); }
+      /* fine match against the real outlines: both Switzerlands measured on screen (the hero's unscaled), then the start view
+         is nudged so the two lie on top of each other exactly; run again when the figures take over */
+      function match(){ if(!chd||!heroCn||v.t>.001) return; var hs=document.querySelector('.hero .stage'); if(!hs) return;
+        var m=/scale\(([\d.]+)/.exec(heroCn.style.transform||''), sc=m?+m[1]:1; if(Math.abs(sc-1)>.002) return;
+        var a=heroCn.getBoundingClientRect(), ab=hs.getBoundingClientRect(), b=chd.getBoundingClientRect(), bb=fig.getBoundingClientRect();
+        if(!b.width||!a.width) return; var k=b.width/a.width, unit=V0.w/innerWidth;
+        V0.w*=k; V0.h*=k; V0.x+=( (b.left-bb.left) - (a.left-ab.left)*k )*unit*0+((b.left-bb.left)-(a.left-ab.left))*unit; V0.y+=((b.top-bb.top)-(a.top-ab.top))*unit;
+        vb(); }
       function vb(){ var t=v.t, w=Math.exp(Math.log(V0.w)+(Math.log(V1.w)-Math.log(V0.w))*t), k=(w-V0.w)/(V1.w-V0.w||1), h=w*(V0.h/V0.w);
         pm.setAttribute('viewBox',(V0.x+(V1.x-V0.x)*k).toFixed(2)+' '+(V0.y+(V1.y-V0.y)*k).toFixed(2)+' '+w.toFixed(2)+' '+h.toFixed(2));
         var x=Math.max(0,Math.min(1,(t-.6)/.2)); if(chd) chd.style.opacity=1-x; chHl.style.opacity=x;
@@ -243,7 +251,7 @@
       var hw=$('.fw',h2), rows=$('dl>div',fig);
       g.set(land,{opacity:0}); measure();
       var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=300%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
-        onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); }}});
+        onEnter:function(){ fig.classList.add('on'); match(); }, onLeaveBack:function(){ fig.classList.remove('on'); }}});
       /* 0 to 1: the camera pulls back from Switzerland to Europe */
       zt.to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
         .to(land,{opacity:1,duration:.35,stagger:{amount:.35,from:'center'}},.25);
