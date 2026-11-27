@@ -914,3 +914,15 @@ h2{font-size:clamp(32px,3.6vw,58px)}
 .sg-lede{margin:clamp(20px,2.4vw,36px) 0 0 22%;max-width:17em;font:500 clamp(22px,2.5vw,42px)/1.18 var(--display);letter-spacing:-.02em;color:#1A063A}
 html:not(.gs) .sg-mark{transform:translate(-96%,-50%) scale(3)}
 @media (max-width:760px){ .sg-txt{left:var(--pad)} .sg-lede{margin-left:0} }
+/* figures map: borders keep their hairline width while the camera pulls back from Switzerland */
+.pmap path{vector-effect:non-scaling-stroke}
+
+/* figures map, seamless hand-over from the hero: tucked under the end of the hero and hidden until its own pin takes over;
+   it starts on the hero map's ground and fades to white as the card settles (--zk 0..1) */
+.gs .fig.zoom{position:relative;z-index:6;margin-top:-100svh;isolation:isolate}
+.gs .fig.zoom:not(.on){visibility:hidden}
+.gs .fig.zoom::before{content:"";position:absolute;z-index:-1;left:50%;width:100vw;transform:translateX(-50%);top:0;height:100svh;pointer-events:none;
+  background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%);opacity:calc(1 - var(--zk,1))}
+.gs .fig.zoom .pm{position:relative;background:transparent!important;isolation:isolate}
+.gs .fig.zoom .pm::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(160deg,#1A063A 0%,#280A58 50%,#431291 100%);opacity:var(--zk,1)}
+.pmap .ln{vector-effect:none}

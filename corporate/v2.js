@@ -96,11 +96,13 @@
       if(window.__mapProgress) window.__mapProgress(Math.min(1,ra*.25+rb*1.05)); }
     place(); addEventListener('resize',place);
     var words=$('.hero .stage h1,.hero .stage .meta,.hero .stage .intro');
-    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=260%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
+    var tl=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:stage,start:'top top',end:'+=290%',pin:true,scrub:true,anticipatePin:1,invalidateOnRefresh:true}});
     tl.to(vt,{t:1,duration:.56,onUpdate:seek},0)
       .to(m,{a:1,duration:.2,ease:'power2.out',onUpdate:place},.5)
       .to(words,{autoAlpha:0,yPercent:-8,duration:.12,ease:'power1.in'},.7)
-      .to(m,{b:1,duration:.28,ease:'power2.in',onUpdate:place},.72);
+      .to(m,{b:1,duration:.28,ease:'power2.in',onUpdate:place},.72)
+      .to($('.hero .mapt,.hero .chmap .lbl,.hero .chmap .lead,.hero .chmap .pin'),{autoAlpha:0,duration:.1,ease:'power1.in'},1.02)
+      .to({},{duration:.04});
   }
 
   /* 2. section headlines: lines rise from a mask when the headline reaches 80% of the screen */
@@ -159,6 +161,7 @@
   /* the hero video is light: over the hero the header turns dark only once the dark map panel has opened over it */
   var darkEls=$('.co,.x3d-sec,.ct'), hst=document.querySelector('.hero .stage'), hrv=document.querySelector('.hero .reveal');
   function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); return r.top<=64&&r.bottom>64; });
+    if(!on){ var fz=document.querySelector('.fig.zoom.on.hd-dark'); if(fz){ var zr=fz.getBoundingClientRect(); on=zr.top<=64&&zr.bottom>64; } }
     if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
     hd.classList.toggle('dark',on); }
   window.__hdTone=hdTone;   addEventListener('scroll',hdTone,{passive:true}); addEventListener('resize',hdTone); hdTone();
@@ -181,22 +184,65 @@
 
   /* 16. a thin progress line along the top of the page */
   var sp=document.querySelector('.sprog'); if(sp) g.to(sp,{scaleX:1,ease:'none',scrollTrigger:{trigger:document.documentElement,start:'top top',end:'bottom bottom',scrub:.3}});
-  /* 17. figures map: the land sweeps in from the west; then each of the group's countries drops onto the map from above
-         and lands with a soft shadow (headquarters first), its dot pops, the leader line draws and the plate slides in.
-         While the page scrolls, the lifted layer moves faster than the land beneath it (parallax depth). */
+  /* 17. figures map. On desktop the camera pulls back from Switzerland to Europe: the section is pinned, the map card starts
+         full-screen with only Switzerland in view (as the hero map leaves it), the view zooms out while the rest of the
+         continent fades in around it and the card settles into its place; then the group's other countries drop onto the map
+         (dot, leader line, plate) and the figures appear. On phones the map simply builds up when it arrives. */
   var pm=document.querySelector('.pmap'); if(pm){
     var land=$('.pm-land path',pm).sort(function(a,b){ return a.getAttribute('data-x')-b.getAttribute('data-x'); });
     var q=function(sel){ return pm.querySelector(sel); };
-    var tl=g.timeline({scrollTrigger:{trigger:pm,start:'top 72%',once:true}});
-    tl.from(land,{autoAlpha:0,duration:.5,stagger:{amount:.8},ease:'power1.out'},0)
-      .from(q('.jp .box'),{autoAlpha:0,y:16,duration:.6,ease:'expo.out'},.5).from(q('.jp .jt'),{autoAlpha:0,duration:.4},.7);
-    ['ch','uk','be','cz','jp'].forEach(function(c,i){ var at=.7+i*.26, hl=q('.hl[data-c="'+c+'"]'), dt=q('.dot[data-c="'+c+'"]'), ln=q('.ln[data-c="'+c+'"]'), lb=q('.lbl[data-c="'+c+'"]');
-      if(hl) tl.from(hl,{y:-34,scale:1.3,autoAlpha:0,transformOrigin:'50% 50%',duration:.9,ease:'back.out(1.5)'},at);
+    /* the group's countries land one after another: dot pops, the leader line draws, the plate slides in */
+    function drops(tl,list,t0){ list.forEach(function(c,i){ var at=t0+i*.26, hl=q('.hl[data-c="'+c+'"]'), dt=q('.dot[data-c="'+c+'"]'), ln=q('.ln[data-c="'+c+'"]'), lb=q('.lbl[data-c="'+c+'"]');
+      if(hl&&c!=='ch') tl.from(hl,{y:-34,scale:1.3,autoAlpha:0,transformOrigin:'50% 50%',duration:.9,ease:'back.out(1.5)'},at);
       if(dt){ tl.from(dt,{autoAlpha:0,duration:.2},at+.45).from(dt.querySelector('.core'),{scale:0,transformOrigin:'50% 50%',duration:.5,ease:'back.out(3)'},at+.45); }
-      if(ln){ var L=ln.getTotalLength(); ln.style.strokeDasharray=L; tl.fromTo(ln,{strokeDashoffset:L},{strokeDashoffset:0,duration:.45,ease:'power2.out'},at+.55); }
-      if(lb) tl.from(lb,{autoAlpha:0,x:c==='uk'||c==='ch'?10:-10,duration:.6,ease:'expo.out'},at+.7); });
-    g.fromTo(q('.pm-top'),{y:18},{y:-18,ease:'none',scrollTrigger:{trigger:pm,start:'top bottom',end:'bottom top',scrub:true}});
-    g.fromTo(q('.pm-land'),{y:-6},{y:6,ease:'none',scrollTrigger:{trigger:pm,start:'top bottom',end:'bottom top',scrub:true}}); }
+      if(ln){ var L=ln.getTotalLength(); ln.style.strokeDasharray=L; tl.fromTo(ln,{strokeDashoffset:L,autoAlpha:0},{strokeDashoffset:0,autoAlpha:1,duration:.45,ease:'power2.out'},at+.55); }
+      if(lb) tl.from(lb,{autoAlpha:0,x:c==='uk'||c==='ch'?10:-10,duration:.6,ease:'expo.out'},at+.7); }); }
+    var fig=pm.closest('.fig'), card=pm.closest('.pm'), zoom=fig&&card&&innerWidth>980;
+    if(zoom){
+      own(fig); $('.up',fig).forEach(own); fig.classList.add('zoom');
+      /* where Switzerland sits on the hero map once it fills the screen (its build-up scale undone) */
+      function heroCH(){ var p=document.querySelector('.hero .chmap .cn'), st=document.querySelector('.hero .stage'); if(!p||!st) return null;
+        var a=p.getBoundingClientRect(), b=st.getBoundingClientRect(), m=/scale\(([\d.]+)/.exec(p.style.transform||''), sc=m?+m[1]:1, w=a.width/sc, h=a.height/sc;
+        return {cx:a.left-b.left-(w-a.width)*.5+w/2, cy:a.top-b.top-(h-a.height)*.6+h/2, w:w}; }
+      function figCH(){ var a=q('.hl[data-c="ch"]').getBoundingClientRect(), b=fig.getBoundingClientRect(); return {cx:a.left-b.left+a.width/2, cy:a.top-b.top+a.height/2, w:a.width}; }
+      var VB={x0:308-52,y0:233-59.3,w0:104,x1:0,y1:0,w1:500}, AR=570/500, v={t:0};
+      function vb(){ var w=Math.exp(Math.log(VB.w0)+(Math.log(VB.w1)-Math.log(VB.w0))*v.t), k=(w-VB.w0)/(VB.w1-VB.w0);
+        pm.setAttribute('viewBox',(VB.x0+(VB.x1-VB.x0)*k).toFixed(2)+' '+(VB.y0+(VB.y1-VB.y0)*k).toFixed(2)+' '+w.toFixed(2)+' '+(w*AR).toFixed(2)); }
+      /* the card starts covering the screen, with Switzerland a little right of centre as in the hero map; the start is
+         measured with the card's own transform cleared, again on every refresh */
+      var S0={x:0,y:0,s:1}, cp={p:0};
+      function measure(){ var keep=card.style.transform; card.style.transform='none'; var r=card.getBoundingClientRect(), fr=fig.getBoundingClientRect(), top=r.top-fr.top;
+        S0.s=Math.max(innerWidth/r.width,innerHeight/r.height)*1.3; S0.x=innerWidth*.62-(r.left+r.width/2); S0.y=innerHeight*.52-(top+r.height/2);
+        /* then match the start to the hero: same size and place of Switzerland, so one map hands over to the other unseen */
+        var H=heroCH(), kp=cp.p, kt=v.t; if(H){ cp.p=0; v.t=0; vb(); place(); var F=figCH(); if(F.w>0){ S0.s*=H.w/F.w; place(); F=figCH(); S0.x+=H.cx-F.cx; S0.y+=H.cy-F.cy; } cp.p=kp; v.t=kt; vb(); }
+        card.style.transform=keep; place(); }
+      function place(){ var k=cp.p, s=S0.s+(1-S0.s)*k; fig.style.setProperty('--zk',Math.max(0,Math.min(1,(k-.3)/.45)).toFixed(3)); card.style.transformOrigin='50% 50%'; card.style.transform='translate('+(S0.x*(1-k)).toFixed(1)+'px,'+(S0.y*(1-k)).toFixed(1)+'px) scale('+s.toFixed(4)+')'; }
+      ST.addEventListener('refreshInit',function(){ card.style.transform='none'; }); ST.addEventListener('refresh',measure);
+      var others=['uk','be','cz','jp'], jpBox=[q('.jp .box'),q('.jp .jt')].filter(Boolean);
+      var words=[fig.querySelector('h2')].concat($('dl>div',fig));
+      g.set(land,{opacity:0}); g.set(words,{autoAlpha:0,y:24}); vb();
+      /* the finale is built paused: its "from" tweens hide the countries, dots, lines and plates until it plays */
+      var played=false, finale=g.timeline({paused:true});
+      finale.fromTo(jpBox,{autoAlpha:0},{autoAlpha:1,duration:.5},0);
+      drops(finale,['ch'].concat(others),.1);
+      finale.to(words,{autoAlpha:1,y:0,duration:.8,stagger:.12,ease:'expo.out'},.2);
+      finale.progress(0).pause();
+      var zt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fig,start:'top top',end:'+=170%',pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+        onEnter:function(){ fig.classList.add('on'); }, onLeaveBack:function(){ fig.classList.remove('on'); },
+        onUpdate:function(self){ var dk=self.progress<.4; if(dk!==fig.classList.contains('hd-dark')){ fig.classList.toggle('hd-dark',dk); if(window.__hdTone) window.__hdTone(); }
+          if(self.progress>.86&&!played){ played=true; finale.play(0); } else if(self.progress<.6&&played){ played=false; finale.pause(0); } }}});
+      measure();
+      zt.to(cp,{p:1,duration:1,ease:'power2.inOut',onUpdate:place},0)
+        .to(v,{t:1,duration:1,ease:'power2.inOut',onUpdate:vb},0)
+        .to(land,{opacity:1,duration:.35,stagger:{amount:.35,from:'center'}},.25)
+        .to({},{duration:.3});
+    } else {
+      var tl=g.timeline({scrollTrigger:{trigger:pm,start:'top 72%',once:true}});
+      tl.from(land,{autoAlpha:0,duration:.5,stagger:{amount:.8},ease:'power1.out'},0)
+        .from(q('.jp .box'),{autoAlpha:0,y:16,duration:.6,ease:'expo.out'},.5).from(q('.jp .jt'),{autoAlpha:0,duration:.4},.7);
+      ['ch','uk','be','cz','jp'].forEach(function(c,i){ var hl=q('.hl[data-c="'+c+'"]'); if(hl&&c==='ch') tl.from(hl,{y:-34,scale:1.3,autoAlpha:0,transformOrigin:'50% 50%',duration:.9,ease:'back.out(1.5)'},.7); });
+      drops(tl,['ch','uk','be','cz','jp'],.7); }
+  }
   /* 18. team cards rise one after another; partner dots on the pharmacy map are already staggered in CSS */
   var tml=document.querySelector('.tm-list'); if(tml){ own(tml); g.from($('li',tml),{y:40,autoAlpha:0,duration:.9,stagger:.1,ease:'expo.out',scrollTrigger:{trigger:tml,start:'top 80%',once:true}}); }
 
