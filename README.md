@@ -21,6 +21,17 @@ Serve the folder with any static server (the About Us page needs the pages on on
 - Regional map around Zurich (lakes, canton and municipal borders): swisstopo / FSO generalised boundaries via [swiss-maps](https://github.com/interactivethings/swiss-maps) 4.7.0. Rivers, motorways, railways and urban areas: Natural Earth 10m (public domain).
 - Icons: [Lucide](https://lucide.dev) (ISC licence), © Lucide Icons and Contributors.
 
+## V2 pages
+
+V2 follows the client's direction: the homepage is a showcase (keywords, visuals, short lines) and the full texts live on subpages.
+
+- `v2.html`: the homepage. Each section keeps a title, one line and a link to its subpage.
+- `v2-companies.html`: group companies, team, figures and the group map.
+- `v2-pharma.html`: the value chain, How we work, cultivation and the Tagelswangen facility.
+- `v2-pharmacies.html`: Bogen Pharma, the partner pharmacy map and how patients access medical cannabis.
+- `v2-contact.html`: contact details and the form.
+- `corporate/v2.css` and `corporate/v2-page.js`: styles and page behaviour shared by all V2 pages; `corporate/v2.js`: the GSAP motion.
+
 ## Motion environment (second version, `v2.html`)
 
 The header toggle switches between V1 (`index.html`) and V2 (`v2.html`). V2 starts as a copy of V1 and is where motion prototypes are built, inspired by the reference site polpharmabiologics.com (Webflow, GSAP, Lenis, Barba, Swiper, Unicorn Studio).

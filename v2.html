@@ -10,878 +10,7 @@
 <!-- the site's existing families (DM Sans, Montserrat); only lighter weights are added for the large figures -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="corporate/img/brand/logo-color.svg" type="image/svg+xml">
-<style>
-/* Astrasana corporate, light editorial version.
-   Same families as the 3D story (Montserrat for display, DM Sans for text); colours follow the investor brochure:
-   white and near-black dominate, the deep brand purple only for captions, links and small details, lavender for rare surfaces. */
-:root{
-  --paper:#fff; --paper-2:#f7f6f8;
-  --ink:#231f20; --ink-2:#47423f; --ink-3:#77716e;
-  --rule:#e4e0e7; --rule-2:#cdc6d4;
-  --purple:#431291; --purple-h:#330e6f; /* Astrasana Holding colour, styleguide.astrasana.io */
-  --lav-1:#eee9f4; --lav-2:#ddd4e9; --lav-3:#bdaed5;
-  --night:#0e0e11; --night-fg:#f3eeeb; --night-acc:#a49cf0;
-  --display:'Montserrat',ui-sans-serif,system-ui,sans-serif;
-  --text:'DM Sans',ui-sans-serif,system-ui,sans-serif;
-  --pad:clamp(20px,5.2vw,80px); --gut:clamp(16px,2.1vw,32px); --sec:clamp(96px,11vw,168px); --max:1680px;
-  --t-cap:13px; --t-s:15px; --t-m:17px; --t-l:clamp(19px,1.5vw,23px);
-  --t-h3:clamp(22px,1.9vw,30px); --t-h2:clamp(38px,4.9vw,76px); --t-h1:clamp(46px,7.4vw,118px); --t-fig:clamp(72px,9.5vw,148px);
-  --ease:cubic-bezier(.16,1,.3,1);
-  --r-photo:10px; --r-btn:8px;
-  color-scheme:light;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--paper);-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--ink-2);font:400 var(--t-m)/1.6 var(--text);-webkit-font-smoothing:antialiased;overflow-x:clip}
-img{display:block;max-width:100%}
-main [id]{scroll-margin-top:76px} main .sec[id]{scroll-margin-top:calc(64px + clamp(28px,3vw,48px) - var(--sec))} main [id]:focus{outline:none}
-::selection{background:var(--lav-2);color:var(--ink)}
-input,textarea{caret-color:var(--purple)}
-a{text-underline-offset:.18em}
-a{color:inherit;text-decoration:none}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
-.skip{position:absolute;left:16px;top:-80px;z-index:100;background:var(--ink);color:#fff;padding:12px 18px}
-.skip:focus{top:16px}
-.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-
-/* grid: twelve columns, wide margins */
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);padding:0 var(--pad);max-width:var(--max);margin:0 auto}
-.sec{padding-top:var(--sec)}
-
-/* type */
-h1,h2,h3,.disp{font-family:var(--display);color:var(--ink);font-weight:600;letter-spacing:-.025em;text-wrap:balance}
-h1{font-size:var(--t-h1);line-height:.98;letter-spacing:-.035em}
-h2{font-size:var(--t-h2);line-height:1.02}
-h3{font-size:var(--t-h3);line-height:1.15;letter-spacing:-.015em}
-.lede{font-size:var(--t-l);line-height:1.45;color:var(--ink);text-wrap:pretty}
-.cap{font:500 var(--t-cap)/1.5 var(--text);color:var(--purple);letter-spacing:.005em}
-.label{font:500 15px/1.4 var(--text);color:var(--ink-3)}
-.small{font-size:var(--t-s);line-height:1.6}
-p+p{margin-top:1em}
-p,li,dd,figcaption{text-wrap:pretty}
-.cols2{columns:2;column-gap:var(--gut)}
-.cols2 p{break-inside:avoid-column}
-
-/* text links: a short rule that grows, no buttons on the light site */
-.tlink{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:600 15px/1.2 var(--display);color:var(--ink);letter-spacing:-.005em}
-.tlink span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1.5px no-repeat;padding-bottom:3px;transition:background-size .45s var(--ease)}
-.tlink:hover span,.tlink:focus-visible span{background-size:100% 1.5px}
-.tlink svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .35s var(--ease)}
-.tlink:hover svg{transform:translateX(4px)}
-.tlink.acc{color:var(--purple)}
-
-/* photographs: rectangles, cool neutral grade, a slow reveal */
-.ph{position:relative;overflow:hidden;background:var(--paper-2);border-radius:var(--r-photo)}
-.ph img{width:100%;height:100%;object-fit:cover}
-.ph:not(.tint) img{filter:saturate(.74) contrast(1.04) brightness(1.01)}
-.ph.cool img{filter:saturate(.62) contrast(1.05) brightness(1.02) hue-rotate(-8deg)}
-.ph:not(.tint)::after{content:"";position:absolute;inset:0;background:#d9d0ea;mix-blend-mode:multiply;opacity:.14;pointer-events:none}
-.fig .ph::after{opacity:.08}
-.img-sec .ph::after{display:none}
-.ph.tint{background:var(--lav-1)} .ph.tint img{mix-blend-mode:multiply}
-.rv .ph,.ph.rv{clip-path:inset(0 0 100% 0 round var(--r-photo));transition:clip-path .9s var(--ease)}
-.rv .ph img,.ph.rv img{transform:scale(1.04);transition:transform 1.1s var(--ease)}
-.rv.in .ph,.ph.rv.in{clip-path:inset(0 0 0 0 round var(--r-photo))}
-.rv.in .ph img,.ph.rv.in img{transform:none}
-.up{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.in .up,.up.in{opacity:1;transform:none}
-.rule{height:1px;background:var(--rule);transform-origin:left;transform:scaleX(0);transition:transform 1.2s var(--ease)}
-/* the chain: five stops on one line. When the row reaches mid-screen a parcel runs the line once; each badge fills as it is reached */
-.ch .head h2{grid-column:1/7}
-.ch .head p{grid-column:8/12;align-self:end}
-.ch ol{--b:clamp(64px,5.4vw,80px);--fill:0;grid-column:1/13;list-style:none;margin-top:clamp(56px,6vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:clamp(10px,1vw,16px);position:relative}
-.ch .track{visibility:hidden;position:absolute;top:calc(var(--b) / 2 - 1px);left:calc(var(--b) / 2);right:calc((100% - 4 * var(--gut)) / 5 - var(--b) / 2);height:2px;background:var(--rule);z-index:0}
-.ch .track i{position:absolute;inset:0;background:var(--purple);transform-origin:left;transform:scaleX(var(--fill))}
-.ch .track b{position:absolute;top:50%;left:calc(var(--fill) * 100%);width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--purple);opacity:0;transition:opacity .3s ease}
-.ch ol.running .track b{opacity:1}
-.ch li{position:relative;z-index:1;padding:clamp(20px,2vw,32px);border-radius:var(--r-photo);background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--lav-2);transition:background-color .6s var(--ease),box-shadow .6s var(--ease)}
-/* each step is a lavender outline that fills as the run reaches it */
-.ch li.lit{background:var(--lav-1);box-shadow:inset 0 0 0 1.5px var(--lav-1)}
-.ch li .badge{display:block;width:clamp(44px,3.6vw,56px);height:clamp(44px,3.6vw,56px);transition:transform .35s var(--ease)}
-.ch li .ic{display:block;width:100%;height:auto;fill:none;stroke:var(--ink-3);stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;overflow:visible;transition:stroke .45s var(--ease)}
-.ch li .num{display:block;margin-top:24px;font:300 clamp(40px,3.8vw,60px)/.9 var(--display);letter-spacing:-.04em;color:var(--ink-3);transition:color .6s ease}
-.ch li b{display:block;margin-top:12px;font:600 clamp(19px,1.55vw,24px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
-.ch li p{margin-top:12px;font-size:var(--t-s);max-width:24em}
-.ch li:hover .badge{transform:translateY(-2px)}
-.ch li.lit .badge{animation:reach .5s var(--ease)}
-.ch li .ic .f{fill:none}
-.ch li.lit .ic{stroke:var(--purple)}
-.ch li.lit .num{color:var(--purple)}
-@keyframes reach{0%{transform:scale(.92)}55%{transform:scale(1.07)}100%{transform:none}}
-@media (prefers-reduced-motion:reduce){ .ch ol{--fill:1} .ch li,.ch li .badge,.ch li .ic,.ch li .num{transition:none} .ch li.lit .badge{animation:none} .ch .track b{display:none} }
-@media (max-width:1100px){
-  .ch .head h2,.ch .head p{grid-column:1/13} .ch .head p{margin-top:20px}
-  .ch ol{--b:60px;grid-template-columns:1fr;row-gap:12px}
-  .ch .track{left:calc(var(--b) / 2 - 1px);right:auto;top:calc(var(--b) / 2);bottom:auto;height:var(--trackh,0px);width:2px}
-  .ch .track i{transform-origin:top;transform:scaleY(var(--fill))}
-  .ch .track b{left:50%;top:calc(var(--fill) * 100%);margin:-7px 0 0 -7px}
-}
-}
-.in .rule,.rule.in{transform:none}
-@media (prefers-reduced-motion:reduce){ .rv .ph,.ph.rv,.up,.rule{clip-path:none!important;opacity:1!important;transform:none!important;transition:none!important} .rv .ph img,.ph.rv img{transform:none!important;transition:none!important} }
-
-/* ---------- header ---------- */
-.hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);-webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);transition:box-shadow .3s ease}
-.hd.scrolled{box-shadow:0 1px 0 var(--rule)}
-.hd .grid{height:64px;align-items:center}
-.logo{position:relative;display:block;width:max-content;line-height:0}
-.logo img{display:block;height:100%;width:auto}
-.logo .l-white{position:absolute;inset:0;opacity:0}
-.logo img{transition:opacity .42s cubic-bezier(.4,0,.2,1)}
-.hd .logo{grid-column:1/3;height:21px;position:relative} .hd .logo::after{content:'';position:absolute;inset:-12px -8px}
-.hd nav{grid-column:4/13;grid-row:1;display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,1.45vw,24px)}
-.hd nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 14px/1 var(--text);color:var(--ink-2);transition:color .2s ease}
-.hd nav a:hover,.hd nav a.on{color:var(--ink)}
-.hd nav a::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1.5px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
-.hd nav a:hover::after{transform:scaleX(1)}
-.hd nav .nav3d{gap:6px}
-.hd nav .nav3d svg{width:15px;height:15px;fill:none;stroke:var(--purple);stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round;transform:translateY(-1px);transition:transform .35s var(--ease)}
-.hd nav .nav3d:hover svg{transform:translateY(-1px) rotate(-12deg)}
-.hd nav .contact{color:var(--purple);font-weight:600}
-.hd nav .contact::after{background:var(--purple)}
-.hd .logo{grid-row:1}
-/* switch between the two versions of the site, kept while the second one is being built */
-.vtog{grid-column:3/4;grid-row:1;justify-self:start;display:inline-flex;gap:2px;padding:3px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--rule-2)}
-.vtog a{display:inline-flex;align-items:center;min-height:28px;padding:0 11px;border-radius:999px;font:600 12px/1 var(--display);letter-spacing:.02em;color:var(--ink-3);transition:background-color .2s ease,color .2s ease}
-.vtog a:hover{color:var(--ink)} .vtog a[aria-current]{background:var(--ink);color:#fff}
-.menu-btn{display:none;grid-row:1;grid-column:12/13;justify-self:end;width:44px;height:44px;border:0;background:none;cursor:pointer}
-.menu-btn i{display:block;width:22px;height:1.5px;background:var(--ink);margin:6px auto;transition:transform .3s var(--ease)}
-.hd.open .menu-btn i:first-child{transform:translateY(3.75px) rotate(45deg)} .hd.open .menu-btn i:last-child{transform:translateY(-3.75px) rotate(-45deg)}
-@media (max-width:980px){
-  .hd .grid{height:56px} .hd .logo{grid-column:1/7;height:18px} .vtog{grid-column:7/12;justify-self:end;margin-right:8px}
-  .menu-btn{display:block}
-  .hd nav{position:fixed;inset:56px 0 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:0;padding:24px var(--pad) 40px;background:var(--paper);
-    opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s ease,transform .3s var(--ease),visibility 0s .3s}
-  .hd.open{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--paper)} /* a filter would trap the fixed panel inside the bar */
-  .hd nav .nav3d svg{width:20px;height:20px;transform:none}
-  .hd.open nav{opacity:1;visibility:visible;transform:none;transition:opacity .3s ease,transform .3s var(--ease)}
-  .hd nav a{width:100%;min-height:60px;font:600 26px/1 var(--display);color:var(--ink);letter-spacing:-.02em;border-bottom:1px solid var(--rule)}
-  .hd nav a::after{display:none}
-  }
-
-/* ---------- hero (brochure p.2: a large rectangular photo, a large black title, white space) ---------- */
-.hero{padding-top:clamp(24px,3vw,48px)}
-.hero h1{grid-column:1/12;grid-row:1;margin-top:clamp(16px,2.4vw,40px);font-size:clamp(46px,6.6vw,104px)}
-.hero .meta{grid-column:1/4;grid-row:2;margin-top:clamp(28px,3vw,48px)}
-.hero .meta p+p{margin-top:12px}
-.hero .ph{grid-column:1/13;grid-row:3;aspect-ratio:16/6.2;margin-top:clamp(40px,4vw,64px)}
-.hero .mapt{grid-column:1/5;grid-row:1;align-self:end;padding:0 0 clamp(8px,1vw,16px) clamp(28px,3.4vw,56px)}
-.hero .mapt h2{font-size:clamp(24px,2.2vw,34px);line-height:1.1;margin-bottom:16px}
-.hero .mapt p{font-size:var(--t-s);color:var(--ink-2);max-width:26em}
-.hero .chm{grid-column:1/13;grid-row:3;margin-top:clamp(40px,4vw,64px);position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:center;background:var(--lav-1);border-radius:var(--r-photo);padding:clamp(28px,3.4vw,56px) 0;overflow:hidden}
-.chmap{grid-column:5/13;grid-row:1;margin-right:clamp(0px,2vw,32px);width:100%;height:auto;overflow:visible}
-.chmap .cn{fill:var(--lav-2);stroke:var(--purple);stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
-.chmap .ct{fill:none;stroke:#cfc3e4;stroke-width:.9}
-.chmap .pin path{fill:var(--purple);stroke:#fff;stroke-width:1.2} .chmap .pin .in{fill:#fff}
-.chmap .lbl rect{fill:#fff;stroke:var(--rule);stroke-width:.7;rx:5px}
-.chmap .lbl text{font:600 12px var(--display);fill:var(--ink);letter-spacing:-.01em}
-.chmap .lbl text.s{font:400 10.5px var(--text);fill:var(--ink-2)}
-/* the outline draws once on load, then the cantons, lakes and the two sites appear */
-.js .chmap .cn{stroke-dashoffset:1;animation:outline 2.2s cubic-bezier(.65,0,.35,1) .35s forwards}
-.js .chmap .ct,.js .chmap .lbl{opacity:0;animation:fadein .8s ease forwards}
-.js .chmap .ct{animation-delay:1.9s} .js .chmap .l1{animation-delay:2.5s} .js .chmap .l2{animation-delay:2.7s}
-.js .chmap .pin{transform-box:fill-box;transform-origin:center;opacity:0;animation:pinin .5s var(--ease) forwards}
-.js .chmap .hq{animation-delay:2.3s} .js .chmap .pr{animation-delay:2.45s}
-@keyframes outline{to{stroke-dashoffset:0}} @keyframes fadein{to{opacity:1}}
-@keyframes pinin{from{opacity:0;scale:.3}to{opacity:1;scale:1}}
-@media (prefers-reduced-motion:reduce){ .js .chmap *{animation:none!important;opacity:1!important;stroke-dashoffset:0!important} }
-.rise .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
-.rise .w>span{display:inline-block;transform:translateY(108%);transition:transform 1s var(--ease);transition-delay:calc(var(--k) * 55ms + 120ms)}
-.rise.go .w>span{transform:none}
-@media (prefers-reduced-motion:reduce){ .rise .w>span{transform:none;transition:none} }
-.hero .intro{grid-column:5/10;grid-row:2;margin-top:clamp(28px,3vw,48px)}
-.hero .intro .tlink{margin-top:20px}
-
-/* ---------- company (brochure p.6: title left and lower, photo top right, compact columns, a quiet table) ---------- */
-.co .ph{grid-column:7/13;grid-row:1;aspect-ratio:4/3}
-.co .ttl{grid-column:1/6;grid-row:1;align-self:start}
-.co .ttl .lede{margin-top:32px;max-width:30em}
-.co .text{grid-column:1/7;grid-row:2;margin-top:clamp(56px,6vw,96px);color:var(--purple)}
-.co .lab{grid-column:1/6;grid-row:3;margin-top:32px}
-.co .tbl{grid-column:7/13;grid-row:2/4;margin-top:clamp(56px,6vw,96px)}
-table{width:100%;border-collapse:collapse;font-size:var(--t-s)}
-caption{text-align:left;font:600 15px/1.3 var(--display);color:var(--ink);padding-bottom:14px}
-th,td{text-align:left;vertical-align:top;padding:11px 16px 11px 0;border-top:1px solid var(--ink)}
-tr:last-child th,tr:last-child td{border-bottom:1px solid var(--ink)}
-th{font:600 14px/1.5 var(--display);color:var(--ink);width:34%;letter-spacing:-.005em}
-td{color:var(--ink-2)}
-.ct td a{display:inline-flex;align-items:center;min-height:44px;margin:-12px 0}
-.ct td a:hover{color:var(--purple)}
-td.n{color:var(--purple);font-weight:500;width:3em;text-align:right;padding-right:0}
-
-/* ---------- figures (brochure p.3-4: two planes, numbers on a quiet colour, a large photograph) ---------- */
-.fig .ph{grid-column:1/6;grid-row:1/3;aspect-ratio:4/5;align-self:start}
-/* the group's presence, drawn: Europe with the four countries of the group, Japan as an inset */
-.fig .pm{grid-column:1/6;grid-row:1/3;align-self:start;background:var(--lav-1);border-radius:var(--r-photo);overflow:hidden;line-height:0}
-.pmap{display:block;width:100%;height:auto}
-.pmap .land{fill:#fff;stroke:#cfc3e4;stroke-width:.6;stroke-linejoin:round}
-.pmap .on{fill:var(--lav-2);stroke:var(--purple);stroke-width:1.1;stroke-linejoin:round}
-.pmap .jp rect{fill:var(--lav-1);stroke:#cfc3e4;stroke-width:.8}
-.pmap .pin path{fill:var(--purple);stroke:#fff;stroke-width:1.2} .pmap .pin .in{fill:#fff}
-.pmap .lbl rect{fill:#fff;stroke:var(--rule);stroke-width:.7;rx:5px}
-.pmap .lbl text{font:600 11px var(--display);fill:var(--ink);letter-spacing:-.01em}
-.pmap .lbl text.s{font:400 9.5px var(--text);fill:var(--ink-2)}
-.fig .ph figcaption{z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.45);position:absolute;left:clamp(20px,2.4vw,36px);bottom:clamp(20px,2.4vw,36px);max-width:240px;font-size:12px;line-height:1.55;color:rgba(255,255,255,.82)}
-.fig h2{grid-column:7/13;grid-row:1;align-self:start}
-.fig dl{grid-column:7/13;grid-row:2;align-self:end;margin-top:clamp(40px,4vw,64px)}
-.fig dl>div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:var(--gut);align-items:end;padding:clamp(18px,2vw,28px) 0;border-top:1px solid var(--ink)}
-.fig dl>div:last-child{border-bottom:1px solid var(--ink)}
-.fig dd{grid-column:1;grid-row:1/3;font:300 clamp(64px,7.4vw,120px)/.86 var(--display);color:var(--ink);letter-spacing:-.045em}
-.fig dd .n{display:inline-block;text-align:left}
-.fig dd .pl{display:inline-block;vertical-align:top;font-size:.46em;line-height:1;margin:.02em 0 0 .06em;letter-spacing:0}
-.fig dd small{font:400 .3em/1 var(--display);letter-spacing:-.01em;margin-left:.2em;color:var(--purple)}
-.fig dt{grid-column:2;grid-row:1;font:600 clamp(17px,1.35vw,20px)/1.25 var(--display);color:var(--ink);letter-spacing:-.01em}
-.fig dl p{grid-column:2;grid-row:2;margin-top:6px;font-size:var(--t-s);color:var(--ink-2)}
-
-/* ---------- image section (brochure p.5: one large photo, text in its free area) ---------- */
-.img-sec .ph{grid-column:7/13;grid-row:1;aspect-ratio:4/5;overflow:hidden}
-.img-sec .ph img{object-position:50% 58%}
-.img-sec .over{grid-column:1/6;grid-row:1;align-self:end}
-.img-sec .over h2{font-size:var(--t-h2);margin:14px 0 28px}
-.img-sec .over p.small{font-size:var(--t-l);line-height:1.5;color:var(--ink)}
-
-/* ---------- Tagelswangen (brochure p.8: photos of different sizes, purple caption, large title, columns) ---------- */
-.tg{grid-template-rows:auto 1fr}
-.tg .p1{grid-column:1/5;grid-row:1/3;aspect-ratio:3/4.3}
-.tg .p2{grid-column:5/8;grid-row:1;align-self:start;aspect-ratio:4/5}
-.tg .c2{grid-column:5/8;grid-row:2;align-self:start;margin-top:24px}
-.tg .ttl{grid-column:8/13;grid-row:1/3;align-self:start}
-.tg .ttl h2{font-size:clamp(36px,3.9vw,62px);hyphens:manual}
-.tg .ttl h2{margin-bottom:32px}
-.tg .ttl .tlink{margin-top:24px}
-
-/* ---------- pharmacies (brochure p.7: large vertical photo, title, lede, columns) ---------- */
-.ph-sec .ph{grid-column:1/7;grid-row:1/5;aspect-ratio:4/4.6}
-/* the partner pharmacies on the map of Switzerland, as in the 3D story; the dots appear one after another */
-.ph-sec .ph.phm{aspect-ratio:auto;align-self:start;background:var(--lav-1);padding:clamp(28px,3.4vw,56px) clamp(16px,2vw,32px);line-height:0}
-.phmap{display:block;width:100%;height:auto;overflow:visible}
-.phmap .cn{fill:var(--lav-2);stroke:var(--purple);stroke-width:1.6;stroke-linejoin:round}
-.phmap .d{fill:var(--purple);stroke:#fff;stroke-width:1.6;transform-box:fill-box;transform-origin:center}
-.phmap .pin path{fill:var(--purple);stroke:#fff;stroke-width:1.2} .phmap .pin .in{fill:#fff}
-.phmap .lbl rect{fill:#fff;stroke:var(--rule);stroke-width:.7;rx:5px}
-.phmap .lbl text{font:600 13px var(--display);fill:var(--ink);letter-spacing:-.01em} .phmap .lbl text.s{font:400 11.5px var(--text);fill:var(--ink-2)}
-.js .phmap .d{opacity:0} .js .rv.in .phmap .d{animation:pinin .45s var(--ease) forwards;animation-delay:calc(.5s + var(--i) * 22ms)}
-@media (prefers-reduced-motion:reduce){ .js .phmap .d{opacity:1;animation:none!important} }
-.ph-sec h2,.ph-sec .lede,.ph-sec .body{align-self:start}
-.ph-sec .pat{grid-row:5}
-.ph-sec h2{grid-column:8/13;grid-row:1}
-.ph-sec .lede{grid-column:8/13;grid-row:2;margin-top:32px}
-.ph-sec .body{grid-column:8/13;grid-row:3;margin-top:40px}
-.ph-sec .body h3{font-size:clamp(20px,1.6vw,24px);margin-bottom:12px}
-.ph-sec .pat{grid-column:1/13;margin-top:clamp(56px,6vw,96px);padding:clamp(28px,3.4vw,56px);background:var(--paper-2);border-radius:var(--r-photo);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut)}
-.ph-sec .pat h3{grid-column:1/6;grid-row:1;font-size:clamp(22px,2vw,30px)}
-.ph-sec .pat .intro{grid-column:1/6;grid-row:2;align-self:start;margin-top:16px}
-/* the patient route: one step per row, a large light number beside it */
-.steps{grid-column:7/13;grid-row:1/4;list-style:none;counter-reset:st}
-.steps li{display:grid;grid-template-columns:clamp(56px,5vw,80px) 1fr;column-gap:var(--gut);padding:clamp(18px,2vw,28px) 0;border-top:1px solid var(--rule)}
-.steps li:first-child{border-top:0;padding-top:0} .steps li .cap{grid-row:1/3;font:300 clamp(34px,3.2vw,48px)/.9 var(--display);letter-spacing:-.04em;color:var(--purple)}
-.steps b{display:block;font:600 17px/1.3 var(--display);color:var(--ink);margin:2px 0 6px}
-.steps p{font-size:var(--t-s)}
-
-/* ---------- products: an index, not cards ---------- */
-.pr .head h2{grid-column:1/8}
-.pr .head .lede{grid-column:9/13;align-self:end}
-.pr .band{grid-column:1/13;margin-top:clamp(40px,4.5vw,72px);aspect-ratio:21/8}
-.pr .band img{object-position:50% 40%}
-.pr .list{grid-column:1/13;margin-top:clamp(40px,4vw,64px);list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gut);row-gap:clamp(32px,3vw,48px)}
-.pr .list li{display:grid;gap:10px;align-content:start;padding-top:20px;border-top:1px solid var(--ink)}
-.pr .list i{font:600 13px/1 var(--display);font-style:normal;color:var(--purple)}
-.pr .list b{font:600 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
-.pr .list span{font-size:var(--t-s)}
-
-/* ---------- about us / 3D: a deliberate step into the dark environment ---------- */
-.x3d-sec{overflow-x:clip;margin-top:var(--sec);background:var(--night);color:var(--night-fg);padding:clamp(72px,8vw,128px) 0}
-.x3d-sec .label{color:var(--night-acc)}
-.x3d-sec :focus-visible{outline-color:#fff}
-.x3d-sec h2{color:#fff;grid-column:1/6;margin:0 0 28px}
-.x3d-sec .txt{grid-column:1/5;grid-row:2;color:rgba(243,238,235,.74)}
-.x3d-sec .hd2{grid-column:1/6;grid-row:1}
-.x3d-sec .go{grid-column:1/6;grid-row:3;align-self:end;margin-top:40px}
-.x3d-sec .pv{grid-column:6/13;grid-row:1/4;position:relative;display:block;overflow:hidden;border-radius:var(--r-photo);aspect-ratio:16/10;background:#121116}
-.x3d-sec .pv img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease),opacity .6s ease}
-.x3d-sec .pv .tag{position:absolute;left:20px;bottom:18px;font:500 14px/1 var(--text);color:#fff}
-/* the globe from the 3D story replaces the still once it has loaded; the still stays for browsers without WebGL */
-.x3d-sec .pv.globe{background:transparent;overflow:visible}
-.x3d-sec .pv.globe img{transition:opacity .6s ease} .x3d-sec .pv.globe.live img{opacity:0}
-.globe-cv{position:absolute;inset:-14%;width:128%;height:128%;display:block;cursor:grab;touch-action:pan-y}
-.globe.drag .globe-cv{cursor:grabbing}
-.globe-tags{position:absolute;inset:-14%;pointer-events:none;overflow:hidden}
-.globe-tags .gtag{position:absolute;left:0;top:0;padding:6px 10px;border-radius:8px;font:400 12px/1.3 var(--text);white-space:nowrap;color:rgba(243,238,235,.72);background:rgba(14,14,17,.78);box-shadow:inset 0 0 0 1px rgba(164,156,240,.55);opacity:0;will-change:transform}
-.globe-tags .gtag b{font-weight:500;color:#f3eeeb}
-.globe-tags .gtag.hq{background:#a49cf0;color:#fff;box-shadow:none} .globe-tags .gtag.hq b{color:#fff}
-.btn3d{border-radius:var(--r-btn);display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 22px;border:1px solid rgba(243,238,235,.5);color:#fff;font:600 15px/1 var(--display);transition:background-color .3s ease,color .3s ease,border-color .3s ease}
-.btn3d:hover,.btn3d:focus-visible{background:#fff;color:var(--night);border-color:#fff}
-.btn3d svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.x3d-sec .note{display:block;margin-top:14px;font-size:12px;color:rgba(243,238,235,.5)}
-
-/* ---------- partners: a hairline grid of marks ---------- */
-.pa .head h2{grid-column:1/6}
-.pa .head p{grid-column:7/12;align-self:end}
-/* partners run as one slow band; it stops under the pointer and on keyboard focus */
-.pa .mq{grid-column:1/13;margin-top:clamp(48px,5vw,80px);position:relative;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.pa .mq-track{display:flex;width:max-content;animation:mq 60s linear infinite}
-.pa .mq:hover .mq-track,.pa .mq:focus-within .mq-track,.pa .mq.paused .mq-track{animation-play-state:paused}
-@keyframes mq{to{transform:translateX(-50%)}}
-.pa .logos{display:flex;list-style:none}
-.pa .logos li{flex:none;width:clamp(160px,15vw,230px);height:clamp(96px,8.5vw,128px);display:grid;place-items:center;padding:20px 28px}
-@media (prefers-reduced-motion:reduce){ .pa .mq{-webkit-mask-image:none;mask-image:none} .pa .mq-track{animation:none;width:auto} .pa .logos{flex-wrap:wrap;justify-content:center} .pa .logos[aria-hidden]{display:none} }
-.pa .logos img{max-height:56px;max-width:80%;width:auto;object-fit:contain;filter:grayscale(1);opacity:.72;transition:opacity .3s ease,filter .3s ease}
-.pa .logos li:hover img{filter:none;opacity:1}
-
-/* ---------- news: a list with dates in purple ---------- */
-.nw .head h2{grid-column:1/8}
-.nw .head .tlink{grid-column:10/13;justify-self:end;align-self:end}
-.nw ol{grid-column:1/13;margin-top:clamp(40px,4vw,64px);list-style:none}
-.nw li a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);padding:26px 0 30px;border-top:1px solid var(--rule);transition:background-color .3s ease}
-.nw li:last-child a{border-bottom:1px solid var(--rule)}
-.nw li .lg{grid-column:1/3;grid-row:1/3;align-self:start;display:grid;place-items:center;aspect-ratio:16/10;padding:18px 22px;border:1px solid var(--rule);border-radius:var(--r-photo);background:#fff;transition:border-color .3s ease}
-.nw li .lg img{max-width:100%;max-height:52px;width:auto;object-fit:contain;filter:brightness(0);opacity:.82;transition:opacity .3s ease}
-/* hover: the whole row turns purple, logo included */
-.nw li .cap,.nw li p{transition:color .2s ease}
-.nw li a:hover .lg{border-color:var(--purple)} .nw li a:hover .lg img{opacity:1;filter:brightness(0) invert(11%) sepia(62%) saturate(5200%) hue-rotate(262deg) brightness(88%) contrast(105%)}
-.nw li a:hover p,.nw li a:hover .cap{color:var(--purple)}
-.nw li .cap{grid-column:3/8;grid-row:1;padding-bottom:8px}
-.nw li h3{grid-row:2;align-self:start;grid-column:3/8;font-size:clamp(20px,1.7vw,26px);transition:color .2s ease}
-.nw li p{grid-row:1/3;align-self:start;grid-column:9/13;font-size:var(--t-s)}
-.nw li a:hover h3{color:var(--purple)}
-
-/* ---------- contact ---------- */
-.ct h2{grid-column:1/9}
-.ct .lede{grid-column:1/6;margin-top:28px}
-.ct .addr{grid-column:1/6;grid-row:3;align-self:end;margin-top:56px}
-.ct form{grid-column:7/13;grid-row:2/4;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;column-gap:16px;row-gap:20px;align-content:start;padding:clamp(24px,2.6vw,40px);background:var(--paper-2);border-radius:var(--r-photo)}
-.ct form h3{grid-column:1/3;font-size:clamp(20px,1.6vw,24px)}
-.ct form .sub{grid-column:1/3;margin-top:-12px;font-size:var(--t-s);color:var(--ink-2)}
-.ct label{display:grid;gap:8px;font:600 14px/1.3 var(--text);color:var(--ink)}
-.ct label.wide{grid-column:1/3}
-.ct label i{font-style:normal;color:var(--purple)}
-.ct input,.ct select,.ct textarea{width:100%;min-height:48px;border:1px solid var(--rule-2);border-radius:var(--r-btn);background:#fff;padding:12px 14px;font:400 16px/1.4 var(--text);color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease}
-.ct select:invalid,.ct select option[value=""]{color:var(--ink-3)}
-.ct select{-webkit-appearance:none;appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23231f20' stroke-width='1.6'/%3E%3C/svg%3E") right 14px center/16px no-repeat}
-.ct ::placeholder{color:var(--ink-3)}
-.ct textarea{resize:vertical;min-height:132px}
-.ct input:hover,.ct select:hover,.ct textarea:hover{border-color:var(--ink-3)}
-.ct input:focus,.ct select:focus,.ct textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(67,18,145,.14)}
-.ct .send{border-radius:var(--r-btn);grid-column:1/3;justify-self:stretch;justify-content:center;display:inline-flex;align-items:center;gap:14px;min-height:52px;padding:0 24px;background:var(--ink);color:#fff;border:0;font:600 15px/1 var(--display);cursor:pointer;transition:background-color .25s ease}
-.ct .send:hover{background:var(--purple)}
-.ct .send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-.ct .fnote{grid-column:1/3;font-size:13px;color:var(--ink-2);margin-top:-6px;text-align:center}
-
-/* ---------- footer ---------- */
-.ft{margin-top:var(--sec);border-top:1px solid var(--ink);padding:56px 0 40px;font-size:var(--t-s)}
-.ft .logo{grid-column:1/3;height:32px;align-self:start;margin-top:4px} /* optically level with the cap height of the column headings */
-.ft .about{grid-column:3/6;color:var(--ink-3)}
-.ft .col{grid-column:span 2}
-.ft .col.wide{grid-column:span 3}
-.ft .fh{font:600 15px/1.3 var(--display);color:var(--ink);margin-bottom:14px}
-.ft ul{list-style:none} .ft li a,.ft li span{display:inline-flex;align-items:center;min-height:40px}
-.ft a:hover{color:var(--purple)}
-.ft .base{grid-column:1/13;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:64px;padding-top:20px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
-.ft .base nav{display:flex;gap:24px} .ft .base nav a{display:inline-flex;align-items:center;min-height:40px}
-
-/* leaving for the 3D story: the page settles into the dark of the 3D scene */
-.veil{position:fixed;inset:0;z-index:200;background:var(--night);opacity:0;pointer-events:none;transition:opacity .42s cubic-bezier(.4,0,.2,1)}
-.veil::after{content:"";position:absolute;inset:0;background:var(--lav-2);opacity:.0;transition:opacity .2s ease}
-body.leaving .veil{opacity:1;pointer-events:auto}
-/* the logo stays where it is through the veil and crossfades to the white version, as it stands on the About Us page */
-body.leaving .hd{z-index:210;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-body.leaving .hd .logo .l-col{opacity:0} body.leaving .hd .logo .l-white{opacity:1}
-body.leaving .hd nav,body.leaving .hd .menu-btn{opacity:0;transition:opacity .2s ease}
-@media (prefers-reduced-motion:reduce){ .veil{transition:none} }
-
-/* ---------- tablet ---------- */
-@media (max-width:1100px){
-  .hero h1{grid-column:1/13}
-  @media (max-width:760px){ .hero h1{font-size:clamp(34px,11vw,46px)} }
-  .hero .meta{grid-column:1/13;grid-row:2;display:flex;gap:32px} .hero .meta p+p{margin-top:0}
-  .hero .intro{grid-row:3;grid-column:1/8;margin-top:28px}
-  .hero .chm{grid-row:4} .chmap{grid-column:2/12;grid-row:1} .hero .mapt{grid-column:2/12;grid-row:2;padding:24px 0 0}
-  .co .ph{grid-column:5/13;grid-row:1}
-  .co .ttl{grid-column:1/11;grid-row:2;margin-top:48px}
-  .co .text{grid-column:1/13;grid-row:3} .co .tbl{grid-column:1/13;grid-row:4} .co .lab{display:none}
-  .fig .ph,.fig .pm{grid-column:1/13;grid-row:auto;aspect-ratio:16/10} .fig .pm{aspect-ratio:auto} .pmap .lbl text{font-size:14px} .pmap .lbl text.s{font-size:12px} .fig h2{grid-column:1/13;grid-row:auto;margin-top:48px} .fig dl{grid-column:1/13;grid-row:auto;margin-top:32px}
-  .img-sec .ph{grid-column:1/13} .img-sec .over{grid-column:1/13;grid-row:2;margin-top:40px}
-  .tg .p1{grid-column:1/8;grid-row:1/3} .tg .p2{grid-column:8/13;grid-row:1} .tg .c2{grid-column:8/13;grid-row:2}
-  .tg .ttl{grid-column:1/12;grid-row:auto;margin-top:72px}
-  .ph-sec .ph{grid-column:1/9;grid-row:1} .ph-sec .pat{grid-row:auto}
-  .ph-sec h2,.ph-sec .lede,.ph-sec .body{grid-column:1/12;grid-row:auto} .ph-sec h2{margin-top:56px}
-  .ph-sec .pat h3,.ph-sec .pat .intro{grid-column:1/13} .ph-sec .pat .intro{margin-top:12px} .steps{grid-column:1/13;grid-row:auto;margin-top:32px} .steps li:first-child{border-top:1px solid var(--rule);padding-top:clamp(18px,2vw,28px)}
-  .pr .head h2{grid-column:1/13} .pr .head .lede{grid-column:1/10;margin-top:24px}
-  .pr .list{grid-template-columns:repeat(2,minmax(0,1fr))} .pr .band{aspect-ratio:16/8}
-  .x3d-sec .hd2,.x3d-sec .txt,.x3d-sec .go{grid-column:1/13;grid-row:auto} .x3d-sec h2{grid-column:1/13}
-  .x3d-sec .pv{grid-column:1/13;grid-row:2;margin:8px 0 32px} .x3d-sec .pv.globe{aspect-ratio:1/1} .globe-cv,.globe-tags{inset:0;width:100%;height:100%}
-  .pa .head h2,.pa .head p{grid-column:1/13} .pa .head p{margin-top:24px}
-  .nw .head h2{grid-column:1/13} .nw .head .tlink{grid-column:1/13;justify-self:start;margin-top:12px}
-  .ct h2,.ct .lede,.ct .addr,.ct form{grid-column:1/13;grid-row:auto}
-  .ft .about{grid-column:3/13} .ft .col,.ft .col.wide{grid-column:span 4;margin-top:40px}
-}
-/* ---------- phone ---------- */
-@media (max-width:640px){
-  body{font-size:16px}
-  .hero .meta{flex-direction:column;gap:6px}
-  .hero .chm{grid-row:auto;margin:40px calc(var(--pad) * -1) 0;border-radius:0;padding:28px 0 24px} .chmap{grid-column:1/13;padding:0 8px;margin-right:0} .hero .mapt{grid-column:1/13;padding:20px var(--pad) 0} .chmap .lbl text{font-size:19px} .phmap .lbl text{font-size:19px} .phmap .lbl text.s{font-size:16px} .phmap .d{r:7px} .chmap .lbl text.s{font-size:15px}
-  .hero .meta{margin-top:24px}
-  .hero .intro{grid-column:1/13;grid-row:auto}
-  .co .ph{grid-column:3/13} .cols2{columns:1}
-  .fig .ph{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);aspect-ratio:4/3}
-  .fig dl>div{grid-template-columns:1fr;row-gap:8px} .fig dd{grid-row:auto} .fig dt,.fig dl p{grid-column:1;grid-row:auto}
-  .fig .ph,.pr .band{border-radius:0;clip-path:none!important}
-  .ph-sec .ph{border-radius:0 var(--r-photo) var(--r-photo) 0;clip-path:none!important}
-  .img-sec .over{grid-column:1/13;grid-row:2;margin-top:28px}
-  .tg .p1{grid-column:1/10;grid-row:auto} .tg .p2{grid-column:6/13;grid-row:auto;margin-top:-64px;position:relative} .tg .c2{grid-column:6/13;grid-row:auto}
-  .ph-sec .ph{grid-column:1/13;margin-left:calc(var(--pad) * -1)}
-  .ph-sec .pat{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);border-radius:0;padding:40px var(--pad)}
-  .pr .list{grid-template-columns:1fr} .pr .band{aspect-ratio:4/3;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1)}
-  .nw li a{row-gap:10px} .nw li .lg{grid-column:1/6;grid-row:auto;padding:12px 16px} .nw li .lg img{max-height:36px} .nw li .cap,.nw li h3,.nw li p{grid-column:1/13;grid-row:auto}
-  .ct form{grid-template-columns:1fr} .ct form h3,.ct form .sub,.ct label.wide,.ct .send,.ct .fnote{grid-column:1/2}
-  .ft .logo{grid-column:1/7} .ft .about{grid-column:1/13;margin-top:20px} .ft .col,.ft .col.wide{grid-column:span 6}
-}
-/* ---------- V2 motion (corporate/v2.js) ---------- */
-/* preloader: two halves of the signifier meet, a purple disc covers the screen, the page opens */
-.loader{display:none}
-.pre .loader{display:block;position:fixed;inset:0;z-index:100;background:var(--paper);overflow:hidden}
-.pre body{overflow:hidden}
-.loader .cap{position:absolute;font:600 14px/1 var(--display);letter-spacing:-.005em;color:var(--ink)}
-.loader .cap.l{left:var(--pad);top:28px} .loader .cap.r{right:var(--pad);bottom:28px}
-.loader .mark{position:absolute;left:50%;top:50%;width:clamp(64px,7vw,96px);aspect-ratio:60.1/53.6;transform:translate(-50%,-50%)}
-.loader .half{position:absolute;inset:0;width:100%;height:100%;fill:var(--purple)}
-.loader .half.a{clip-path:inset(0 52% 0 0)} .loader .half.b{clip-path:inset(0 0 0 48%)}
-.loader .cover{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--purple);transform:scale(0)}
-/* header over the dark About Us band */
-.hd{transition:background-color .35s ease,box-shadow .3s ease}
-.hd nav a,.hd .vtog a{transition:color .35s ease,background-color .35s ease}
-.hd.dark{background:rgba(14,14,17,.78);box-shadow:none}
-.hd.dark nav a{color:rgba(243,238,235,.72)} .hd.dark nav a:hover{color:#fff} .hd.dark nav a::after{background:#fff}
-.hd.dark nav .contact{color:var(--night-acc)} .hd.dark nav .nav3d svg{stroke:var(--night-acc)}
-.hd.dark .logo .l-col{opacity:0} .hd.dark .logo .l-white{opacity:1}
-.hd.dark .vtog{box-shadow:inset 0 0 0 1px rgba(243,238,235,.28)} .hd.dark .vtog a{color:rgba(243,238,235,.6)} .hd.dark .vtog a[aria-current]{background:#fff;color:var(--night)}
-.hd.dark .menu-btn i{background:#fff}
-/* hero panel grows to the full screen width as the page scrolls */
-.hero .chm.bleed{margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);padding-left:calc((100vw - 100%) / 2);padding-right:calc((100vw - 100%) / 2);border-radius:0}
-.has-ln{position:relative;border-top-color:transparent!important}
-.ln{position:absolute;left:0;right:0;transform-origin:left center;pointer-events:none}
-.gs .rise .w>span{transform:none;transition:none}
-.gs #t-hero{text-wrap:wrap} /* same line breaks as V1 once SplitText takes the title over */
-.pr .band.bleed{margin-left:calc((100% - 100vw) / 2);margin-right:calc((100% - 100vw) / 2);border-radius:0;clip-path:none}
-
-/* ================= V2 design: the reference site's look on the Astrasana brand =================
-   A full-bleed brand-purple stage behind the hero, light large headlines with tight tracking,
-   pill buttons, a lavender band for the value chain where the cards fill with purple, and a purple
-   closing band around the contact form. Colours stay the brand's: #431291 and its lavenders. */
-:root{--r-photo:16px;--r-btn:999px;--deep:#431291}
-h1,h2{font-weight:400;letter-spacing:-.045em}
-h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
-.hero h1{font-weight:300;font-size:clamp(48px,7.6vw,124px);line-height:.94;letter-spacing:-.05em}
-.fig h2,.ct h2,.nw h2{font-weight:400}
-.ph-sec .pat h3,.ct form h3{font-weight:500;letter-spacing:-.025em}
-/* pill buttons */
-.pill{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 26px;border-radius:999px;font:600 15px/1 var(--display);letter-spacing:-.005em;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);transition:background-color .3s ease,color .3s ease,box-shadow .3s ease}
-.pill svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .35s var(--ease)}
-.pill:hover{background:#fff;color:var(--deep);box-shadow:inset 0 0 0 1px #fff} .pill:hover svg{transform:translateX(4px)}
-.pill.solid{background:#fff;color:var(--deep);box-shadow:none} .pill.solid:hover{background:var(--lav-2)}
-.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.btn3d,.ct .send{border-radius:999px}
-/* the hero stage: brand purple from behind the header to the middle of the map panel */
-.hero{position:relative;isolation:isolate;padding-top:clamp(40px,5vw,88px)}
-.hero::before{content:"";position:absolute;z-index:-1;left:50%;top:-64px;width:100vw;transform:translateX(-50%);height:calc(var(--stage,70vh) + 64px);background:var(--deep)}
-.hero h1{color:#fff}
-.hero .meta p{color:rgba(255,255,255,.7)} .hero .intro .lede{color:rgba(255,255,255,.88)}
-.hero .chm{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
-/* the header sits on the purple while the stage is under it */
-.hd.tint{background:rgba(26,6,58,.9);box-shadow:none}
-.hd.tint nav a{color:rgba(255,255,255,.78)} .hd.tint nav a:hover{color:#fff} .hd.tint nav a::after{background:#fff}
-.hd.tint nav .contact{color:#fff} .hd.tint nav .nav3d svg{stroke:#fff}
-.hd.tint .logo .l-col{opacity:0} .hd.tint .logo .l-white{opacity:1}
-.hd.tint .vtog{box-shadow:inset 0 0 0 1px rgba(255,255,255,.32)} .hd.tint .vtog a{color:rgba(255,255,255,.7)} .hd.tint .vtog a[aria-current]{background:#fff;color:var(--deep)}
-.hd.tint .menu-btn i{background:#fff}
-/* the value chain on a lavender band; a reached card fills with purple */
-.ch{background:var(--lav-1);box-shadow:0 0 0 100vmax var(--lav-1);clip-path:inset(0 -100vmax);padding-bottom:clamp(80px,8vw,140px);margin-top:var(--sec)}
-.ch.sec{padding-top:clamp(80px,8vw,140px)}
-.ch li{background:#fff;box-shadow:none;border-radius:var(--r-photo)}
-.ch li.lit{background:var(--deep);box-shadow:none}
-/* the filled card: a gradient built from the brand's violet scale (styleguide: Violet 400 #7E52CC, Violet 600 #431291 brand,
-   Violet 900 #1A063A) with a fine grain on top; it fades in over the white card when the step is reached */
-:root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");}
-.ch li::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--violet-grad);opacity:0;transition:opacity .7s var(--ease)}
-.ch li::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grain);background-size:180px;mix-blend-mode:soft-light;opacity:0;transition:opacity .7s var(--ease)}
-.ch li.lit::before{opacity:1} .ch li.lit::after{opacity:.45}
-.ch li{isolation:isolate;overflow:hidden}
-.ch li.lit b{color:#fff} .ch li.lit p{color:rgba(255,255,255,.78)} .ch li.lit .num{color:var(--lav-2)} .ch li.lit .ic{stroke:#fff}
-.ch li b,.ch li p{transition:color .5s var(--ease)}
-/* the closing band: contact on purple, the form as a white card */
-.ct{background:var(--deep);box-shadow:0 0 0 100vmax var(--deep);clip-path:inset(0 -100vmax);padding-bottom:clamp(80px,8vw,140px);margin-top:var(--sec)}
-.ct.sec{padding-top:clamp(80px,8vw,140px)}
-.ct h2{color:#fff} .ct .lede{color:rgba(255,255,255,.85)}
-.ct th{color:#fff;border-top-color:rgba(255,255,255,.35)} .ct td{color:rgba(255,255,255,.78);border-top-color:rgba(255,255,255,.35)} .ct tr:last-child th,.ct tr:last-child td{border-bottom-color:rgba(255,255,255,.35)}
-.ct td a:hover{color:#fff}
-.ct form{background:#fff}
-.ct .send{background:var(--deep)} .ct .send:hover{background:var(--ink)}
-.ft{margin-top:0;border-top:0}
-.ct textarea{border-radius:16px}
-/* ---------- V2 gradients: the violet scale with grain, dark on the bands, light on panels and cards ---------- */
-:root{
-  --grain-k:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --grain-l:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .04  0 0 0 0 .23  0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --grad-dark:linear-gradient(180deg,#1A063A 0%,#431291 60%,#5A22B3 100%);
-  --grad-light:linear-gradient(180deg,#FFFFFF 0%,#F4F0FB 50%,#E6DDF6 100%);}
-.grad-l{background:var(--grain-l) 0 0/180px,var(--grad-light)}
-/* bands: full-bleed backgrounds as a pseudo-element, so they can carry a gradient */
-.hero::before{background:var(--grain-k) 0 0/180px,var(--grad-dark)}
-.ch,.ct{background:none;box-shadow:none;clip-path:none;position:relative;isolation:isolate}
-.ch::before,.ct::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%)}
-.ch::before{background:var(--grain-l) 0 0/180px,linear-gradient(180deg,#F4F0FB 0%,#E6DDF6 100%)}
-.ct::before{background:var(--grain-k) 0 0/180px,var(--grad-dark)}
-/* panels */
-.hero .chm,.fig .pm,.ph-sec .ph.phm,.ph-sec .pat{background:var(--grain-l) 0 0/180px,var(--grad-light)}
-/* violet cards: an even gradient down the brand's violet scale; declared on the card so the cursor position (--mx/--my) applies */
-.ch li,.pr .list li{
-  --violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 52%,#7E52CC 100%);
-  --glow:radial-gradient(240px circle at var(--mx,-300px) var(--my,-300px),rgba(203,185,238,.55) 0%,rgba(203,185,238,0) 70%)}
-/* product categories as dark cards, after the reference's news cards: title on top, a glass circle at the bottom,
-   a soft light under the cursor */
-.pr .list{column-gap:12px;row-gap:12px}
-.pr .list li{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(240px,20vw,300px);padding:clamp(22px,2vw,32px);border-top:0;border-radius:var(--r-photo);background:var(--grain-k) 0 0/180px,var(--violet-grad);align-content:start;transition:transform .5s var(--ease)}
-.pr .list li b{color:#fff} .pr .list li span{color:rgba(255,255,255,.78);max-width:24em}
-.pr .list li::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--glow);opacity:0;transition:opacity .4s ease}
-.pr .list li::after{content:"";position:absolute;right:clamp(18px,1.8vw,28px);bottom:clamp(18px,1.8vw,28px);width:clamp(84px,8vw,120px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(255,255,255,.55);background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.02) 0%,rgba(255,255,255,.07) 62%,rgba(255,255,255,.16) 100%);
-  box-shadow:inset 0 0 18px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transition:transform .6s var(--ease)}
-@media (hover:hover){ .pr .list li:hover{transform:translateY(-4px)} .pr .list li:hover::before{opacity:1} .pr .list li:hover::after{transform:scale(1.08)} }
-/* ---------- V2 hero: a full-screen video stage, scrubbed by the scroll, closed by a sweep of the signifier ---------- */
-.hero{padding-top:0}
-.hero::before{display:none}
-.hero .stage{grid-column:1/13;grid-row:1/3;position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-content:center;
-  min-height:calc(100svh - 64px);padding-top:clamp(40px,5vw,80px);padding-bottom:clamp(40px,5vw,80px);
-  width:100vw;justify-self:start;margin-left:calc(50% - 50vw);margin-right:0;padding-left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));padding-right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));background:#EDE6F8}
-.hero .hv{position:absolute;z-index:-1;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 50%}
-.hero h1{color:#1A063A} .hero .meta p{color:rgba(26,6,58,.66)} .hero .intro .lede{color:#280A58}
-.hero .pill{color:var(--deep);background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)} .hero .pill:hover{background:#fff;color:var(--deep);box-shadow:inset 0 0 0 1px #fff}
-.hero .pill.solid{background:var(--deep);color:#fff;box-shadow:none} .hero .pill.solid:hover{background:#5A22B3}
-.hero .sweep{position:absolute;z-index:3;left:50%;top:50%;width:min(56vw,680px);height:auto;pointer-events:none;opacity:0;overflow:visible;filter:drop-shadow(0 18px 40px rgba(67,18,145,.28))}
-.hero .sweep .sw-fill{fill:url(#sw-g)} .hero .sweep .sw-edge{fill:none;stroke:#fff;stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:.9}
-.hero .chm{margin-top:clamp(56px,6vw,96px)}
-@media (max-width:980px){ .hero .hv{object-position:78% 50%} }
-/* ---------- V2 header: no bar, as on the reference; the logo and pill buttons float over the page on a translucent blur ---------- */
-.hd{position:fixed;left:0;right:0;top:0;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
-.hero .stage{min-height:100svh;padding-top:calc(64px + clamp(40px,5vw,80px))}
-.hd nav{gap:6px}
-.hd nav a,.hd .vtog,.menu-btn{-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)}
-.hd nav a{min-height:40px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);color:var(--ink);transition:background-color .3s ease,color .3s ease}
-.hd nav a::after{display:none}
-.hd nav a:hover{background:#fff;color:var(--ink)}
-.hd nav .contact{background:var(--deep);color:#fff;box-shadow:none} .hd nav .contact:hover{background:#5A22B3;color:#fff}
-.hd .vtog{background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
-.hd.dark nav a,.hd.tint nav a{background:rgba(26,6,58,.4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);color:#fff}
-.hd.dark nav a:hover,.hd.tint nav a:hover{background:rgba(255,255,255,.22)}
-.hd.dark nav .contact,.hd.tint nav .contact{background:#fff;color:var(--deep)}
-.hd.dark .vtog,.hd.tint .vtog{background:rgba(26,6,58,.4)}
-@media (max-width:980px){
-  .menu-btn{border-radius:999px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
-  .hd.dark .menu-btn,.hd.tint .menu-btn{background:rgba(26,6,58,.4)}
-  .hd.open{background:var(--paper)!important}
-  .hd nav a,.hd.dark nav a,.hd.tint nav a{min-height:60px;padding:0;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--ink)}
-  .hd nav .contact{background:none;color:var(--purple)}
-  .hero .stage{padding-top:calc(56px + 40px)} }
-@media (max-width:760px){ .hero .cta .pill{flex:1 1 auto;justify-content:center} .hero h1{font-size:clamp(32px,10.2vw,48px)} }
-
-/* ================= V2 blocks: layouts and effects after the reference, section by section ================= */
-:root{--r-photo:20px}
-/* Companies: a dark statement band. The headline sits centred inside four bracket corners that open from the middle,
-   the team photo and the group table sit below it on the dark */
-.co{position:relative;isolation:isolate;padding-bottom:clamp(80px,8vw,140px);margin-top:var(--sec)}
-.co.sec{padding-top:clamp(80px,8vw,140px)}
-.co::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:var(--grain-k) 0 0/180px,var(--grad-dark)}
-.co .ttl{position:relative;text-align:center;padding:clamp(40px,5vw,88px) clamp(20px,4vw,72px)}
-.co .ttl .brk{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(#fff,#fff) 0 0/34px 1px,linear-gradient(#fff,#fff) 0 0/1px 34px,linear-gradient(#fff,#fff) 100% 0/34px 1px,linear-gradient(#fff,#fff) 100% 0/1px 34px,
-    linear-gradient(#fff,#fff) 0 100%/34px 1px,linear-gradient(#fff,#fff) 0 100%/1px 34px,linear-gradient(#fff,#fff) 100% 100%/34px 1px,linear-gradient(#fff,#fff) 100% 100%/1px 34px;background-repeat:no-repeat;opacity:.55}
-.co h2{color:#fff} .co .ttl .lede{color:rgba(255,255,255,.8);margin-left:auto;margin-right:auto}
-.co .text{color:#CBB9EE} .co .lab{color:rgba(255,255,255,.62)}
-.co caption{color:#fff} .co th{color:#fff;border-top-color:rgba(255,255,255,.28)} .co td{color:rgba(255,255,255,.74);border-top-color:rgba(255,255,255,.28)}
-.co tr:last-child th,.co tr:last-child td{border-bottom:1px solid rgba(255,255,255,.28)}
-@media (min-width:1101px){
-  .co .ttl{grid-column:2/12;grid-row:1;align-self:start}
-  .co .ph{grid-column:1/7;grid-row:2;margin-top:clamp(56px,6vw,96px);aspect-ratio:4/3}
-  .co .tbl{grid-column:8/13;grid-row:2;align-self:end;margin-top:0}
-  .co .text{grid-column:1/7;grid-row:3;margin-top:clamp(40px,4vw,64px)}
-  .co .lab{grid-column:8/13;grid-row:3;align-self:start;margin-top:clamp(40px,4vw,64px)} }
-/* Cultivation and Tagelswangen: large rounded photographs that drift at their own pace (scroll parallax) */
-.img-sec .ph,.tg .ph{will-change:transform}
-/* Pharmacies: the patient route; its heading stays in view while the steps go by */
-.ph-sec .pat-l{grid-column:1/6;grid-row:1/4;align-self:start;position:sticky;top:120px}
-.ph-sec .pat-l .intro{margin-top:16px}
-@media (max-width:1100px){ .ph-sec .pat-l{grid-column:1/13;grid-row:auto;position:static} }
-/* Partners: each logo on its own light pill */
-.pa .logos{gap:12px;padding:14px 0}
-.pa .logos li{border-radius:999px;background:var(--grain-l) 0 0/180px,var(--grad-light);box-shadow:inset 0 0 0 1px rgba(67,18,145,.08)}
-.pa .mq{border-top:0;border-bottom:0}
-/* News: cards after the reference's insights: the date, the title, the partner's logo in a glass circle and
-   "More" in a glass square with a circle inside, on the violet gradient */
-.nw ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.nw li a{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr auto;grid-template-areas:"cap cap" "h3 h3" "sp sp" "lg more";column-gap:12px;
-  min-height:clamp(420px,36vw,540px);padding:clamp(24px,2.4vw,36px);border-top:0!important;border-radius:var(--r-photo);background:var(--grain-k) 0 0/180px,var(--violet-grad);color:#fff;transition:transform .5s var(--ease)}
-.nw li .cap{grid-area:cap;color:rgba(255,255,255,.75);padding:0;font-size:14px}
-.nw li h3{grid-area:h3;color:#fff;margin-top:14px;font-size:clamp(22px,2vw,30px);font-weight:500;letter-spacing:-.03em;line-height:1.12}
-.nw li p{display:none}
-.nw li .lg{grid-area:lg;align-self:end;width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;padding:22px;border:1px solid rgba(255,255,255,.5);background:radial-gradient(circle,rgba(255,255,255,.03) 0%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.18) 100%);box-shadow:inset 0 0 22px rgba(255,255,255,.12);display:grid;place-items:center;transition:transform .6s var(--ease)}
-.nw li .lg img{filter:none!important;opacity:1!important;max-height:46px;max-width:78%}
-.nw li a::after{content:"More \2192";grid-area:more;align-self:end;justify-self:start;width:100%;max-width:150px;aspect-ratio:1;border-radius:22px;display:grid;place-items:center;font:500 15px/1 var(--display);color:#fff;
-  background:radial-gradient(circle closest-side,rgba(255,255,255,0) 0 95.5%,rgba(255,255,255,.6) 96.5% 98.5%,rgba(255,255,255,0) 99.5%),rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);transition:transform .6s var(--ease),background-color .3s ease}
-.nw li a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--glow);opacity:0;transition:opacity .4s ease}
-.nw li a{--glow:radial-gradient(260px circle at var(--mx,-300px) var(--my,-300px),rgba(203,185,238,.45) 0%,rgba(203,185,238,0) 70%);--violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 52%,#7E52CC 100%)}
-@media (hover:hover){ .nw li a:hover{transform:translateY(-4px)} .nw li a:hover::before{opacity:1} .nw li a:hover .lg{transform:rotate(-8deg) scale(1.04)} .nw li a:hover::after{transform:scale(1.04)} .nw li a:hover h3{color:#fff} }
-@media (max-width:980px){ .nw ol{grid-template-columns:1fr} .nw li a{min-height:380px} }
-
-/* hero reveal: the map panel behind a flat signifier-shaped window (positions and size come from corporate/v2.js) */
-.gs .hero .reveal{position:absolute;z-index:4;inset:0;visibility:hidden;
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0.3 60.1 53.6'%3E%3Cpath fill='%23000' d='M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0.3 60.1 53.6'%3E%3Cpath fill='%23000' d='M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z'/%3E%3C/svg%3E");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:var(--rs,0px) auto;mask-size:var(--rs,0px) auto;-webkit-mask-position:var(--rx,0px) var(--ry,0px);mask-position:var(--rx,0px) var(--ry,0px)}
-.gs .hero .reveal.on{visibility:visible} .gs .hero .reveal.open{-webkit-mask-image:none;mask-image:none}
-.gs .hero .reveal .chm{position:absolute;inset:0;margin:0!important;border-radius:0!important;clip-path:none!important;box-shadow:none;min-height:0;
-  display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-content:center;align-items:center;
-  padding:calc(64px + clamp(24px,3vw,48px)) max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad))) clamp(24px,3vw,48px)}
-.gs .hero .reveal .chmap{grid-column:5/13;max-height:calc(100svh - 160px)}
-.gs .hero .reveal .mapt{grid-column:1/5;align-self:center;padding:0}
-@media (max-width:980px){ .gs .hero .reveal .chm{align-content:center;padding:calc(56px + 24px) var(--pad) 32px} .gs .hero .reveal .chmap{grid-column:1/13;grid-row:1;padding:0} .gs .hero .reveal .mapt{grid-column:1/13;grid-row:2;padding-top:20px} }
-
-/* ---------- V2 buttons: slanted like the stroke of the signifier (skewX 19.6deg, as in the 3D story) ---------- */
-.hd nav a,.hd .vtog,.hd .vtog a,.menu-btn,.hero .pill,.ct .send,.btn3d{position:relative;isolation:isolate;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important}
-.hd nav a::before,.hd .vtog::before,.hd .vtog a::before,.menu-btn::before,.hero .pill::before,.ct .send::before,.btn3d::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);
-  background:var(--bb,transparent);box-shadow:var(--bs,none);-webkit-backdrop-filter:var(--bf,none);backdrop-filter:var(--bf,none);transition:background-color .3s ease,box-shadow .3s ease}
-.hd nav{gap:14px} .hd nav a{padding:0 18px}
-.hd nav a{--bb:rgba(255,255,255,.62);--bs:inset 0 0 0 1px rgba(255,255,255,.55);--bf:blur(14px) saturate(160%)}
-.hd nav a:hover{--bb:#fff}
-.hd nav .contact{--bb:var(--deep);--bs:none} .hd nav .contact:hover{--bb:#5A22B3}
-.hd .vtog{padding:3px 6px;--bb:rgba(255,255,255,.62);--bs:inset 0 0 0 1px rgba(255,255,255,.55);--bf:blur(14px) saturate(160%)}
-.hd .vtog a::before{border-radius:6px} .hd .vtog a[aria-current]{--bb:var(--ink)}
-.hd.dark nav a,.hd.tint nav a{--bb:rgba(26,6,58,.4);--bs:inset 0 0 0 1px rgba(255,255,255,.18)}
-.hd.dark nav a:hover,.hd.tint nav a:hover{--bb:rgba(255,255,255,.22)}
-.hd.dark nav .contact,.hd.tint nav .contact{--bb:#fff}
-.hd.dark .vtog,.hd.tint .vtog{--bb:rgba(26,6,58,.4);--bs:inset 0 0 0 1px rgba(255,255,255,.18)} .hd.dark .vtog a[aria-current],.hd.tint .vtog a[aria-current]{--bb:#fff}
-.menu-btn{--bb:rgba(255,255,255,.62);--bs:inset 0 0 0 1px rgba(255,255,255,.55);--bf:blur(14px) saturate(160%)}
-.hd.dark .menu-btn,.hd.tint .menu-btn{--bb:rgba(26,6,58,.4)}
-.hero .pill{padding:0 30px;--bb:rgba(255,255,255,.62);--bs:inset 0 0 0 1px rgba(255,255,255,.6);--bf:blur(14px) saturate(160%)} .hero .pill:hover{--bb:#fff}
-.hero .pill.solid{--bb:var(--deep);--bs:none} .hero .pill.solid:hover{--bb:#5A22B3}
-.hero .cta{gap:18px;padding-left:10px}
-.ct .send{--bb:var(--deep)} .ct .send:hover{--bb:var(--ink)}
-.btn3d{padding:0 28px;--bs:inset 0 0 0 1px rgba(243,238,235,.5)} .btn3d:hover,.btn3d:focus-visible{--bb:#fff;--bs:none}
-@media (max-width:980px){ .hd nav a::before{display:none} .hd nav{gap:0} .hd nav a{padding:0} }
-
-/* ---------- V2 "How we work": light; the steps scroll on the left as white cards, the right column stays with a large
-   step counter and a slanted progress bar that follow the scroll ---------- */
-.hw{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px);align-items:start}
-.hw.sec{padding-top:clamp(80px,8vw,140px)}
-.hw::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:var(--grain-l) 0 0/180px,linear-gradient(180deg,#F4F0FB 0%,#E6DDF6 100%)}
-.hw-l{grid-column:8/13;grid-row:1;position:sticky;top:110px}
-.hw-k{display:flex;align-items:center;gap:10px;font:500 13px/1 var(--text);color:var(--deep)}
-.hw-k i{width:8px;height:8px;border-radius:2px;background:var(--deep);transform:skewX(-19.6deg)}
-.hw h2{margin-top:0;font-size:clamp(34px,3.6vw,56px)}
-.hw-t{margin-top:20px;max-width:30em}
-.hw .hw-cta{margin-top:28px;margin-left:10px;color:#fff;position:relative;isolation:isolate;background:none!important;box-shadow:none!important}
-.hw .hw-cta::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);background:var(--deep);transition:background-color .3s ease}
-.hw .hw-cta:hover::before{background:#5A22B3}
-.hw-now{margin-top:clamp(40px,4vw,64px);padding-top:24px;border-top:1px solid rgba(67,18,145,.2)}
-.hw-cnt{display:flex;align-items:baseline;gap:12px;font-family:var(--display);color:var(--deep)}
-.hw-big{font-weight:300;font-size:clamp(88px,9vw,148px);line-height:.85;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
-.hw-of{font-size:20px;color:#7E52CC}
-.hw-name{display:block;margin-top:14px;font:500 clamp(20px,1.7vw,26px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
-.hw-bar{display:flex;gap:10px;margin-top:22px;padding-left:4px}
-.hw-bar i{flex:1;height:10px;border-radius:3px;transform:skewX(-19.6deg);background:rgba(67,18,145,.14);transition:background-color .45s var(--ease)}
-.hw-bar i.on{background:var(--deep)}
-.hw-r{grid-column:1/7;grid-row:1;list-style:none;display:grid;gap:14px}
-.hw-step{background:#fff;border-radius:var(--r-photo);padding:clamp(26px,2.6vw,40px)}
-.hw-step h3{display:flex;align-items:center;gap:20px;font:500 clamp(22px,2vw,30px)/1.1 var(--display);letter-spacing:-.025em;color:var(--ink)}
-.hw-n{position:relative;isolation:isolate;display:inline-grid;place-items:center;width:44px;height:38px;font:500 16px/1 var(--display);color:var(--deep);transition:color .4s ease}
-.hw-n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:8px;transform:skewX(-19.6deg);box-shadow:inset 0 0 0 1.5px var(--deep);transition:background-color .4s ease}
-.hw-step.on .hw-n{color:#fff} .hw-step.on .hw-n::before{background:var(--deep)}
-.hw-sub{list-style:none;margin-top:22px}
-.hw-sub li{display:grid;grid-template-columns:56px 1fr;padding:14px 0;border-top:1px solid rgba(67,18,145,.12);font-size:var(--t-s);color:var(--ink-2)}
-.hw-sub .sn{color:#7E52CC;font-variant-numeric:tabular-nums}
-@media (max-width:980px){ .hw-l{grid-column:1/13;grid-row:1;position:static} .hw-now{display:none} .hw-r{grid-column:1/13;grid-row:2;margin-top:40px} }
-
-/* ---------- V2 value chain: a sideways row of large cards, each with its own gradient from the violet scale ---------- */
-.ch li:nth-child(1){--violet-grad:linear-gradient(180deg,#1A063A 0%,#431291 55%,#7E52CC 100%)}
-.ch li:nth-child(2){--violet-grad:linear-gradient(160deg,#280A58 0%,#5A22B3 58%,#A688E0 100%)}
-.ch li:nth-child(3){--violet-grad:linear-gradient(200deg,#1A063A 0%,#36107A 45%,#7E52CC 100%)}
-.ch li:nth-child(4){--violet-grad:linear-gradient(135deg,#431291 0%,#280A58 60%,#1A063A 100%)}
-.ch li:nth-child(5){--violet-grad:linear-gradient(20deg,#1A063A 0%,#431291 45%,#A688E0 100%)}
-.gs .ch.hscroll{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:calc(64px + clamp(24px,3vw,48px));padding-bottom:clamp(24px,3vw,48px)}
-.gs .ch.hscroll ol{display:flex!important;gap:16px;width:max-content;padding:0!important;margin-top:clamp(28px,3vw,48px);will-change:transform}
-.gs .ch.hscroll li{flex:none;width:clamp(300px,34vw,520px);min-height:clamp(380px,56svh,560px);padding:clamp(28px,2.6vw,44px);display:flex;flex-direction:column}
-.gs .ch.hscroll li .badge{width:clamp(56px,4.6vw,72px);height:clamp(56px,4.6vw,72px)}
-.gs .ch.hscroll li .num{margin-top:auto;font-size:clamp(64px,7vw,112px)}
-.gs .ch.hscroll li b{font-size:clamp(24px,2.2vw,34px)} .gs .ch.hscroll li p{font-size:var(--t-m);max-width:22em}
-@media (max-width:760px){ .gs .ch.hscroll li{width:82vw;min-height:62svh} .gs .ch.hscroll .head p{display:none} }
-
-.gs .ch.hscroll{overflow:hidden} .hw{overflow-x:clip}
-/* news cards: no glass circle or square; the partner logo sits plainly at the bottom, "Read more" beside it */
-.nw li .lg{max-width:none!important;width:auto!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;padding:0!important;justify-self:start;place-items:end start}
-.nw li .lg img{max-height:34px!important;max-width:150px!important;filter:brightness(0) invert(1)!important;opacity:.92!important}
-.nw li a::after{content:"Read more \2192"!important;max-width:none!important;width:auto!important;aspect-ratio:auto!important;border-radius:0!important;background:none!important;box-shadow:none!important;justify-self:end!important;font:500 15px/1 var(--display)!important;color:#fff;opacity:.85}
-@media (hover:hover){ .nw li a:hover .lg{transform:none} .nw li a:hover::after{transform:translateX(4px);opacity:1} }
-
-/* hero on the dark drops video: light type, white buttons */
-.hero .stage{background:#1A063A}
-.hero .hv{object-position:70% 50%}
-.hero .stage::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(26,6,58,.62) 0%,rgba(26,6,58,.3) 45%,rgba(26,6,58,0) 75%)}
-@media (max-width:760px){ .hero .stage::after{background:linear-gradient(180deg,rgba(26,6,58,.35) 0%,rgba(26,6,58,.6) 55%,rgba(26,6,58,.35) 100%)} }
-.hero h1{color:#fff} .hero .meta p{color:rgba(255,255,255,.66)} .hero .intro .lede{color:rgba(255,255,255,.88)}
-.hero .pill{color:#fff;--bb:rgba(255,255,255,.12);--bs:inset 0 0 0 1px rgba(255,255,255,.45)} .hero .pill:hover{--bb:rgba(255,255,255,.24);color:#fff}
-.hero .pill.solid{color:var(--deep);--bb:#fff;--bs:none} .hero .pill.solid:hover{--bb:#E6DDF6}
-
-/* no pale lilac grounds: bands are white; panels and cards are white with a fine line */
-.ch::before,.hw::before{background:#fff!important}
-.hero .chm,.fig .pm,.ph-sec .ph.phm,.ph-sec .pat,.pa .logos li{background:#fff!important;box-shadow:inset 0 0 0 1px var(--rule)!important}
-.gs .hero .reveal .chm{background:#fff!important;box-shadow:none!important}
-.ch li,.hw-step{box-shadow:inset 0 0 0 1px var(--rule)}
-.ch li.lit{box-shadow:none}
-.hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bs:inset 0 0 0 1px rgba(20,16,31,.12)}
-
-/* header pills: no fill, just a light violet outline (Violet 200); Contact stays filled */
-.hd nav a,.hd .vtog,.menu-btn,.hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn,.hd.dark nav a,.hd.tint nav a,.hd.dark .vtog,.hd.tint .vtog,.hd.dark .menu-btn,.hd.tint .menu-btn{--bb:transparent;--bs:inset 0 0 0 1.5px #CBB9EE;--bf:none}
-.hd nav a:hover,.hd.dark nav a:hover,.hd.tint nav a:hover{--bb:rgba(203,185,238,.22)}
-.hd nav .contact{--bb:var(--deep)!important;--bs:none!important;color:#fff!important}
-.hd.dark nav .contact,.hd.tint nav .contact{--bb:#fff!important;color:var(--deep)!important}
-.hd .vtog a[aria-current]{--bb:var(--deep);color:#fff} .hd.dark .vtog a[aria-current],.hd.tint .vtog a[aria-current]{--bb:#fff;color:var(--deep)}
-.hd.dark .vtog a:not([aria-current]),.hd.tint .vtog a:not([aria-current]){color:rgba(255,255,255,.75)}
-.hd .vtog a{--bs:none!important} .hd .vtog a:not([aria-current]){--bb:transparent!important}
-
-/* hero: bold title, a darker gradient behind the text */
-.hero h1{font-weight:700!important;letter-spacing:-.04em!important}
-.hero .intro .lede{font-weight:500}
-.hero .stage::after{background:linear-gradient(90deg,rgba(26,6,58,.82) 0%,rgba(26,6,58,.6) 38%,rgba(26,6,58,.18) 68%,rgba(26,6,58,0) 85%)!important}
-@media (max-width:760px){ .hero .stage::after{background:linear-gradient(180deg,rgba(26,6,58,.55) 0%,rgba(26,6,58,.78) 55%,rgba(26,6,58,.55) 100%)!important} }
-
-/* ---------- V2 hero map: dark violet panel with a fine grid, Switzerland in a light violet gradient with a white edge,
-   dots for the sites and dark labels tied to them by leader lines ---------- */
-.hero .chm,.gs .hero .reveal .chm{background:linear-gradient(rgba(203,185,238,.07) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(203,185,238,.07) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(160deg,#1A063A 0%,#280A58 55%,#431291 100%)!important;box-shadow:none!important}
-.hero .mapt h2{color:#fff} .hero .mapt p{color:rgba(255,255,255,.72)}
-.chmap .cn{fill:url(#chg)!important;stroke:#fff!important;stroke-width:1.4!important}
-.chmap .ct{display:none}
-.chmap .pin .dot{fill:var(--deep);stroke:#fff;stroke-width:2.4}
-.chmap .lbl rect{fill:rgba(26,6,58,.88)!important;stroke:rgba(203,185,238,.4)!important;stroke-width:1!important;rx:10px}
-.chmap .lbl text{fill:#fff!important;font-size:15px!important} .chmap .lbl text.s{fill:rgba(255,255,255,.7)!important;font-size:12.5px!important}
-.chmap .lead{fill:none;stroke:rgba(255,255,255,.85);stroke-width:1.2}
-@media (max-width:980px){ .chmap .lbl text{font-size:22px!important} .chmap .lbl text.s{font-size:17px!important} }
-
-/* Companies without the photo: table and text in two columns */
-@media (min-width:1101px){ .co .tbl{grid-column:1/8;grid-row:2;margin-top:clamp(56px,6vw,96px);align-self:start} .co .lab{grid-column:9/13;grid-row:2;margin-top:clamp(56px,6vw,96px)} .co .text{grid-column:1/13;grid-row:3} }
-/* team placeholder: a violet circle for each portrait, name, role and a short line */
-.tm .head{grid-column:1/13;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:end}
-.tm .head h2{grid-column:1/8} .tm .head p{grid-column:9/13;color:var(--ink-3);font-size:var(--t-s)}
-.tm-list{grid-column:1/13;list-style:none;margin-top:clamp(40px,4vw,64px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.tm-list li{padding:clamp(22px,2vw,32px);border-radius:var(--r-photo);box-shadow:inset 0 0 0 1px var(--rule)}
-.tm-list .av{display:block;width:clamp(96px,8vw,128px);aspect-ratio:1;border-radius:50%;background:var(--grain-k) 0 0/180px,linear-gradient(160deg,#A688E0 0%,#431291 60%,#1A063A 100%)}
-.tm-list b{display:block;margin-top:24px;font:600 clamp(19px,1.5vw,22px)/1.2 var(--display);color:var(--ink);letter-spacing:-.02em}
-.tm-list .role{display:block;margin-top:6px;font-size:var(--t-s);color:var(--deep)}
-.tm-list p{margin-top:14px;font-size:var(--t-s);color:var(--ink-2)}
-@media (max-width:980px){ .tm .head h2,.tm .head p{grid-column:1/13} .tm .head p{margin-top:14px} .tm-list{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media (max-width:560px){ .tm-list{grid-template-columns:1fr} }
-/* hero map: room for the labels under the header */
-.gs .hero .reveal .chm{padding-top:calc(64px + clamp(56px,6vw,96px))!important}
-.gs .hero .reveal .chmap{max-height:none;width:min(100%,calc((100svh - 240px) * 731 / 562));justify-self:center;align-self:center}
-.hero + .co{margin-top:0!important} .hero{padding-bottom:0!important;margin-bottom:0!important}
-
-/* no grid on the map panel */
-.hero .chm,.gs .hero .reveal .chm{background:linear-gradient(160deg,#1A063A 0%,#280A58 55%,#431291 100%)!important}
-
-/* ---------- V2 light purple, with contrast: a flat, clean Violet 100 ground (no grain, no grey mix), pure white cards
-   without lines on it, deep ink text and the brand violet for numbers and accents ---------- */
-:root{--lilac:#E6DDF6}
-.ch::before,.hw::before,.tm::before{background:var(--lilac)!important}
-.tm{position:relative;isolation:isolate;margin-top:var(--sec);padding-bottom:clamp(80px,8vw,140px)} .tm.sec{padding-top:clamp(80px,8vw,140px)}
-.tm::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%)}
-.ch li,.hw-step,.tm-list li{background:#fff!important;box-shadow:0 1px 0 rgba(26,6,58,.06)!important}
-.ch li.lit{box-shadow:none!important}
-.ch h2,.hw h2,.tm h2,.ch li b,.hw-step h3,.tm-list b{color:#14101F}
-.ch .head p,.hw-t,.tm .head p{color:#3A2F55}
-.ch li .num{color:#431291}
-.hw-sub li{border-top-color:rgba(67,18,145,.14)} .hw-sub li{color:#2A2340} .hw-sub .sn{color:#431291}
-.hw-now{border-top-color:rgba(67,18,145,.3)} .hw-bar i{background:rgba(67,18,145,.2)}
-.tm .head p{color:#3A2F55}
-.fig .pm,.ph-sec .ph.phm,.ph-sec .pat{background:var(--lilac)!important;box-shadow:none!important}
-.pa .logos li{background:var(--lilac)!important;box-shadow:none!important}
-.pa .logos img{filter:grayscale(1) brightness(.35)!important;opacity:.9!important}
-
-/* ---------- V2 contrast pass ---------- */
-/* chain cards carry their text at the bottom: every gradient ends dark there */
-.ch li:nth-child(1){--violet-grad:linear-gradient(180deg,#7E52CC 0%,#431291 45%,#1A063A 100%)}
-.ch li:nth-child(2){--violet-grad:linear-gradient(200deg,#A688E0 0%,#5A22B3 40%,#1A063A 100%)}
-.ch li:nth-child(3){--violet-grad:linear-gradient(160deg,#7E52CC 0%,#36107A 50%,#1A063A 100%)}
-.ch li:nth-child(4){--violet-grad:linear-gradient(135deg,#5A22B3 0%,#280A58 60%,#1A063A 100%)}
-.ch li:nth-child(5){--violet-grad:linear-gradient(20deg,#1A063A 0%,#431291 55%,#A688E0 100%)}
-.ch li.lit p{color:rgba(255,255,255,.9)!important} .ch li.lit .num{color:#E6DDF6!important}
-.hw-of{color:#5A22B3}
-.globe-tags .gtag.hq{background:#5A22B3}
-.pr .list li span,.nw li .cap{color:rgba(255,255,255,.88)!important}
-.hero .meta p{color:rgba(255,255,255,.82)}
-/* ---------- V2 small motion ---------- */
-.sprog{position:fixed;z-index:60;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,#A688E0,#431291);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
-.tm-list li{transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
-.tm-list .av{background-size:180px,200% 200%!important;transition:background-position 1.2s var(--ease),transform .6s var(--ease)}
-@media (hover:hover){ .tm-list li:hover{transform:translateY(-6px);box-shadow:0 18px 40px -20px rgba(26,6,58,.35)!important} .tm-list li:hover .av{background-position:0 0,100% 100%;transform:rotate(-8deg) scale(1.04)}
-  .pa .logos li{transition:transform .4s var(--ease),background-color .3s ease} .pa .logos li:hover{transform:translateY(-4px);background:#fff!important} .pa .logos li:hover img{filter:none!important} }
-@media (prefers-reduced-motion:reduce){ .sprog{display:none} }
-/* hero copy sits higher: content starts under the header instead of the screen centre; lede and buttons closer to the headline */
-@media (min-width:981px){ .hero .stage{align-content:start;padding-top:calc(64px + clamp(20px,3.5vh,40px))}
-  .hero .meta,.hero .intro{margin-top:clamp(16px,1.8vw,28px)} .hero .intro .tlink,.hero .cta{margin-top:18px} }
-/* hero without the dark veil: the light video shows as it is, the copy is set in brand violet */
-.hero .stage{background:#F4F1F8} .hero .stage::after{display:none!important}
-.hero h1{color:#431291!important} .hero .meta p{color:#5A22B3!important} .hero .intro .lede{color:#280A58!important}
-.hero .pill{color:#431291;--bb:rgba(255,255,255,.55);--bs:inset 0 0 0 1.5px #A688E0} .hero .pill:hover{--bb:#fff;color:#431291}
-.hero .pill.solid{color:#fff;--bb:#431291;--bs:none} .hero .pill.solid:hover{--bb:#5A22B3;color:#fff}
-/* header pills on a light ground: a translucent white fill with a blur under the violet outline */
-.hd:not(.dark):not(.tint) nav a:not(.contact),.hd:not(.dark):not(.tint) .vtog,.hd:not(.dark):not(.tint) .menu-btn{--bb:rgba(255,255,255,.62);--bf:blur(14px) saturate(160%)}
-.hd:not(.dark):not(.tint) nav a:not(.contact):hover{--bb:rgba(255,255,255,.92)}
-/* header pills: no outline, only the blurred translucent fill (white on light grounds, a faint white veil on dark ones) */
-.hd nav a:not(.contact),.hd .vtog,.hd .menu-btn{--bs:none!important;--bf:blur(14px) saturate(160%)!important}
-.hd.dark nav a:not(.contact),.hd.tint nav a:not(.contact),.hd.dark .vtog,.hd.tint .vtog,.hd.dark .menu-btn,.hd.tint .menu-btn{--bb:rgba(255,255,255,.14)}
-.hd.dark nav a:not(.contact):hover,.hd.tint nav a:not(.contact):hover{--bb:rgba(255,255,255,.26)}
-/* one clean violet, no grain: the noise is switched off everywhere; the hero map ends in the colour the Companies band starts with */
-:root{--grain:none;--grain-k:none;--grain-l:none}
-/* no light under the cursor on the violet cards */
-.pr .list li::before,.nw li a::before{display:none!important}
-/* contact form: softly rounded fields, not pills */
-.ct input,.ct select,.ct textarea{border-radius:8px!important}
-/* hero copy keeps to the left of the flask; the line masks get room for ascenders and descenders */
-@media (min-width:981px){ .hero h1{font-size:clamp(44px,5.6vw,108px)!important;max-width:52vw}
-  .hero .meta{grid-column:1/13;grid-row:2;display:flex;gap:32px} .hero .meta p+p{margin-top:0}
-  .hero .intro{grid-column:1/13;grid-row:3;max-width:46vw} }
-main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
-/* ---------- figures map: a dark violet card (no grid), muted land, the group's countries lifted in light lilac
-   with dark plates and leader lines; Japan in an inset ---------- */
-.fig .pm{background:linear-gradient(160deg,#1A063A 0%,#280A58 50%,#431291 100%)!important;box-shadow:none!important;border-radius:var(--r-photo)}
-.pmap{overflow:hidden}
-.pmap .pm-land path{fill:#55387F;stroke:rgba(203,185,238,.38);stroke-width:.5;stroke-linejoin:round}
-.pmap .hl{fill:url(#pm-hl);stroke:#fff;stroke-width:.8;stroke-linejoin:round;filter:url(#pm-lift)}
-.pmap .jp .box{fill:#2A1650;stroke:rgba(203,185,238,.55);stroke-width:.9}
-.pmap .jp .jt{font:700 11px var(--display);fill:#fff;letter-spacing:-.01em}
-.pmap .ln{fill:none;stroke:rgba(255,255,255,.7);stroke-width:.8}
-.pmap .dot .core{fill:#5A22B3;stroke:#fff;stroke-width:1.5}
-.pmap .dot .pulse{fill:none;stroke:#E6DDF6;stroke-width:1;transform-box:fill-box;transform-origin:center;animation:pm-pulse 2.6s cubic-bezier(.2,.6,.3,1) infinite}
-.pmap .dot[data-c="be"] .pulse{animation-delay:.5s} .pmap .dot[data-c="cz"] .pulse{animation-delay:1s} .pmap .dot[data-c="ch"] .pulse{animation-delay:1.5s} .pmap .dot[data-c="jp"] .pulse{animation-delay:2s}
-@keyframes pm-pulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.4);opacity:0}}
-.fig .pmap .lbl rect{fill:#2A1650;stroke:rgba(203,185,238,.55);stroke-width:.8;rx:5px}
-.fig .pmap .lbl text{font:700 11px var(--display);fill:#fff;letter-spacing:-.01em} .fig .pmap .lbl text.s{font:400 8.5px var(--text);fill:rgba(255,255,255,.72)}
-@media (max-width:980px){ .fig .pmap .lbl text,.pmap .jp .jt{font-size:13px} .fig .pmap .lbl text.s{font-size:10px} }
-@media (prefers-reduced-motion:reduce){ .pmap .dot .pulse{animation:none;opacity:0} }
-/* hero video: the flask sits nearer the centre in this cut, so on desktop the frame moves right; the strip it leaves
-   takes the video's own white, so no edge shows */
-.hero .stage{background:#FEFCFF}
-@media (min-width:981px){ .hero .hv{transform:translateX(4%)} }
-/* where the headline crosses the flask it turns to its negative: the text colour is the inverse of the violet, blended by difference,
-   so it reads violet on the white ground and inverts over the glass */
-.hero h1{mix-blend-mode:difference;color:#BCED6E!important}
-/* calm map: no pulsing rings, no shadow under the lifted countries */
-.pmap .dot .pulse{display:none} .pmap .hl{filter:none}
-/* coloured bands sit flush: no white margin above them (their own padding keeps the content spaced) */
-.tm,.ch,.hw,.x3d-sec,.ct{margin-top:0!important}
-.hero .chm,.gs .hero .reveal .chm{background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)!important}
-.co::before{background:linear-gradient(180deg,#36107A 0%,#280A58 45%,#1A063A 100%)}
-.ct::before{background:linear-gradient(180deg,#1A063A 0%,#280A58 55%,#36107A 100%)}
-</style>
+<link rel="stylesheet" href="corporate/v2.css">
 <script>/* old links to chapters of the 3D story (/#history-1) open that chapter in About Us */
 (function(){ var m=/^#history-(\d{1,2})$/.exec(location.hash); if(m) location.replace('about-us/?chapter='+m[1]); })();</script>
 <script>document.documentElement.classList.add('js');
@@ -902,14 +31,14 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
     <a class="logo" href="v2.html" aria-label="Astrasana Holding AG, home"><img class="l-col" src="corporate/img/brand/logo-color.svg" alt="" width="128" height="24"><img class="l-white" src="corporate/img/brand/logo-white.svg" alt="" width="128" height="24"></a>
     <div class="vtog" role="group" aria-label="Site version"><a href="./">V1</a><a href="v2.html" aria-current="page">V2</a></div>
     <nav id="menu" aria-label="Main">
-      <a href="#companies">Companies</a>
-      <a href="#cultivation">Pharma</a>
+      <a href="v2-companies.html">Companies</a>
+      <a href="v2-pharma.html">Pharma</a>
       <a class="nav3d" href="#about">About Us<span class="vh"> (with&nbsp;a&nbsp;3D story)</span></a>
-      <a href="#pharmacies">Pharmacies</a>
+      <a href="v2-pharmacies.html">Pharmacies</a>
       <a href="#products">Products</a>
       <a href="#partners">Partners</a>
       <a href="#news">News</a>
-      <a class="contact" href="#contact">Contact</a>
+      <a class="contact" href="v2-contact.html">Contact</a>
     </nav>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><i></i><i></i></button>
   </div>
@@ -921,13 +50,6 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
     <div class="stage">
       <video class="hv" poster="corporate/img/hero-drop-poster.webp" muted playsinline preload="auto" aria-hidden="true"><source src="corporate/video/hero-drop.mp4" type="video/mp4"><source src="corporate/video/hero-drop.webm" type="video/webm"></video>
     <h1 id="t-hero" class="rise">Swiss medical cannabis. From&nbsp;cultivation to&nbsp;pharmacy.</h1>
-    <div class="meta up">
-      <p class="small">Kloten, Switzerland<br>Europe and&nbsp;Japan</p>
-    </div>
-    <div class="intro up">
-      <p class="lede">A&nbsp;vertically integrated Swiss pharmaceutical and&nbsp;cannabis company covering all market segments within the&nbsp;industry.</p>
-      <div class="cta"><a class="pill solid" href="#contact">Get in&nbsp;touch</a><a class="pill" href="#chain">See the&nbsp;value chain<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
-    </div>
       <svg class="sweep" viewBox="0 0.3 60.1 53.6" aria-hidden="true"><defs><linearGradient id="sw-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6DDF6"/><stop offset=".55" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs><path class="sw-fill" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/><path class="sw-edge" d="M24.6246547049,2.1654466524v-.0102515271l16.3843455194,50.4340472776c.2497806841.7688711653.9662579015,1.2894485424,1.7746843107,1.2894485424h17.3125688052L43.1202615712,1.6452826763c-.2498490198-.7687601428-.9662715382-1.2892305486-1.7746134769-1.2892305486h-17.3040489905l-.0027007632.0026443825c-6.2525772078.0734692772-13.1423197992,3.2953572995-17.7525169439,8.2942581783C2.9375492265,12.2845581466-.8431285209,18.616584689.1662197467,28.153922023c1.7248194265,16.2948022491,14.9531765135,25.7247689223,36.4587445338,25.7247689223l-4.698554306-14.6432103724c-.2223658052-.6930108824-1.0902448008-.9207560476-1.6142431129-.4156457594-4.6424278077,4.4750870252-15.5774840556,9.5284805268-21.8686933143,3.7097181651-3.6747453012-3.8165580921-5.9181211377-8.7095265246-6.5370570835-14.5601584425-.941004754-8.8863653662,2.5620274691-14.7639075427,5.666531578-18.1306798853,4.4320768621-4.8071118935,11.1297412028-7.7979949109,17.0517066631-7.6732679984Z"/></svg>
     </div>
     <figure class="chm">
@@ -946,37 +68,11 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <section class="co grid sec rv" id="companies" aria-labelledby="t-co">
     <div class="ttl"><span class="brk" aria-hidden="true"></span>
       <h2 id="t-co" class="up">Vertically integrated, globally distributed</h2>
-      <p class="lede up">Astrasana Holding brings its&nbsp;companies together under one roof: cultivation and&nbsp;research, pharmaceutical production, distribution to&nbsp;pharmacies and&nbsp;clinics, and&nbsp;animal health.</p>
-    </div>
-    <div class="text cols2 small up">
-      <p>As&nbsp;a&nbsp;pharmaceutical distribution specialist, Astrasana imports and&nbsp;distributes medical cannabis, supplying pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic. The&nbsp;company also cultivates cannabis for&nbsp;medical purposes in&nbsp;Switzerland.</p>
-      <p>As&nbsp;the&nbsp;first Swiss company, Astrasana maintains an&nbsp;exclusive partnership with&nbsp;the&nbsp;publicly listed GSI Creos corporation and&nbsp;distributes CBD products for&nbsp;both human and&nbsp;veterinary use.</p>
-    </div>
-    <p class="lab small up">With&nbsp;locations in&nbsp;Europe and&nbsp;Japan, Astrasana Holding remains competitive, agile and&nbsp;flexible. Our&nbsp;international network serves all market segments of&nbsp;the&nbsp;industry.</p>
-    <div class="tbl up">
-      <table>
-        <caption>Group companies</caption>
-        <tbody>
-          <tr><th scope="row">Switzerland</th><td>Astrasana Holding AG, Bogen Pharma AG, Astrasana Pharma AG, Astrasana Research AG, Astrasana Animal Health AG</td></tr>
-          <tr><th scope="row">Czech Republic</th><td>Astrasana Czech s.r.o., Astrasana Pharma s.r.o., Releaf s.r.o.</td></tr>
-          <tr><th scope="row">Japan</th><td>Astrasana Japan</td></tr>
-          <tr><th scope="row">United Kingdom</th><td>Astrasana UK Ltd.</td></tr>
-          <tr><th scope="row">Belgium</th><td>NexGen DLH</td></tr>
-        </tbody>
-      </table>
+      <p class="lede up">Cultivation, production, distribution and&nbsp;animal health under one&nbsp;roof.</p>
+      <a class="tlink more up" href="v2-companies.html"><span>Our companies</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
   </section>
 
-  <!-- team (V2): placeholder until the portraits and bios arrive -->
-  <section class="tm grid sec rv" id="team" aria-labelledby="t-tm">
-    <div class="head"><h2 id="t-tm">The&nbsp;people behind Astrasana</h2><p>Placeholder: portraits, names and&nbsp;roles of&nbsp;the&nbsp;management team will follow.</p></div>
-    <ul class="tm-list">
-        <li><span class="av" aria-hidden="true"></span><b>Name Surname</b><span class="role">Chief Executive Officer</span><p>Short introduction: background, responsibilities and what this person leads at&nbsp;Astrasana.</p></li>
-        <li><span class="av" aria-hidden="true"></span><b>Name Surname</b><span class="role">Chief Operating Officer</span><p>Short introduction: background, responsibilities and what this person leads at&nbsp;Astrasana.</p></li>
-        <li><span class="av" aria-hidden="true"></span><b>Name Surname</b><span class="role">Head of&nbsp;Production</span><p>Short introduction: background, responsibilities and what this person leads at&nbsp;Astrasana.</p></li>
-        <li><span class="av" aria-hidden="true"></span><b>Name Surname</b><span class="role">Head of&nbsp;Distribution</span><p>Short introduction: background, responsibilities and what this person leads at&nbsp;Astrasana.</p></li>
-    </ul>
-  </section>
 
   <!-- key figures -->
   <section class="fig grid sec rv" aria-labelledby="t-fig">
@@ -990,9 +86,9 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
 </svg></figure>
     <h2 id="t-fig" class="up">Astrasana in&nbsp;figures</h2>
     <dl>
-      <div class="up"><dt>Employees</dt><dd>~30</dd><p>Around 30&nbsp;people, with&nbsp;headquarters in&nbsp;Kloten, Switzerland.</p></div>
-      <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd><p>In&nbsp;Switzerland, the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and&nbsp;Belgium.</p></div>
-      <div class="up"><dt>Countries worldwide</dt><dd>18<span class="pl" aria-hidden="true">+</span></dd><p>Astrasana products are distributed in&nbsp;over 18&nbsp;countries.</p></div>
+      <div class="up"><dt>Employees</dt><dd>~30</dd></div>
+      <div class="up"><dt>Additional subsidiaries</dt><dd>9</dd></div>
+      <div class="up"><dt>Countries worldwide</dt><dd>18<span class="pl" aria-hidden="true">+</span></dd></div>
     </dl>
   </section>
 
@@ -1001,54 +97,29 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <section class="ch sec rv" id="chain" aria-labelledby="t-ch">
     <div class="grid head">
       <h2 id="t-ch" class="up">One group, every step of&nbsp;the&nbsp;chain</h2>
-      <p class="up">From&nbsp;cultivation in&nbsp;Switzerland to&nbsp;the&nbsp;pharmacy counter and&nbsp;markets abroad, each step sits with&nbsp;a&nbsp;company of&nbsp;the&nbsp;Astrasana group.</p>
     </div>
     <div class="grid">
       <ol aria-label="From cultivation to pharmacy">
         <span class="track" aria-hidden="true"><i></i><b></b></span>
-        <li><span class="num" aria-hidden="true">01</span><b>Cultivation</b><p>Around 1,000&nbsp;m² in&nbsp;Switzerland under a&nbsp;Swissmedic licence, following GACP.</p></li>
-        <li><span class="num" aria-hidden="true">02</span><b>Production</b><p>Processing and&nbsp;packaging, an&nbsp;in‑house quality control laboratory and&nbsp;GDP‑standard storage.</p></li>
-        <li><span class="num" aria-hidden="true">03</span><b>Distribution</b><p>Import and&nbsp;distribution of&nbsp;medical cannabis to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic.</p></li>
-        <li><span class="num" aria-hidden="true">04</span><b>Pharmacies</b><p>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding, with&nbsp;expert advice.</p></li>
-        <li><span class="num" aria-hidden="true">05</span><b>International</b><p>Products distributed in&nbsp;over 18&nbsp;countries, with&nbsp;companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;UK and&nbsp;Belgium.</p></li>
+        <li><span class="num" aria-hidden="true">01</span><b>Cultivation</b></li>
+        <li><span class="num" aria-hidden="true">02</span><b>Production</b></li>
+        <li><span class="num" aria-hidden="true">03</span><b>Distribution</b></li>
+        <li><span class="num" aria-hidden="true">04</span><b>Pharmacies</b></li>
+        <li><span class="num" aria-hidden="true">05</span><b>International</b></li>
       </ol>
     </div>
   </section>
 
-  <!-- how we work (V2): the left side stays, the steps scroll by on the right -->
-  <section class="hw grid sec rv" id="how" aria-labelledby="t-hw">
-    <div class="hw-l">
-      <h2 id="t-hw">From&nbsp;seed to&nbsp;pharmacy in&nbsp;one group</h2>
-      <p class="hw-t">Each step of&nbsp;the&nbsp;chain sits with&nbsp;a&nbsp;company of&nbsp;the&nbsp;Astrasana group, so&nbsp;quality and&nbsp;supply are controlled from&nbsp;cultivation to&nbsp;the&nbsp;pharmacy counter.</p>
-      <a class="pill solid hw-cta" href="#contact">Work with&nbsp;us</a>
-      <div class="hw-now" aria-hidden="true"><p class="hw-cnt"><span class="hw-big">01</span><span class="hw-of">/&nbsp;04</span></p><b class="hw-name">Cultivation</b><div class="hw-bar"><i></i><i></i><i></i><i></i></div></div>
-    </div>
-    <ol class="hw-r">
-        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">1</span>Cultivation</h3><ol class="hw-sub"><li><span class="sn">1.1</span><span>Around 1,000&nbsp;m² in&nbsp;Switzerland</span></li><li><span class="sn">1.2</span><span>Operating under a&nbsp;Swissmedic licence</span></li><li><span class="sn">1.3</span><span>Grown following GACP</span></li><li><span class="sn">1.4</span><span>Every batch traceable from&nbsp;seed to&nbsp;harvest</span></li><li><span class="sn">1.5</span><span>Accredited laboratories test cannabinoids, terpenes and&nbsp;contaminants</span></li></ol></li>
-        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">2</span>Production</h3><ol class="hw-sub"><li><span class="sn">2.1</span><span>Pharmaceutical processing and&nbsp;packaging</span></li><li><span class="sn">2.2</span><span>In&#8209;house quality control laboratory</span></li><li><span class="sn">2.3</span><span>GDP&#8209;standard storage</span></li><li><span class="sn">2.4</span><span>Under one roof in&nbsp;Tagelswangen, Canton Zurich</span></li></ol></li>
-        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">3</span>Distribution</h3><ol class="hw-sub"><li><span class="sn">3.1</span><span>Import and&nbsp;distribution through Bogen Pharma&nbsp;AG</span></li><li><span class="sn">3.2</span><span>Supply to&nbsp;pharmacies and&nbsp;clinics in&nbsp;Switzerland and&nbsp;the&nbsp;Czech Republic</span></li><li><span class="sn">3.3</span><span>THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding</span></li><li><span class="sn">3.4</span><span>Expert advice for&nbsp;partner pharmacies</span></li></ol></li>
-        <li class="hw-step"><h3><span class="hw-n" aria-hidden="true">4</span>International</h3><ol class="hw-sub"><li><span class="sn">4.1</span><span>Companies in&nbsp;the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and&nbsp;Belgium</span></li><li><span class="sn">4.2</span><span>Products distributed in&nbsp;over 18&nbsp;countries</span></li><li><span class="sn">4.3</span><span>Exclusive partnership with&nbsp;GSI Creos for&nbsp;CBD products</span></li></ol></li>
-    </ol>
-  </section>
 
   <section class="img-sec grid sec rv" id="cultivation" aria-labelledby="t-cu">
     <figure class="ph"><img src="corporate/img/seedlings.webp" srcset="corporate/img/seedlings-900.webp 900w, corporate/img/seedlings.webp 1800w" sizes="(min-width:1100px) 50vw, 100vw" alt="A cannabis seedling breaking through the soil" width="1800" height="2609" loading="lazy"></figure>
       <div class="over">
         <h2 id="t-cu">Swiss cannabis cultivation</h2>
-        <p class="small">Astrasana Pharma AG cultivates high-quality medical cannabis on&nbsp;approximately 1,000&nbsp;m² in&nbsp;Switzerland, operating under a&nbsp;Swissmedic licence. Production follows GACP, every batch is&nbsp;traceable from&nbsp;seed to&nbsp;harvest, and&nbsp;accredited laboratories test cannabinoids, terpenes and&nbsp;contaminants.</p>
+        <p class="small">Around 1,000&nbsp;m² in&nbsp;Switzerland, under a&nbsp;Swissmedic licence.</p>
+        <a class="tlink more up" href="v2-pharma.html"><span>How we work</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       </div>
   </section>
 
-  <!-- Tagelswangen -->
-  <section class="tg grid sec rv" aria-labelledby="t-tg">
-    <figure class="ph cool p1"><img src="land/site/production-2.webp" alt="Specialist in protective clothing checking plants in the cultivation room" width="1600" height="1067" loading="lazy" style="object-position:62% 50%"></figure>
-    <figure class="ph p2"><img src="corporate/img/facility-corridor.webp" alt="Corridor of the Astrasana facility with the Astrasana Holding AG sign" width="1536" height="1024" loading="lazy" style="object-position:93% 40%"></figure>
-    <div class="ttl">
-      <h2 id="t-tg" class="up">Production facility in&nbsp;Tagelswangen complete</h2>
-      <p class="lede up">Astrasana successfully completes the&nbsp;setup of&nbsp;its&nbsp;pharmaceutical production facility in&nbsp;Tagelswangen, Canton Zurich.</p>
-      <p class="small up" style="margin-top:20px">Climate-controlled cultivation rooms, pharmaceutical processing and&nbsp;packaging, an&nbsp;in-house quality control laboratory and&nbsp;GDP‑standard storage sit under one roof.</p>
-    </div>
-  </section>
 
   <!-- about us: entry to the 3D story -->
   <section class="x3d-sec rv" id="about" aria-labelledby="t-3d">
@@ -1056,13 +127,11 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
       <div class="hd2">
         <h2 id="t-3d" class="up">Discover our&nbsp;world</h2>
       </div>
-      <p class="txt up">Astrasana Holding is&nbsp;a&nbsp;Swiss group with&nbsp;companies in&nbsp;Switzerland, the&nbsp;Czech Republic, Japan, the&nbsp;United Kingdom and&nbsp;Belgium. The&nbsp;interactive story follows our&nbsp;structure, production in&nbsp;Tagelswangen, the&nbsp;warehouse in&nbsp;Kloten and&nbsp;the&nbsp;route to&nbsp;our&nbsp;partner pharmacies across the&nbsp;map.</p>
       <div class="pv globe" data-globe="land/vendor/" role="img" aria-label="Globe with the countries of the Astrasana group: Switzerland, the Czech Republic, the United Kingdom, Belgium and Japan">
         <img src="corporate/img/globe-still.webp" srcset="corporate/img/globe-still-800.webp 741w, corporate/img/globe-still.webp 1482w" sizes="(min-width:1100px) 58vw, 100vw" alt="" width="1482" height="928" loading="lazy">
       </div>
       <div class="go up">
         <a class="btn3d" href="about-us/" data-3d>Explore Astrasana in&nbsp;3D<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M6 5h5v5"/></svg></a>
-        <span class="note">Best viewed on&nbsp;desktop.</span>
       </div>
     </div>
   </section>
@@ -1071,22 +140,8 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <section class="ph-sec grid sec rv" id="pharmacies" aria-labelledby="t-ph">
     <figure class="ph phm"><svg class="phmap" viewBox="-8 -8 731 474" role="img" aria-label="Map of Switzerland with the partner pharmacies supplied by Bogen Pharma from Kloten"><path class="cn" d="M575.8 172.3L577.4 174.0L579.8 174.5L581.2 173.9L581.8 172.6L583.8 172.9L587.6 172.0L587.6 172.7L588.6 173.6L590.0 174.2L591.6 173.9L591.5 175.2L593.3 176.3L596.9 176.5L598.0 177.8L603.8 177.4L604.9 179.0L606.4 179.6L608.1 181.3L610.0 181.8L611.9 183.4L614.5 182.5L615.7 180.9L618.2 181.4L618.8 182.2L617.4 183.3L617.3 184.1L617.7 184.8L620.1 186.1L620.7 188.5L619.2 190.1L619.5 190.7L618.1 192.4L618.1 193.8L617.4 194.8L618.6 196.2L618.0 197.7L618.2 199.9L618.9 200.1L618.2 201.3L621.0 202.0L622.9 203.5L623.9 203.3L625.3 205.0L627.8 206.3L629.2 206.5L631.2 205.6L632.4 206.5L634.2 205.6L634.9 207.9L636.1 208.7L638.6 209.6L640.5 208.9L643.1 212.4L643.8 212.6L644.3 213.8L645.9 214.9L645.7 217.6L647.0 218.3L651.4 218.2L652.2 218.9L652.3 220.5L654.2 222.9L656.4 222.1L657.0 221.1L659.6 221.4L660.8 220.5L662.4 221.3L663.3 220.6L664.3 220.6L664.7 220.0L666.2 219.7L668.2 217.0L669.8 217.4L672.2 216.8L674.3 217.0L674.6 212.8L673.5 211.6L673.2 210.2L674.4 208.9L675.0 205.7L675.8 205.0L675.5 202.1L679.7 202.7L684.4 204.7L685.0 203.6L687.4 203.5L687.6 202.2L685.9 200.1L686.1 198.4L686.4 197.8L689.3 196.9L689.6 194.6L691.3 191.3L691.2 190.6L691.9 190.3L692.2 188.7L693.6 188.1L696.2 188.4L698.2 186.3L700.4 187.0L702.6 190.3L704.9 192.1L704.2 195.5L705.1 196.4L709.4 197.1L712.7 199.9L714.7 200.6L714.1 202.1L714.5 203.3L714.2 205.7L713.0 206.9L712.5 210.6L710.8 212.9L711.5 213.6L711.9 215.5L711.3 218.0L711.9 221.1L710.7 222.8L711.1 224.0L710.1 224.3L709.6 225.3L710.1 226.7L709.4 227.2L709.7 228.5L708.6 231.3L706.8 232.8L705.3 233.0L704.8 234.7L704.2 235.0L706.0 236.5L707.2 238.8L707.3 242.9L707.2 243.3L706.2 243.2L700.8 247.4L703.6 250.9L703.2 253.2L702.2 254.0L701.2 254.0L699.6 257.8L698.0 258.2L697.8 258.9L699.4 261.9L699.2 264.8L700.7 267.7L701.0 269.8L702.1 270.2L707.9 268.8L710.5 270.7L713.9 274.3L715.1 274.8L713.9 277.1L714.4 278.8L713.8 280.1L714.5 280.7L714.0 283.5L712.4 286.0L712.9 288.2L711.8 290.2L712.0 291.3L709.9 291.8L708.9 294.2L706.4 292.7L703.5 289.5L700.2 291.2L696.0 288.9L693.1 288.5L692.8 289.9L690.9 291.5L688.8 289.4L686.6 290.6L686.0 289.9L684.2 289.8L684.1 287.8L682.8 285.1L680.3 284.3L680.0 283.5L679.1 283.6L677.6 284.9L676.0 283.4L675.7 280.2L678.4 275.9L676.2 273.2L675.3 270.2L672.9 271.6L671.6 274.4L668.1 273.0L668.0 272.3L663.2 274.7L659.3 275.8L659.1 276.5L657.9 277.0L653.8 275.8L652.9 279.9L653.6 280.8L653.4 282.2L652.7 283.5L650.0 284.0L651.1 285.9L650.6 286.7L648.9 287.8L648.3 289.7L647.3 290.8L645.0 291.2L644.6 292.0L644.8 293.1L646.0 294.0L645.6 294.7L646.1 296.1L645.8 298.2L644.3 299.0L644.7 300.9L645.4 301.3L644.7 302.8L645.3 304.1L644.4 305.8L645.8 307.8L646.1 309.6L643.8 313.5L644.3 314.5L645.9 315.2L646.5 314.9L647.4 318.0L647.8 318.3L649.8 317.8L650.3 319.5L653.5 319.4L654.7 317.8L656.1 318.3L656.4 317.6L658.0 317.0L658.6 317.6L660.2 317.8L661.2 321.4L663.0 320.7L663.9 322.7L663.2 323.5L663.2 327.1L662.2 327.7L660.1 327.5L657.7 329.4L658.0 333.3L654.7 335.4L654.9 336.6L654.1 339.6L656.0 344.1L659.4 346.2L659.3 347.0L661.9 349.0L662.0 350.8L663.2 351.4L663.4 353.9L664.7 355.0L665.4 356.9L665.2 357.7L661.4 361.2L660.6 363.3L657.9 364.4L652.6 363.7L650.8 364.2L648.8 366.3L644.6 363.3L646.1 362.1L646.1 360.7L647.2 359.2L646.4 355.2L642.2 352.5L637.0 350.8L636.4 348.2L637.7 347.0L637.1 345.6L637.7 344.3L634.5 342.0L635.4 339.4L637.0 337.6L637.1 335.6L635.3 335.4L632.1 332.6L630.7 330.4L631.2 329.3L630.3 329.1L627.3 330.1L626.6 330.8L626.7 331.7L625.8 332.1L625.5 331.1L624.5 331.1L623.0 328.7L619.4 330.4L618.9 331.6L616.9 332.9L616.4 332.4L615.0 332.9L614.0 332.4L613.4 333.1L611.3 333.2L609.3 335.6L607.6 336.1L606.5 337.1L603.7 337.9L602.5 339.2L600.7 338.6L597.3 335.4L596.3 335.6L594.1 337.9L594.7 339.8L593.1 341.8L594.5 342.8L594.5 344.2L593.3 345.9L592.7 348.9L590.8 349.4L588.6 348.7L586.7 346.6L585.7 347.3L585.6 348.1L584.1 348.2L580.9 350.5L577.6 350.2L576.3 348.5L571.4 348.5L568.7 346.7L568.4 345.9L567.5 345.9L566.7 346.8L565.1 345.4L561.9 341.1L561.6 339.8L561.2 339.9L560.3 335.5L559.0 334.4L558.4 332.6L552.8 329.8L552.9 328.1L554.0 326.8L552.9 321.5L551.7 319.5L552.7 314.5L552.5 309.7L553.5 308.3L553.1 305.8L551.0 305.9L550.9 304.9L552.8 304.8L553.2 299.3L548.6 301.8L547.1 303.9L547.0 306.7L544.9 308.9L541.6 307.5L540.9 305.4L539.7 305.0L538.7 303.7L538.2 302.6L539.0 300.5L537.6 299.2L536.1 300.3L533.6 300.4L533.3 299.9L529.2 300.3L526.0 302.0L524.7 302.1L523.4 305.1L523.9 306.1L523.3 309.1L524.0 310.3L522.1 312.4L519.1 313.5L519.3 316.6L521.7 319.6L523.4 320.0L524.4 321.3L524.6 323.1L524.1 323.5L524.6 323.9L523.6 325.5L524.8 328.1L523.5 330.4L523.7 331.7L524.7 334.0L526.9 334.5L527.4 337.3L526.4 338.5L526.2 339.4L527.5 341.2L526.6 343.3L525.1 344.0L524.5 345.2L525.1 348.0L523.0 349.7L522.4 351.4L521.0 352.2L520.7 354.3L519.9 354.8L519.3 362.5L519.0 362.9L517.3 362.6L515.0 363.7L515.3 364.8L514.7 367.0L514.0 367.8L512.0 368.4L510.9 371.8L511.4 373.3L510.9 375.0L509.2 377.1L505.6 377.0L504.9 379.0L501.4 381.0L499.3 385.3L497.9 385.3L496.7 385.9L495.9 387.2L494.3 387.4L491.6 389.1L494.3 396.3L492.7 398.8L492.5 401.3L489.7 402.3L488.1 402.0L484.7 404.1L483.8 404.2L482.9 404.9L482.9 406.4L481.7 407.7L481.4 409.4L483.8 412.4L484.7 417.8L483.8 418.0L483.1 419.1L482.0 419.1L481.4 420.8L479.5 420.8L479.6 422.6L478.7 422.9L478.4 422.5L478.5 423.1L479.3 424.0L482.4 425.4L482.9 428.0L482.1 429.2L483.7 430.8L483.2 432.8L484.3 432.7L484.9 433.2L486.9 433.0L487.9 434.6L489.6 434.5L489.5 435.5L491.0 436.4L490.9 436.9L491.6 436.3L492.3 436.7L492.3 439.5L493.9 438.8L494.2 439.1L494.2 440.0L493.1 441.2L492.5 441.1L492.5 442.7L490.7 445.0L488.8 445.4L488.0 447.9L488.4 449.8L485.8 452.9L486.2 454.1L485.2 457.5L483.7 457.3L482.8 458.2L480.0 457.0L479.3 457.2L479.8 454.3L478.6 454.2L478.1 453.4L477.3 454.1L476.5 453.9L476.1 454.7L475.5 454.9L474.1 453.9L474.2 453.3L473.2 452.4L470.7 452.8L469.6 453.4L469.0 454.6L467.7 454.4L466.4 455.3L466.7 452.6L469.6 448.3L471.6 446.9L471.1 446.1L470.3 446.8L469.8 446.1L469.5 442.7L467.9 440.3L468.4 438.4L466.7 435.2L465.6 435.2L463.3 431.7L464.3 428.3L463.5 425.7L461.6 426.2L459.8 425.3L456.5 422.5L455.4 420.6L453.7 419.1L451.8 419.2L450.9 418.5L448.1 418.1L447.5 418.2L447.3 418.9L446.5 418.8L447.6 414.4L449.7 411.3L451.8 410.4L453.0 408.9L453.4 406.7L453.9 407.0L454.3 406.2L453.3 405.6L454.2 404.5L455.7 405.1L457.3 402.1L456.9 398.9L454.0 397.2L451.1 393.9L449.7 393.0L448.7 394.5L446.1 394.6L443.7 393.1L442.5 393.0L439.6 388.2L436.8 390.9L435.2 393.9L432.4 392.8L430.7 392.8L429.7 390.9L428.3 391.3L426.3 390.4L424.8 387.9L419.1 388.3L418.8 385.7L416.1 383.4L417.7 380.6L415.3 380.3L415.2 379.1L413.8 379.1L413.1 378.5L412.5 375.6L411.5 374.0L410.0 373.5L409.9 372.1L407.8 370.8L406.6 366.1L404.9 365.3L403.9 365.7L400.3 363.6L396.8 362.9L395.8 360.1L392.8 359.1L392.4 357.8L393.4 356.2L394.5 355.6L390.1 347.6L392.1 346.4L392.6 342.8L394.2 342.4L394.5 341.0L396.0 339.5L395.4 335.1L396.8 332.9L396.2 328.9L395.3 327.4L396.9 325.2L395.7 323.2L396.5 321.6L394.7 319.0L395.3 317.8L394.8 316.3L396.1 314.1L395.6 313.9L395.5 312.7L394.1 311.6L394.1 310.9L392.9 309.6L390.7 309.7L388.4 310.8L387.1 310.8L384.6 312.4L380.5 312.4L378.8 313.5L378.3 314.7L374.0 318.4L372.4 318.9L371.2 318.4L369.8 321.0L368.3 322.4L370.6 323.7L371.5 323.4L372.5 324.5L372.7 325.7L372.2 326.6L372.9 327.4L372.0 329.6L370.0 330.3L367.5 332.7L365.8 331.9L364.3 332.6L363.8 333.3L364.6 335.4L363.7 336.1L364.2 336.7L362.6 336.6L362.1 337.9L359.8 338.0L358.0 339.4L357.7 340.3L358.2 341.2L356.6 342.8L356.1 345.2L354.1 346.8L353.1 346.3L350.9 347.9L348.2 348.2L345.9 346.9L344.4 346.9L341.8 349.2L340.6 351.6L339.4 352.0L338.6 353.4L336.3 355.0L336.3 356.0L335.4 356.4L335.8 357.3L336.6 357.9L338.7 358.2L338.8 358.9L340.1 358.9L340.9 362.0L341.7 362.0L342.8 363.8L344.6 364.3L345.4 367.6L346.6 369.7L346.9 372.3L348.8 374.4L348.8 375.6L347.7 376.3L346.4 378.9L347.2 382.3L345.5 384.8L342.5 385.2L340.9 386.3L340.7 389.3L339.8 390.6L335.6 392.0L333.7 391.9L331.3 393.0L328.2 393.1L327.3 397.7L326.3 399.1L326.2 400.3L328.3 406.2L326.2 407.3L324.6 409.1L325.5 410.6L324.5 412.0L324.7 413.5L322.9 413.5L321.0 417.2L319.2 416.4L316.0 417.2L308.4 417.0L306.1 421.2L303.5 422.3L304.2 424.6L303.1 426.0L303.7 426.8L303.4 428.0L302.4 428.4L302.1 430.9L303.4 433.1L302.8 434.6L301.7 434.8L301.3 435.5L300.5 434.5L297.1 434.3L294.5 433.1L291.2 435.3L286.4 430.8L283.0 429.9L282.7 431.3L281.1 433.8L278.8 433.8L276.7 431.3L277.1 428.2L275.5 426.9L272.3 426.0L271.9 424.3L269.9 421.9L268.8 421.7L266.0 423.2L262.9 422.7L261.4 423.3L258.0 423.1L256.9 422.2L256.4 419.5L251.9 419.4L250.6 421.8L251.4 424.8L250.8 426.2L250.1 426.7L248.4 426.3L246.9 424.9L245.2 426.0L243.9 424.9L243.0 426.5L240.6 427.2L239.5 428.4L240.1 430.9L239.6 431.5L237.5 431.1L237.1 431.9L235.3 432.0L232.6 435.8L230.0 437.3L228.6 436.7L226.1 440.0L225.5 440.1L223.0 438.3L222.2 438.5L221.4 436.9L219.5 435.8L216.3 436.9L215.4 436.6L215.1 435.5L212.8 435.3L211.7 434.3L210.2 435.7L208.9 439.1L208.1 439.3L205.8 442.0L205.2 442.0L204.6 440.9L203.2 441.6L201.3 441.1L199.4 441.9L199.3 443.0L196.8 444.9L196.4 446.1L196.9 447.8L196.3 448.4L195.3 448.8L193.5 447.7L192.9 447.8L190.8 445.9L191.2 444.7L189.5 444.1L186.6 445.6L186.0 447.0L183.9 448.7L181.2 448.7L179.8 445.7L180.3 444.9L177.9 442.7L177.4 440.4L175.4 439.3L175.5 437.1L174.9 436.2L173.7 435.7L172.4 434.1L170.9 430.5L171.2 426.8L168.2 425.5L166.7 423.3L167.0 422.4L168.6 421.8L169.0 421.1L167.2 419.2L167.0 416.9L166.2 416.0L165.3 416.5L162.9 415.1L162.3 411.6L160.1 409.1L159.5 409.3L157.4 404.4L156.3 404.6L155.1 403.5L155.4 401.4L154.8 401.0L153.3 401.4L151.0 404.7L148.7 405.2L148.1 406.5L145.7 405.3L145.3 403.5L146.6 400.3L148.2 399.3L147.7 398.2L148.3 396.7L146.9 394.4L148.8 391.4L148.5 390.3L149.5 387.8L148.1 387.5L146.8 388.0L145.8 387.4L141.9 387.2L140.0 385.8L136.2 386.6L135.1 385.0L133.5 384.8L132.3 380.8L132.6 378.8L135.8 374.6L134.4 369.6L135.4 367.1L137.2 364.9L137.2 362.9L138.6 362.4L140.1 359.2L142.5 357.7L142.4 356.8L143.3 355.1L143.1 353.3L144.0 351.8L143.1 349.4L142.4 349.1L141.3 349.6L140.7 348.6L138.4 347.1L138.6 345.9L136.9 343.8L134.9 342.5L133.9 342.7L133.3 339.8L131.4 339.7L129.2 334.6L130.0 332.5L132.5 331.9L134.8 328.9L134.1 327.3L134.3 326.1L137.1 318.0L115.2 311.8L89.6 311.4L74.9 320.7L60.6 323.4L47.7 333.4L42.4 344.6L47.0 346.9L47.0 348.6L47.7 349.6L45.3 351.5L45.3 352.7L47.1 355.8L48.9 357.7L48.8 358.4L49.8 359.3L51.8 358.5L54.3 355.4L54.4 357.4L55.7 357.6L56.7 357.4L56.1 358.5L56.6 358.8L56.7 360.2L54.2 364.6L47.0 369.1L44.7 368.8L42.9 370.1L41.6 371.7L40.4 372.1L39.1 374.0L37.6 374.6L37.2 375.3L37.6 378.1L35.5 379.9L31.8 381.4L30.7 383.0L30.2 382.5L29.2 383.8L23.5 383.2L22.3 381.4L19.8 382.0L16.0 381.5L15.5 383.8L14.6 383.9L13.5 385.3L12.3 384.0L6.7 383.1L5.1 383.6L5.1 384.8L4.1 385.8L1.1 386.9L1.0 385.9L2.5 384.7L2.3 383.0L5.0 376.6L5.5 376.4L6.0 377.0L7.1 374.2L6.5 373.2L2.2 371.0L3.6 369.7L3.0 368.8L3.8 366.9L4.5 366.4L6.8 366.7L6.5 365.1L8.2 365.5L9.4 363.6L11.8 362.7L13.2 361.5L15.2 363.1L17.5 359.9L18.8 360.8L21.7 359.5L23.9 361.7L24.6 360.9L25.0 361.2L27.4 358.5L26.5 355.7L26.8 355.4L25.3 354.1L25.7 353.6L24.2 352.3L24.0 350.8L25.7 348.6L26.6 348.6L26.9 347.9L26.7 344.4L29.7 339.7L29.7 338.3L31.4 337.5L32.8 335.6L33.1 333.9L34.7 332.0L33.0 329.1L31.5 329.5L25.8 324.3L25.8 325.1L24.5 324.4L23.3 322.3L18.0 320.6L21.4 314.4L21.2 313.4L19.7 312.0L20.0 311.1L19.3 309.2L23.2 305.5L25.7 299.0L29.5 294.3L30.6 294.9L32.0 292.9L31.3 292.2L32.5 290.9L25.3 283.7L27.7 280.7L33.3 276.0L36.1 274.6L36.3 273.6L38.7 271.8L39.3 270.4L40.6 270.0L43.7 267.2L44.6 265.7L50.4 260.2L50.3 259.3L52.4 257.5L58.9 253.9L61.7 252.9L63.4 251.8L64.6 250.0L65.3 250.3L66.4 249.7L66.4 248.7L65.8 248.6L68.3 248.2L69.5 246.5L69.0 245.4L70.0 244.3L75.5 242.3L77.1 240.9L77.0 239.9L79.1 238.2L79.0 237.2L80.1 235.0L76.3 232.0L75.7 229.5L77.3 228.6L77.5 225.0L80.3 220.4L81.0 211.5L80.0 209.1L76.5 204.3L76.0 202.8L80.2 199.4L82.3 196.2L86.1 192.2L87.5 194.1L89.5 193.0L96.6 191.0L101.7 188.0L105.2 188.2L108.7 185.7L111.5 180.2L114.6 178.2L117.6 177.7L121.0 174.6L121.2 174.3L120.1 174.0L119.5 173.0L118.2 172.8L116.8 171.0L119.1 169.1L119.3 168.1L118.6 167.4L122.2 165.2L123.0 165.7L124.9 165.0L125.4 163.5L124.6 162.3L124.6 161.0L125.6 160.9L128.3 158.6L129.9 158.5L134.6 156.4L135.2 155.2L136.2 155.1L138.3 152.6L140.1 151.7L140.4 150.8L141.7 150.3L143.1 148.2L141.0 148.0L140.3 146.9L143.9 144.9L144.5 143.7L145.5 143.7L146.4 140.3L151.2 136.1L153.3 135.2L153.9 133.7L155.8 133.2L156.4 131.5L158.3 130.4L156.9 128.0L157.6 126.6L157.8 124.4L156.0 120.4L158.0 119.0L161.1 119.3L161.6 118.1L164.8 118.2L165.8 117.0L166.6 117.0L167.9 114.1L166.9 111.7L170.7 110.8L172.5 111.2L174.2 109.4L173.7 108.8L175.0 107.2L173.2 106.4L173.6 105.4L173.0 103.1L170.7 102.7L170.6 101.3L168.5 101.1L168.1 100.5L167.1 100.6L164.7 102.7L162.7 102.7L161.3 103.5L154.8 103.9L152.9 104.6L149.9 103.6L146.4 105.2L146.3 104.1L147.2 101.9L147.0 100.5L148.8 98.5L150.2 98.4L151.5 97.5L151.7 96.7L151.1 95.2L152.0 94.9L152.4 93.6L151.7 93.2L155.7 92.8L156.1 90.6L155.7 86.5L158.7 86.5L160.0 85.6L160.6 83.5L163.8 83.3L165.6 81.9L164.9 81.3L165.4 78.9L164.0 79.0L164.2 77.9L163.2 76.8L163.5 74.2L162.6 72.8L165.5 71.3L169.2 70.3L171.1 71.9L172.4 71.7L176.6 73.1L177.1 74.0L179.8 72.5L182.9 72.4L185.5 70.5L189.0 72.0L190.8 73.6L197.0 72.7L197.2 73.2L195.4 74.0L193.3 78.6L193.4 80.9L192.2 84.3L195.6 85.4L196.2 86.2L197.8 86.3L200.8 85.2L201.8 85.3L202.9 86.5L202.9 87.7L203.9 88.1L204.0 89.6L207.9 88.1L209.8 86.3L211.3 86.7L213.0 85.4L216.4 85.3L217.3 84.8L218.6 84.9L219.6 86.0L221.3 86.5L226.1 87.0L228.8 86.1L229.3 85.1L231.5 83.9L232.8 82.0L233.0 80.7L235.4 80.1L237.1 77.8L232.9 75.3L231.6 75.9L233.3 72.2L233.8 71.8L236.3 73.6L238.1 73.8L239.5 75.8L242.2 75.3L243.1 74.0L244.4 73.5L244.3 72.8L245.8 72.0L245.5 69.1L243.9 67.6L243.7 66.4L244.6 67.9L246.7 67.4L247.5 68.0L249.0 64.9L248.4 63.9L247.1 63.4L245.6 64.7L244.4 64.7L243.9 62.1L245.3 61.0L247.1 60.7L248.0 59.4L253.1 56.3L252.9 54.9L254.5 53.5L257.4 53.9L258.1 50.6L260.6 51.8L260.5 53.4L262.8 53.6L266.6 50.3L266.4 49.6L267.0 49.0L271.6 50.1L272.8 48.6L274.5 48.2L271.1 51.2L271.1 51.7L272.5 52.3L273.0 54.3L273.9 54.9L273.3 56.2L272.9 54.9L272.1 55.4L271.7 56.7L269.9 56.3L267.4 57.5L265.5 56.6L265.2 57.2L267.5 60.2L269.5 61.0L270.5 63.1L272.7 63.8L275.0 63.8L278.6 61.7L283.5 61.1L284.6 60.2L289.5 58.7L292.9 55.5L294.1 51.6L294.9 51.1L296.5 51.4L297.7 52.4L301.3 51.1L305.8 51.2L307.6 52.9L308.8 55.1L308.2 57.4L308.7 59.4L309.9 60.4L313.8 61.2L314.7 60.8L315.3 58.7L316.4 57.9L319.1 58.6L323.0 58.4L325.7 59.7L329.5 58.8L332.1 56.7L333.4 56.5L335.8 58.1L336.8 58.0L338.4 56.8L339.0 53.8L340.0 52.4L344.2 52.0L344.5 50.4L346.1 49.4L348.8 49.6L350.2 47.9L352.0 47.0L353.5 44.4L355.2 43.5L357.4 44.3L358.4 47.1L360.2 45.4L363.4 44.8L364.4 46.1L366.8 45.6L368.6 46.1L369.6 47.0L369.2 49.5L369.7 50.9L374.6 54.9L379.3 55.2L383.1 56.2L384.3 54.3L385.5 53.5L390.2 55.9L391.8 55.8L394.5 54.7L396.1 54.6L397.8 53.4L399.3 53.5L400.6 52.6L399.7 51.1L396.3 51.9L395.9 51.1L395.3 51.0L394.7 47.8L396.5 47.5L396.8 46.4L397.5 46.5L398.2 44.8L400.5 45.0L402.8 44.3L402.6 42.8L403.8 42.9L403.5 42.4L404.2 40.4L407.5 41.1L407.6 42.3L410.5 42.7L411.4 44.4L412.4 44.3L412.7 45.4L413.2 45.6L411.9 46.0L411.4 48.4L413.2 49.3L414.5 49.2L418.0 45.1L416.8 41.6L416.5 38.4L418.4 36.2L419.2 37.0L419.4 38.1L417.7 39.2L418.3 39.8L420.0 39.5L421.0 38.8L421.8 36.4L418.6 33.7L418.3 31.7L416.9 31.6L416.3 32.9L413.7 34.1L411.7 33.3L411.1 32.1L407.8 33.3L408.0 35.2L406.8 34.5L406.7 33.8L405.7 34.4L406.7 36.7L406.4 37.8L400.4 37.5L400.3 38.6L399.5 37.9L398.8 38.1L398.4 37.0L397.4 36.8L398.0 38.0L396.9 38.6L398.0 39.2L397.3 39.5L396.2 38.5L396.1 35.2L394.8 36.2L394.2 35.7L392.8 35.9L389.5 32.9L387.7 33.1L386.6 31.2L387.1 30.2L388.3 30.0L389.0 29.0L387.7 26.6L386.4 25.7L388.4 23.0L389.8 22.7L391.5 21.1L392.3 21.2L392.1 20.8L392.9 20.0L394.4 20.2L394.7 18.4L394.1 18.3L393.7 16.0L394.5 15.5L394.7 13.9L396.3 12.9L397.1 10.8L399.5 8.6L400.9 9.0L403.1 7.8L404.7 9.1L405.7 7.3L406.6 7.4L409.8 5.8L411.4 6.8L411.3 7.4L413.6 6.5L413.3 4.7L411.2 4.0L411.5 1.1L412.2 0.3L413.0 0.9L413.3 2.4L415.3 1.7L416.0 2.6L417.4 1.6L420.2 2.7L420.0 3.2L420.7 3.5L419.6 6.0L420.2 7.4L420.9 7.6L420.3 9.8L422.2 11.9L423.5 10.6L424.3 10.5L424.7 9.9L424.4 9.5L425.6 8.4L424.8 8.3L425.1 6.6L424.4 4.6L425.0 2.6L426.2 2.2L426.7 3.2L426.3 4.2L429.2 5.6L430.0 5.4L430.3 7.6L431.1 8.4L430.3 9.1L431.0 11.7L431.8 12.4L435.2 10.2L437.1 10.9L437.8 11.6L437.5 12.0L439.4 13.4L439.2 14.6L436.7 14.8L435.2 16.4L434.7 18.4L435.8 20.4L436.8 20.4L438.7 21.6L437.1 26.1L437.4 27.0L441.9 27.7L446.5 30.7L448.0 30.9L447.7 29.9L448.4 27.7L450.3 26.8L449.7 26.1L448.4 25.9L448.4 24.8L447.5 24.1L443.9 23.8L444.4 22.3L444.0 21.2L445.1 20.5L445.0 20.1L445.7 20.3L446.4 19.0L447.4 18.7L448.6 19.0L448.2 17.3L449.7 16.5L450.1 18.2L450.7 18.3L449.5 19.7L450.7 19.8L451.6 21.2L452.8 21.2L451.7 22.3L452.5 22.8L454.0 21.9L455.5 22.5L456.4 24.5L460.2 24.4L459.7 24.9L460.7 26.0L460.5 26.6L458.6 27.0L459.1 26.1L458.7 25.6L458.2 26.1L457.9 25.6L456.8 25.8L456.6 26.6L457.7 26.9L456.6 29.6L458.2 29.8L460.3 32.1L460.5 35.7L461.7 35.7L463.7 37.3L471.0 35.3L477.4 31.1L483.6 28.4L489.1 28.9L491.6 30.1L495.2 30.1L498.7 32.6L502.0 33.5L504.1 32.8L505.1 33.1L507.1 35.7L507.8 35.5L507.9 35.9L509.7 35.1L514.0 35.6L520.6 34.8L550.3 49.5L559.4 60.4L562.0 62.8L565.9 62.9L566.9 63.4L568.8 72.4L571.8 75.2L574.0 79.8L575.2 80.0L576.1 78.1L578.2 81.1L583.8 82.1L584.0 83.0L581.9 85.3L581.7 86.5L582.6 89.4L582.8 93.2L584.1 94.9L586.1 96.0L586.2 98.6L583.6 101.5L578.5 102.1L574.8 106.5L572.8 113.3L571.8 114.7L567.8 117.7L566.2 121.9L563.6 124.3L562.1 130.2L559.4 135.1L558.8 137.9L557.4 140.7L556.7 144.6L557.7 149.1L560.4 154.1L562.1 163.3L561.2 166.4L554.7 171.5L555.2 174.4L555.2 173.7L556.1 173.3L556.7 174.9L557.7 173.1L558.5 173.8L559.0 173.0L560.8 173.1L561.7 172.3L565.2 171.3L567.1 172.8L567.5 174.7L568.3 175.1L569.8 174.2L571.7 174.2L575.1 172.1L575.8 172.3ZM475.2 424.8L476.4 425.1L477.0 423.0L476.5 421.9L476.6 420.2L475.0 419.9L473.7 424.4L475.2 424.8ZM435.8 27.4L435.7 26.5L434.7 26.2L434.9 25.1L433.2 21.8L430.8 23.3L429.8 22.9L430.1 22.5L428.4 22.8L427.4 22.2L427.6 23.5L428.9 24.2L429.3 25.8L428.0 27.1L426.6 27.5L427.2 28.5L428.2 28.8L431.4 26.3L434.1 27.7L435.8 27.4ZM435.8 27.4L434.1 27.7L431.4 26.3L428.2 28.8L427.2 28.5L426.5 27.5L428.0 27.1L429.3 25.8L428.9 24.2L427.6 23.5L427.4 22.2L428.4 22.8L430.1 22.5L429.8 22.9L430.8 23.3L433.2 21.8L434.9 25.1L434.7 26.2L435.7 26.5L435.8 27.4ZM475.2 424.8L473.7 424.4L475.0 419.9L476.6 420.2L476.6 422.8L476.4 425.1L475.2 424.8ZM575.8 172.3L575.1 172.1L571.7 174.2L569.8 174.2L568.3 175.1L567.5 174.7L567.1 172.8L565.2 171.3L561.7 172.3L560.8 173.1L559.0 173.0L558.5 173.8L557.7 173.1L556.7 174.9L556.1 173.3L555.2 173.7L555.2 174.4L554.7 171.5L561.2 166.4L562.1 163.3L560.9 156.1L560.0 153.3L557.7 149.1L556.7 144.6L557.4 140.7L558.8 137.9L559.4 135.1L562.1 130.2L563.8 124.1L569.5 130.8L567.1 134.8L568.4 134.9L569.7 135.8L572.3 139.1L570.4 142.4L570.5 145.7L569.1 147.1L571.4 147.0L574.8 149.7L575.2 151.5L575.9 152.2L576.9 152.4L578.1 151.5L578.7 152.8L578.2 153.8L578.6 155.8L580.2 156.8L578.0 160.8L579.1 161.6L580.1 163.1L579.9 167.1L578.4 167.3L577.6 168.3L576.5 168.0L576.8 170.3L575.8 172.3Z"/><circle class="d" cx="30.5" cy="369.4" r="5" style="--i:0"/><circle class="d" cx="45.4" cy="328.3" r="5" style="--i:1"/><circle class="d" cx="107.1" cy="296.1" r="5" style="--i:2"/><circle class="d" cx="108.8" cy="237.2" r="5" style="--i:3"/><circle class="d" cx="138.4" cy="162.6" r="5" style="--i:4"/><circle class="d" cx="151.3" cy="317.2" r="5" style="--i:5"/><circle class="d" cx="154.3" cy="188.6" r="5" style="--i:6"/><circle class="d" cx="174.4" cy="274.1" r="5" style="--i:7"/><circle class="d" cx="176.9" cy="392.7" r="5" style="--i:8"/><circle class="d" cx="190.7" cy="231.0" r="5" style="--i:9"/><circle class="d" cx="204.1" cy="154.7" r="5" style="--i:10"/><circle class="d" cx="219.4" cy="102.3" r="5" style="--i:11"/><circle class="d" cx="222.1" cy="362.7" r="5" style="--i:12"/><circle class="d" cx="233.0" cy="196.6" r="5" style="--i:13"/><circle class="d" cx="249.2" cy="348.9" r="5" style="--i:14"/><circle class="d" cx="249.9" cy="138.5" r="5" style="--i:15"/><circle class="d" cx="258.1" cy="53.5" r="5" style="--i:16"/><circle class="d" cx="263.4" cy="172.6" r="5" style="--i:17"/><circle class="d" cx="264.1" cy="241.9" r="5" style="--i:18"/><circle class="d" cx="282.5" cy="179.6" r="5" style="--i:19"/><circle class="d" cx="289.7" cy="137.2" r="5" style="--i:20"/><circle class="d" cx="299.9" cy="258.8" r="5" style="--i:21"/><circle class="d" cx="304.1" cy="348.7" r="5" style="--i:22"/><circle class="d" cx="307.6" cy="105.8" r="5" style="--i:23"/><circle class="d" cx="320.8" cy="343.7" r="5" style="--i:24"/><circle class="d" cx="329.7" cy="96.0" r="5" style="--i:25"/><circle class="d" cx="339.8" cy="146.7" r="5" style="--i:26"/><circle class="d" cx="371.1" cy="76.7" r="5" style="--i:27"/><circle class="d" cx="371.5" cy="174.7" r="5" style="--i:28"/><circle class="d" cx="403.9" cy="148.2" r="5" style="--i:29"/><circle class="d" cx="405.9" cy="100.5" r="5" style="--i:30"/><circle class="d" cx="406.6" cy="98.0" r="5" style="--i:31"/><circle class="d" cx="408.7" cy="101.6" r="5" style="--i:32"/><circle class="d" cx="422.1" cy="84.4" r="5" style="--i:33"/><circle class="d" cx="422.4" cy="26.1" r="5" style="--i:34"/><circle class="d" cx="424.1" cy="213.8" r="5" style="--i:35"/><circle class="d" cx="425.5" cy="181.5" r="5" style="--i:36"/><circle class="d" cx="432.0" cy="68.8" r="5" style="--i:37"/><circle class="d" cx="435.4" cy="105.8" r="5" style="--i:38"/><circle class="d" cx="446.8" cy="377.5" r="5" style="--i:39"/><circle class="d" cx="451.2" cy="134.5" r="5" style="--i:40"/><circle class="d" cx="463.9" cy="58.1" r="5" style="--i:41"/><circle class="d" cx="471.3" cy="414.9" r="5" style="--i:42"/><circle class="d" cx="472.5" cy="415.2" r="5" style="--i:43"/><circle class="d" cx="480.4" cy="377.9" r="5" style="--i:44"/><circle class="d" cx="482.4" cy="375.3" r="5" style="--i:45"/><circle class="d" cx="483.8" cy="371.7" r="5" style="--i:46"/><circle class="d" cx="485.2" cy="454.2" r="5" style="--i:47"/><circle class="d" cx="485.2" cy="454.7" r="5" style="--i:48"/><circle class="d" cx="487.2" cy="79.9" r="5" style="--i:49"/><circle class="d" cx="490.9" cy="177.3" r="5" style="--i:50"/><circle class="d" cx="507.5" cy="36.6" r="5" style="--i:51"/><circle class="d" cx="525.1" cy="104.9" r="5" style="--i:52"/><circle class="d" cx="539.9" cy="88.7" r="5" style="--i:53"/><circle class="d" cx="554.7" cy="148.1" r="5" style="--i:54"/><circle class="d" cx="563.9" cy="220.6" r="5" style="--i:55"/><circle class="d" cx="612.3" cy="301.8" r="5" style="--i:56"/><circle class="d" cx="612.6" cy="230.2" r="5" style="--i:57"/><g class="pin hq" transform="translate(414.3 82.4)"><path d="M0 0c-1.3-3.8-7.5-8.6-7.5-14a7.5 7.5 0 0 1 15 0c0 5.4-6.2 10.2-7.5 14z"/><circle class="in" cy="-14" r="2.8"/></g><g class="lbl"><rect/><text x="380.3" y="26.4" text-anchor="end">Kloten</text><text class="s" x="380.3" y="40.4" text-anchor="end">Bogen Pharma</text></g></svg></figure>
     <h2 id="t-ph" class="up">Our&nbsp;partner pharmacies in&nbsp;Switzerland</h2>
-    <p class="lede up">As&nbsp;part of&nbsp;the&nbsp;Astrasana Holding AG, Bogen Pharma AG works with&nbsp;carefully selected, specialised partner pharmacies in&nbsp;Switzerland.</p>
-    <div class="body up">
-      <p class="small">They receive THC flowers, standardised extracts and&nbsp;dronabinol for&nbsp;compounding, expert advice and&nbsp;reliable supply through Bogen Pharma’s distribution network.</p>
-    </div>
-    <div class="pat up">
-      <div class="pat-l">
-      <h3>How patients in&nbsp;Switzerland access their medical cannabis</h3>
-      <p class="small intro">Since August 2022,&nbsp;physicians in&nbsp;Switzerland can prescribe medical cannabis directly. No&nbsp;special federal permit is&nbsp;required.</p>
-      </div>
-      <ol class="steps">
-        <li><span class="cap">01</span><b>Doctor consultation</b><p>The&nbsp;treating physician evaluates whether medical cannabis is&nbsp;an&nbsp;appropriate treatment option based on&nbsp;the&nbsp;patient's condition and&nbsp;history.</p></li>
-        <li><span class="cap">02</span><b>Prescription</b><p>The&nbsp;physician issues a&nbsp;narcotics prescription (Betäubungsmittelrezept) specifying the&nbsp;product, dosage, and&nbsp;treatment plan.</p></li>
-        <li><span class="cap">03</span><b>Pharmacy dispensing</b><p>The&nbsp;patient fills their prescription at&nbsp;a&nbsp;licensed pharmacy that carries pharmaceutical-grade medical cannabis products.</p></li>
-        <li><span class="cap">04</span><b>Ongoing treatment</b><p>Regular follow-ups with&nbsp;the&nbsp;prescribing physician ensure optimal dosing, monitor efficacy, and&nbsp;adjust the&nbsp;treatment plan as&nbsp;needed.</p></li>
-      </ol>
-    </div>
+    <p class="lede up">Selected partner pharmacies across Switzerland, supplied by&nbsp;Bogen Pharma.</p>
+    <a class="tlink more up" href="v2-pharmacies.html"><span>Partner pharmacies</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
   </section>
 
   <!-- products -->
@@ -1098,12 +153,12 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
     <div class="grid">
       <figure class="ph band"><img src="corporate/img/bottling-line.webp" alt="Filling line with bottles and the Astrasana Holding AG sign" width="1536" height="1024" loading="lazy" style="object-position:80% 30%"></figure>
       <ol class="list up">
-        <li><b>Pharmaceuticals</b><span>Medical-grade products for&nbsp;pharmacies and&nbsp;clinics across our&nbsp;network.</span></li>
-        <li><b>Cannabinoids</b><span>THC and&nbsp;CBD formulations for&nbsp;therapeutic applications.</span></li>
-        <li><b>Cosmetics</b><span>CBD-infused skincare meeting Swiss quality standards.</span></li>
-        <li><b>White Label</b><span>Contract manufacturing and&nbsp;private-label solutions for&nbsp;B2B partners.</span></li>
-        <li><b>Wellness</b><span>Bridging pharmaceutical science and&nbsp;everyday health.</span></li>
-        <li><b>Animal Health</b><span>ASTRAVET &amp;&nbsp;Cansuna: CBD products for&nbsp;animals, from&nbsp;vet practice to&nbsp;everyday life.</span></li>
+        <li><b>Pharmaceuticals</b></li>
+        <li><b>Cannabinoids</b></li>
+        <li><b>Cosmetics</b></li>
+        <li><b>White Label</b></li>
+        <li><b>Wellness</b></li>
+        <li><b>Animal Health</b></li>
       </ol>
     </div>
   </section>
@@ -1112,7 +167,6 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <section class="pa sec rv" id="partners" aria-labelledby="t-pa">
     <div class="grid head">
       <h2 id="t-pa" class="up">Strong partnerships</h2>
-      <p class="up">Strong partnerships for&nbsp;shared growth and&nbsp;innovation in&nbsp;the&nbsp;healthcare industry. Each partnership extends our&nbsp;capabilities across research, distribution and&nbsp;product development.</p>
     </div>
     <div class="grid">
       <div class="mq up" id="mq">
@@ -1147,9 +201,9 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
     </div>
     <div class="grid">
       <ol>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/green-karat-exclusive-distribution" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-greenkarat.png" alt="Green Karat" loading="lazy"></span><span class="cap">3&nbsp;August 2026</span><h3>Astrasana becomes exclusive distribution partner of&nbsp;Green Karat in&nbsp;Switzerland</h3><p>Astrasana has signed an&nbsp;exclusive distribution agreement with&nbsp;Canadian producer Green Karat for&nbsp;the&nbsp;Swiss market.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/sanity-group-avaay-partnership" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-sanity.png" alt="Sanity Group" loading="lazy"></span><span class="cap">15&nbsp;June 2026</span><h3>Partnership with&nbsp;Sanity Group: avaay Medical in&nbsp;Switzerland</h3><p>Bogen Pharma, a&nbsp;subsidiary of&nbsp;Astrasana Holding AG, partners with&nbsp;Berlin-based Sanity Group to&nbsp;bring the&nbsp;avaay Medical product line to&nbsp;Switzerland.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
-        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/graeub-astravet-vertrieb" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-graeub.png" alt="GRAEUB" loading="lazy"></span><span class="cap">16&nbsp;March 2026</span><h3>GRAEUB distributes ASTRAVET in&nbsp;Switzerland</h3><p>GRAEUB, part of&nbsp;the&nbsp;LIVISTO Group, takes over exclusive distribution of&nbsp;the&nbsp;ASTRAVET veterinary product line in&nbsp;Switzerland.</p><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/green-karat-exclusive-distribution" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-greenkarat.png" alt="Green Karat" loading="lazy"></span><span class="cap">3&nbsp;August 2026</span><h3>Astrasana becomes exclusive distribution partner of&nbsp;Green Karat in&nbsp;Switzerland</h3><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/sanity-group-avaay-partnership" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-sanity.png" alt="Sanity Group" loading="lazy"></span><span class="cap">15&nbsp;June 2026</span><h3>Partnership with&nbsp;Sanity Group: avaay Medical in&nbsp;Switzerland</h3><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
+        <li class="up"><a href="https://www.astrasana.ch/en/newsroom/graeub-astravet-vertrieb" target="_blank" rel="noopener"><span class="lg"><img src="land/site/logo-graeub.png" alt="GRAEUB" loading="lazy"></span><span class="cap">16&nbsp;March 2026</span><h3>GRAEUB distributes ASTRAVET in&nbsp;Switzerland</h3><span class="vh"> (opens in&nbsp;a&nbsp;new tab)</span></a></li>
       </ol>
     </div>
   </section>
@@ -1157,27 +211,8 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <!-- contact -->
   <section class="ct grid sec rv" id="contact" aria-labelledby="t-ct">
     <h2 id="t-ct" class="up">Let's discuss what Astrasana can build together</h2>
-    <p class="lede up">Pharmacies, clinics, distributors and&nbsp;partners can arrange a&nbsp;non-binding consultation with&nbsp;our&nbsp;team in&nbsp;Kloten.</p>
-    <div class="addr up">
-      <table>
-        <tbody>
-          <tr><th scope="row">Address</th><td>Gerbegasse 2, 8302&nbsp;Kloten, Switzerland</td></tr>
-          <tr><th scope="row">Phone</th><td><a href="tel:+41445452850">+41 44 545 28 50</a></td></tr>
-          <tr><th scope="row">Email</th><td><a href="mailto:info@astrasana.com">info@astrasana.com</a></td></tr>
-          <tr><th scope="row">Licences</th><td><a href="download.html">Swissmedic and&nbsp;SÚKL licences</a></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <form id="cform" class="up">
-      <h3>Send us&nbsp;a&nbsp;message</h3>
-      <p class="sub">Your message goes to&nbsp;our&nbsp;team in&nbsp;Kloten.</p>
-      <label><span>Name <i aria-hidden="true">*</i></span><input name="name" autocomplete="name" placeholder="Your full name" required></label>
-      <label><span>Email <i aria-hidden="true">*</i></span><input name="email" type="email" autocomplete="email" placeholder="name@company.com" required></label>
-      <label class="wide"><span>Your role</span><select name="who"><option value="" selected disabled>Select your role</option><option>A&nbsp;pharmacy</option><option>A&nbsp;clinic or&nbsp;doctor</option><option>A&nbsp;distributor</option><option>A&nbsp;potential partner</option><option>An&nbsp;investor</option><option>An&nbsp;authority</option><option>A&nbsp;patient or&nbsp;member of&nbsp;the&nbsp;public</option></select></label>
-      <label class="wide"><span>Message <i aria-hidden="true">*</i></span><textarea name="msg" rows="4" placeholder="How can we help?" required></textarea></label>
-      <!-- for now the form opens an email draft (mailto); a form service will send it directly later -->
-      <button class="send" type="submit">Send message<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
-    </form>
+    <p class="lede up">Pharmacies, clinics, distributors and&nbsp;partners: talk to&nbsp;our&nbsp;team in&nbsp;Kloten.</p>
+    <a class="send go up" href="v2-contact.html">Get in&nbsp;touch<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
   </section>
 </main>
 
@@ -1185,8 +220,8 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
   <div class="grid">
     <a class="logo" href="./" aria-label="Astrasana Holding AG, home"><img src="corporate/img/brand/logo-color.svg" alt="" width="168" height="32"></a>
     <p class="about">A&nbsp;vertically integrated Swiss pharmaceutical and&nbsp;cannabis company. From&nbsp;cultivation to&nbsp;pharmacy.</p>
-    <div class="col"><h2 class="fh">Company</h2><ul><li><a href="#about">About Us</a></li><li><a href="#companies">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
-    <div class="col"><h2 class="fh">Business</h2><ul><li><a href="#cultivation">Pharma</a></li><li><a href="#pharmacies">Pharmacies</a></li><li><a href="#products">Products</a></li></ul></div>
+    <div class="col"><h2 class="fh">Company</h2><ul><li><a href="#about">About Us</a></li><li><a href="v2-companies.html">Companies</a></li><li><a href="#partners">Partners</a></li><li><a href="#news">News</a></li></ul></div>
+    <div class="col"><h2 class="fh">Business</h2><ul><li><a href="v2-pharma.html">Pharma</a></li><li><a href="v2-pharmacies.html">Pharmacies</a></li><li><a href="#products">Products</a></li></ul></div>
     <div class="col wide"><h2 class="fh">Contact</h2><ul><li><span>Gerbegasse 2, 8302&nbsp;Kloten</span></li><li><a href="tel:+41445452850">+41 44 545 28 50</a></li><li><a href="mailto:info@astrasana.com">info@astrasana.com</a></li></ul></div>
     <div class="base">
       <span>© 2026&nbsp;Astrasana Holding AG. All rights reserved.</span>
@@ -1196,107 +231,7 @@ main h1>div,main h2>div{padding:.1em 0 .22em;margin:-.1em 0 -.22em}
 </footer>
 <div class="veil" aria-hidden="true"></div>
 
-<script>
-(function(){
-  var hd=document.getElementById('hd'), btn=hd.querySelector('.menu-btn'), menu=document.getElementById('menu');
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* header: a hairline once the page scrolls; the phone menu */
-  function onScroll(){ hd.classList.toggle('scrolled',scrollY>8); }
-  addEventListener('scroll',onScroll,{passive:true}); onScroll();
-  function setMenu(open){ hd.classList.toggle('open',open); btn.setAttribute('aria-expanded',open); btn.setAttribute('aria-label',open?'Close menu':'Open menu'); document.body.style.overflow=open?'hidden':''; }
-  btn.addEventListener('click',function(){ setMenu(!hd.classList.contains('open')); });
-  menu.addEventListener('click',function(e){ if(e.target.closest('a')) setMenu(false); });
-  addEventListener('keydown',function(e){ if(e.key==='Escape'&&hd.classList.contains('open')){ setMenu(false); btn.focus(); } });
-
-  /* reveals: photographs open from the top, text rises a little */
-  if('IntersectionObserver' in window&&!reduce){
-    var io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{rootMargin:'0px 0px -12% 0px'});
-    document.querySelectorAll('.rv,.rv .up').forEach(function(el){ io.observe(el); });
-  } else document.querySelectorAll('.rv,.up').forEach(function(el){ el.classList.add('in'); });
-
-  /* map labels: a white plate fitted to each label's text */
-  function plates(){ document.querySelectorAll('.chmap .lbl,.pmap .lbl,.phmap .lbl').forEach(function(g){ var r=g.querySelector('rect'), ts=g.querySelectorAll('text'), x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
-    ts.forEach(function(t){ var b=t.getBBox(); x0=Math.min(x0,b.x); y0=Math.min(y0,b.y); x1=Math.max(x1,b.x+b.width); y1=Math.max(y1,b.y+b.height); });
-    if(x1<x0) return; var px=9, py=6, X0=x0-px, Y0=y0-py, X1=x1+px, Y1=y1+py; r.setAttribute('x',X0); r.setAttribute('y',Y0); r.setAttribute('width',X1-X0); r.setAttribute('height',Y1-Y0);
-    }); }
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(plates); plates(); addEventListener('resize',plates);
-
-  /* hero title: split into words that rise once */
-  var h1=document.getElementById('t-hero');
-  if(h1&&!reduce&&!document.documentElement.hasAttribute('data-lenis')){ /* V2 animates the title with SplitText (corporate/v2.js) */ var k=0; (function wrap(node){ [].slice.call(node.childNodes).forEach(function(c){
-      if(c.nodeType===3){ var frag=document.createDocumentFragment(); c.textContent.split(/([ \t\n\r]+)/).forEach(function(t){ if(!t) return; if(/^[ \t\n\r]+$/.test(t)){ frag.appendChild(document.createTextNode(t)); return; }
-          var w=document.createElement('span'); w.className='w'; var i=document.createElement('span'); i.textContent=t; i.style.setProperty('--k',k++); w.appendChild(i); frag.appendChild(w); }); c.parentNode.replaceChild(frag,c); }
-      else if(c.nodeType===1) wrap(c); }); })(h1);
-    requestAnimationFrame(function(){ requestAnimationFrame(function(){ h1.classList.add('go'); }); }); }
-
-  /* figures: count up once when the section arrives; the width is set to the final number so nothing shifts */
-  var figs=[].slice.call(document.querySelectorAll('.fig dd'));
-  figs.forEach(function(dd){ var t=dd.firstChild; if(!t||t.nodeType!==3) return; var m=/^(\D*)(\d+)$/.exec(t.textContent.trim()); if(!m) return;
-    var n=document.createElement('span'); n.className='n'; n.textContent=t.textContent.trim(); dd.replaceChild(n,t); dd._n={el:n,pre:m[1],to:+m[2]}; });
-  function countUp(){ figs.forEach(function(dd,idx){ var d=dd._n; if(!d) return; d.el.style.minWidth=d.el.getBoundingClientRect().width+'px'; var t0=null, dur=1300+idx*150;
-      function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=1-Math.pow(1-p,3); d.el.textContent=d.pre+Math.round(d.to*e); if(p<1) requestAnimationFrame(step); }
-      d.el.textContent=d.pre+'0'; requestAnimationFrame(step); }); }
-  var figSec=document.querySelector('.fig');
-  if(figSec&&!reduce&&'IntersectionObserver' in window){ var fo=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ fo.disconnect(); countUp(); } },{threshold:.35}); fo.observe(figSec); }
-
-  /* partners: a second copy makes the band seamless */
-  var mq=document.getElementById('mq');
-  if(mq){ var ul=mq.querySelector('.logos'), dup=ul.cloneNode(true); dup.setAttribute('aria-hidden','true'); dup.removeAttribute('aria-label'); dup.querySelectorAll('img').forEach(function(i){ i.alt=''; }); ul.parentNode.appendChild(dup); }
-
-  /* the chain: the line fills while the section crosses the screen; a stop lights when the fill reaches it */
-  var chol=document.querySelector('.ch ol');
-  if(chol){ var stops=[].slice.call(chol.querySelectorAll('li')), track=chol.querySelector('.track'), played=false;
-    function vert(){ return innerWidth<=1100; }
-    /* on phones the line runs from the first badge to the last one */
-    function size(){ if(!vert()){ track.style.removeProperty('--trackh'); return; } var a=stops[0].getBoundingClientRect(), z=stops[stops.length-1].getBoundingClientRect(); track.style.setProperty('--trackh',Math.round(z.top-a.top)+'px'); }
-    /* the parcel runs the line once when the row reaches the middle of the screen; each badge fills as the parcel reaches it */
-    /* the cards light one after another as the run passes them */
-    function setFill(f){ chol.style.setProperty('--fill',f.toFixed(3)); var n=stops.length; stops.forEach(function(li,i){ li.classList.toggle('lit',f>=(i+1)/n-.002); }); }
-    function play(){ if(played) return; played=true; removeEventListener('scroll',check);
-      if(reduce){ setFill(1); return; }
-      var t0=null, dur=vert()?2400:1700; chol.classList.add('running');
-      (function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; setFill(e);
-        if(p<1) requestAnimationFrame(step); else setTimeout(function(){ chol.classList.remove('running'); },250); })(performance.now()); }
-    function check(){ if(window.__chainScrub) return; var r=chol.getBoundingClientRect(), vh=innerHeight; if(r.top<=vh*.92&&r.bottom>0) play(); }
-    window.__chainSet=function(f){ played=true; setFill(f); };
-    size(); setFill(0); addEventListener('resize',function(){ size(); setFill(played?1:0); }); addEventListener('scroll',check,{passive:true}); check(); }
-
-  /* entering the 3D story from About Us: settle into dark, then go (same tab) */
-  document.addEventListener('click',function(e){
-    var a=e.target.closest('a[data-3d]'); if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
-    e.preventDefault();
-    var href=a.href;
-    if(reduce){ location.href=href; return; }
-    document.body.classList.add('leaving'); setTimeout(function(){ location.href=href; },380);
-  });
-  /* links to a section on this page glide there instead of jumping; the wheel or a touch takes over at any moment */
-  document.addEventListener('click',function(e){
-    var a=e.target.closest('a[href^="#"]'); if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
-    var id=a.getAttribute('href').slice(1); if(!id) return;
-    var el=document.getElementById(id); if(!el) return;
-    e.preventDefault();
-    if(location.hash!=='#'+id) history.pushState(null,'','#'+id);
-    var off=parseFloat(getComputedStyle(el).scrollMarginTop)||0;
-    if(window.Motion&&Motion.scrollTo(el)){ el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); return; }
-    var y0=scrollY, y1=Math.max(0,Math.min(el.getBoundingClientRect().top+scrollY-off,document.documentElement.scrollHeight-innerHeight)), dy=y1-y0;
-    var done=function(){ el.setAttribute('tabindex','-1'); el.focus({preventScroll:true}); };
-    if(reduce||Math.abs(dy)<2){ scrollTo(0,y1); done(); return; }
-    var dur=Math.min(1100,Math.max(500,Math.abs(dy)*.35)), t0=null, stop=false;
-    var halt=function(){ stop=true; };
-    addEventListener('wheel',halt,{passive:true,once:true}); addEventListener('touchstart',halt,{passive:true,once:true});
-    (function step(ts){ if(stop) return; if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur), k=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-      scrollTo(0,y0+dy*k); if(p<1) requestAnimationFrame(step); else { removeEventListener('wheel',halt); removeEventListener('touchstart',halt); done(); } })(performance.now());
-  });
-  /* back from the story (or the browser's back button): no veil left over */
-  addEventListener('pageshow',function(){ document.body.classList.remove('leaving'); });
-
-  /* contact form: opens the email app, as on the current site */
-  document.getElementById('cform').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target;
-    var body=f.msg.value+'\n\n'+f.name.value+(f.who.value?' ('+f.who.value+')':'')+'\n'+f.email.value;
-    location.href='mailto:info@astrasana.com?subject='+encodeURIComponent('Enquiry from '+f.name.value)+'&body='+encodeURIComponent(body); });
-})();
-</script>
+<script src="corporate/v2-page.js"></script>
 <script>
 /* V2 hero stage: the purple reaches the middle of the map panel; the header is purple while the stage is under it */
 (function(){ var hero=document.querySelector('.hero'), chm=document.querySelector('.hero .chm'), hd=document.getElementById('hd'); if(!hero||!chm) return;
