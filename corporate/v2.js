@@ -66,7 +66,7 @@
     var prime=function(){ var pr=hv.play(); if(pr&&pr.then) pr.then(function(){ hv.pause(); hv.currentTime=0; }).catch(function(){}); else hv.pause(); };
     if(hv.readyState>=1) prime(); else hv.addEventListener('loadedmetadata',prime,{once:true});
     var vt={t:0}, want=0, seeking=false;
-    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } }
+    function seek(){ var d=hv.duration; if(!d||!isFinite(d)) return; want=Math.min(d-.04,vt.t*d); if(!seeking&&Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; }}
     hv.addEventListener('seeked',function(){ seeking=false; if(Math.abs(hv.currentTime-want)>.02){ seeking=true; hv.currentTime=want; } });
     /* the window: size S, and the point (AX,AY) of the shape (inside its right stroke) placed at screen point P */
     var AR=53.6/60.1, AX=.727, AY=.616, m={a:0,b:0};
