@@ -171,7 +171,6 @@
   function hdTone(){ var on=darkEls.some(function(e){ var r=e.getBoundingClientRect(); if(!(r.top<=64&&r.bottom>64)) return false;
       /* the pinned About Us band counts only while the Pharmacies block has not yet slid over the header */
       if(e.classList.contains('x3d-sec')){ var ps=document.querySelector('.ph-sec'); if(ps&&ps.getBoundingClientRect().top<=72) return false; } return true; });
-    if(!on){ var fe=document.querySelector('.fin'); if(fe&&!fe.classList.contains('lit')){ var fr2=fe.getBoundingClientRect(); on=fr2.top<=64&&fr2.bottom>64; } }
     if(!on){ var fz=document.querySelector('.fig.zoom.on.hd-dark'); if(fz){ var zr=fz.getBoundingClientRect(); on=zr.top<=64&&zr.bottom>64; } }
     if(!on&&hst&&hrv&&hrv.classList.contains('cover')){ var r=hst.getBoundingClientRect(); on=r.top<=64&&r.bottom>64; }
     hd.classList.toggle('dark',on); }
@@ -366,13 +365,6 @@
   /* 25. partners: the logo cells come in one after another, row by row */
   var lw=document.querySelector('.pa .logos:not([aria-hidden])'); if(lw){ own(lw); var lc=$('li',lw); lc.forEach(own);
     g.from(lc,{autoAlpha:0,y:24,duration:.8,stagger:{each:.06,grid:'auto',from:'start'},ease:'expo.out',scrollTrigger:{trigger:lw,start:'top 85%',once:true}}); }
-
-  /* 27. finale: on the dark band, the dark production line opens from a small rounded window to the whole screen and turns light as it fills it */
-  var fn=document.querySelector('.fin'); if(fn){ var fw=fn.querySelector('.fin-win'), fd=fn.querySelector('.fin-d');
-    g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fn,start:'top top',end:'+=120%',pin:true,scrub:.5,anticipatePin:1}})
-      .fromTo(fw,{'--fs':'34%'},{'--fs':'1400%',duration:1,ease:'power3.in',onUpdate:function(){ fw.classList.toggle('full',parseFloat(getComputedStyle(fw).getPropertyValue('--fs'))>1200); }},0)
-      .fromTo(fw.querySelectorAll('img'),{scale:1.25},{scale:1,duration:1,ease:'power2.out'},0)
-      .fromTo(fd,{opacity:1},{opacity:0,duration:.5,onUpdate:function(){ var lit=+fd.style.opacity<.5; if(lit!==fn.classList.contains('lit')){ fn.classList.toggle('lit',lit); if(window.__hdTone) window.__hdTone(); } }},.5); }
 
   /* layout settles after fonts and images; measure again */
   addEventListener('load',function(){ ST.refresh(); });
