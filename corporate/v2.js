@@ -317,7 +317,7 @@
     var gvt={t:0}; g.set(gc.slice(1),{autoAlpha:0,y:30}); var gbk={k:0}, gbi=$('img',gb), DP=[.55,.8,1,.7,1.15,.6,.9,.75]; function gbf(){ var k=gbk.k, H=innerHeight;
       gb.style.filter='saturate(.62) hue-rotate(14deg) brightness('+(.9-.5*k).toFixed(3)+') contrast(.96)';
       /* each bush has its own depth: nearer ones are softer and travel faster (parallax) */
-      gbi.forEach(function(im,i){ var d=DP[i%DP.length]; im.style.filter='blur('+((4+6*d)+(10+8*d)*k).toFixed(1)+'px)'; im.style.translate='0 '+(-H*.9*k*d).toFixed(1)+'px'; }); var e=Math.max(0,Math.min(1,k));
+      gbi.forEach(function(im,i){ var d=DP[i%DP.length]; im.style.filter='blur('+((4+6*d)+(10+8*d)*k).toFixed(1)+'px)'; im.style.translate='0 '+(-H*.32*k*d).toFixed(1)+'px'; }); var e=Math.max(0,Math.min(1,k));
       /* the violet veil deepens as the roots come into view */
       if(gvl){ gvl.style.opacity=(e*e*(3-2*e)).toFixed(3); gvl.style.transform='none'; } if(k>0) gv.style.filter='blur('+(7+15*k).toFixed(1)+'px) brightness('+(1-.6*k).toFixed(3)+')'; } gbf();
     var gt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:gr,start:'top top',end:'+=420%',pin:true,scrub:.5,anticipatePin:1,invalidateOnRefresh:true}});
