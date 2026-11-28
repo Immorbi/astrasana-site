@@ -295,6 +295,29 @@
       onUpdate:function(self){ var p=self.progress, d=ov.duration; if(d&&isFinite(d)){ ow=Math.min(d-.05,p*d); og(); }
         ofr.style.setProperty('--rot',(p*90-45).toFixed(1)+'deg'); ostep(Math.min(osteps.length-1,Math.floor(p*osteps.length))); }}); }
 
+  /* 28. grow: pinned. The flight over the greenhouse is scrubbed; then the plant's strip slides up over the video (lilac above
+         the ground line, deep violet below) and the view travels down the plant to its roots; three captions take turns */
+  var gr=document.querySelector('.gr'); if(gr){ var gv=gr.querySelector('.gr-v'), gb=gr.querySelector('.gr-bg'), gs=gr.querySelector('.gr-strip'), gc=$('.gr-cap',gr), gw=0, gsk=false;
+    gv.pause(); function gg(){ var d=gv.duration; if(!d||!isFinite(d)) return; if(!gsk&&Math.abs(gv.currentTime-gw)>.04){ gsk=true; gv.currentTime=gw; } }
+    gv.addEventListener('seeked',function(){ gsk=false; gg(); }); var gun=function(){ gv.removeAttribute('poster'); }; if(gv.readyState>=2) gun(); else gv.addEventListener('loadeddata',gun,{once:true});
+    var gvt={t:0}; g.set(gc.slice(1),{autoAlpha:0,y:30}); var gbk={k:0}; function gbf(){ var k=gbk.k; gb.style.filter='blur('+(6+16*k).toFixed(1)+'px) saturate(.62) hue-rotate(14deg) brightness('+(.9-.5*k).toFixed(3)+') contrast(.96)'; gb.style.transform='translateY('+(-innerHeight*.35*k).toFixed(1)+'px)'; if(k>0) gv.style.filter='blur('+(7+15*k).toFixed(1)+'px) brightness('+(1-.6*k).toFixed(3)+')'; } gbf();
+    var gt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:gr,start:'top top',end:'+=420%',pin:true,scrub:.5,anticipatePin:1,invalidateOnRefresh:true}});
+    gt.to(gvt,{t:1,duration:1.2,onUpdate:function(){ var d=gv.duration; if(d&&isFinite(d)){ gw=Math.min(d-.05,gvt.t*d); gg(); } }},0)
+      .to(gc[0],{autoAlpha:0,y:-30,duration:.2},1.05)
+      /* the greenhouse goes soft: only the plant is in focus */
+      .fromTo(gv,{filter:'blur(0px)'},{filter:'blur(7px)',duration:.45,ease:'power1.out'},1.0)
+      /* a backdrop of the same plants, softly blurred and graded to the video's greens, takes over from the video */
+      .fromTo(gb,{autoAlpha:0},{autoAlpha:1,duration:.4,ease:'power1.inOut'},1.1)
+      .fromTo(gs,{y:function(){ return innerHeight; }},{y:0,duration:.5,ease:'power2.out'},1.1)
+      .to(gc[1],{autoAlpha:1,y:0,duration:.2},1.5)
+      .to(gs,{y:function(){ return -(gs.offsetHeight-innerHeight); },duration:1.6,ease:'power1.inOut'},1.75)
+      /* the lower we go, the softer and darker the greenhouse behind */
+      /* the lower we go, the softer and darker the plants behind; they drift up more slowly than the plant in front */
+      .fromTo(gbk,{k:0},{k:1,duration:1.6,ease:'power1.in',immediateRender:false,onUpdate:gbf},1.75)
+      .to(gc[1],{autoAlpha:0,y:-30,duration:.2},2.45)
+      .to(gc[2],{autoAlpha:1,y:0,duration:.2},2.95)
+      .to({},{duration:.35}); }
+
   /* 20. cultivation: the scene stands still while the scroll moves through it. The dropper bottle, centred and close, is
          scrubbed and the view travels down it from the dropper's bulb to the base of the bottle; the first text rises
          through the left side and leaves, then the second rises through the right side */

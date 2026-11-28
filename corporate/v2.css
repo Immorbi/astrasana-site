@@ -1130,3 +1130,43 @@ html:not(.gs) .ob{height:auto;padding-top:12vh;padding-bottom:12vh} html:not(.gs
 .pr .list li:nth-child(3),.pr .list.stack li:nth-child(3){background:#431291 url(img/card-cream-dark.webp) right top/cover no-repeat!important}
 /* White Label gets the plain box */
 .pr .list li:nth-child(4),.pr .list.stack li:nth-child(4){background:#E6DDF6 url(img/card-box-light.webp) right top/cover no-repeat!important}
+
+/* ---------- grow: greenhouse flight, then the plant from flower to roots (pinned) ---------- */
+.gr{position:relative;height:100svh;min-height:600px;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;background:#1A063A;color:#fff}
+.gr-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gr::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(13,2,32,.6) 0%,rgba(13,2,32,0) 45%)}
+/* the strip: lilac sky above the ground line (77% of the plant, where the stem meets the roots), deep violet earth below */
+.gr-strip{position:absolute;left:0;right:0;top:0;height:300svh;z-index:1;
+  background:linear-gradient(180deg,#F4EFFC 0%,#E6DDF6 55%,#D9CBF3 76.4%,#2A0E5C 76.6%,#1A063A 100%)}
+.gr-strip img{position:absolute;left:50%;top:0;height:100%;width:auto;transform:translateX(-50%)}
+.gr-cap{position:absolute;z-index:3;left:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));right:max(var(--pad),calc((100vw - 1680px) / 2 + var(--pad)));bottom:7vh;
+  display:grid;grid-template-columns:1fr minmax(0,380px);align-items:end;gap:var(--gut);pointer-events:none}
+.gr-k{grid-column:1;font:600 13px/1 var(--text);letter-spacing:.12em;text-transform:uppercase;color:#CBB9EE;margin-bottom:16px}
+.gr-cap h2,.gr-cap h3{grid-column:1;font:700 clamp(40px,5.4vw,96px)/.98 var(--display)!important;letter-spacing:-.045em;color:#fff!important;max-width:9em;margin:0}
+.gr-t{grid-column:2;grid-row:1/3;align-self:end;font:500 clamp(16px,1.25vw,20px)/1.45 var(--text);color:rgba(255,255,255,.9)}
+.gr-c2 h3{color:#1A063A!important} .gr-c2 .gr-t{color:#280A58} .gr-c2 .gr-k{color:#5A22B3}
+html:not(.gs) .gr{height:auto} html:not(.gs) .gr-strip,html:not(.gs) .gr-c2,html:not(.gs) .gr-c3{display:none} html:not(.gs) .gr-cap{position:relative;padding:60vh 0 8vh}
+@media (max-width:760px){ .gr-cap{grid-template-columns:1fr;bottom:5vh} .gr-t{grid-column:1;grid-row:auto;margin-top:14px} .gr-strip img{height:100%} }
+.gr-strip img{left:66%}
+@media (max-width:760px){ .gr-strip img{left:50%} }
+/* captions stay on the left (title, then the line under it), clear of the plant on the right */
+.gr-cap{grid-template-columns:minmax(0,560px)!important;right:auto!important}
+.gr-t{grid-column:1!important;grid-row:auto!important;margin-top:18px;max-width:26em}
+/* grow: the greenhouse stays as the ground, blurred; the plant floats over it in focus (no lilac strip) */
+.gr-strip{background:none!important}
+.gr-v{transform:scale(1.08);will-change:filter}
+.gr-veil{position:absolute;inset:0;z-index:0;opacity:0;pointer-events:none;background:linear-gradient(180deg,rgba(26,6,58,.55) 0%,rgba(26,6,58,.92) 60%,#1A063A 100%)}
+.gr-strip img{filter:drop-shadow(0 30px 60px rgba(13,2,32,.35))}
+.gr-c2 h3{color:#fff!important} .gr-c2 .gr-t{color:rgba(255,255,255,.9)} .gr-c2 .gr-k{color:#E6DDF6}
+.gr-strip img{filter:none}
+/* grow backdrop: copies of the plant at different depths, blurred and graded to the greenhouse video (cooler, less saturated) */
+.gr-bg{position:absolute;inset:-10% -5% -60%;z-index:0;opacity:0;visibility:hidden;
+  background:linear-gradient(180deg,#9DB59C 0%,#6E8A63 35%,#4A6640 70%,#3A5233 100%);
+  filter:blur(var(--gbb,6px)) saturate(.62) hue-rotate(14deg) brightness(var(--gbl,.82)) contrast(.96)}
+.gr-bg img{position:absolute;width:auto;height:var(--h);left:var(--x);top:var(--y);transform:translateX(-50%) rotate(var(--r,0deg))}
+.gr-bg .b1{--h:150vh;--x:8%;--y:-8vh;--r:-6deg} .gr-bg .b2{--h:120vh;--x:28%;--y:6vh;--r:4deg}
+.gr-bg .b3{--h:170vh;--x:47%;--y:-14vh} .gr-bg .b4{--h:130vh;--x:86%;--y:2vh;--r:7deg}
+.gr-bg .b5{--h:190vh;--x:100%;--y:-20vh;--r:-4deg} .gr-bg .b6{--h:110vh;--x:66%;--y:22vh;--r:-8deg}
+.gr-bg .b7{--h:160vh;--x:-2%;--y:30vh;--r:5deg} .gr-bg .b8{--h:140vh;--x:36%;--y:36vh;--r:-3deg}
+/* the blurred bushes are a middle layer over the greenhouse video, not a replacement for it */
+.gr-bg{background:none!important}
