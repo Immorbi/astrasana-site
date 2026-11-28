@@ -297,10 +297,13 @@
 
   /* 28. grow: pinned. The flight over the greenhouse is scrubbed; then the plant's strip slides up over the video (lilac above
          the ground line, deep violet below) and the view travels down the plant to its roots; three captions take turns */
-  var gr=document.querySelector('.gr'); if(gr){ var gv=gr.querySelector('.gr-v'), gb=gr.querySelector('.gr-bg'), gs=gr.querySelector('.gr-strip'), gc=$('.gr-cap',gr), gw=0, gsk=false;
+  var gr=document.querySelector('.gr'); if(gr){ var gv=gr.querySelector('.gr-v'), gvl=gr.querySelector('.gr-veil'), gb=gr.querySelector('.gr-bg'), gs=gr.querySelector('.gr-strip'), gc=$('.gr-cap',gr), gw=0, gsk=false;
     gv.pause(); function gg(){ var d=gv.duration; if(!d||!isFinite(d)) return; if(!gsk&&Math.abs(gv.currentTime-gw)>.04){ gsk=true; gv.currentTime=gw; } }
     gv.addEventListener('seeked',function(){ gsk=false; gg(); }); var gun=function(){ gv.removeAttribute('poster'); }; if(gv.readyState>=2) gun(); else gv.addEventListener('loadeddata',gun,{once:true});
-    var gvt={t:0}; g.set(gc.slice(1),{autoAlpha:0,y:30}); var gbk={k:0}; function gbf(){ var k=gbk.k; gb.style.filter='blur('+(6+16*k).toFixed(1)+'px) saturate(.62) hue-rotate(14deg) brightness('+(.9-.5*k).toFixed(3)+') contrast(.96)'; gb.style.transform='translateY('+(-innerHeight*.35*k).toFixed(1)+'px)'; if(k>0) gv.style.filter='blur('+(7+15*k).toFixed(1)+'px) brightness('+(1-.6*k).toFixed(3)+')'; } gbf();
+    var gvt={t:0}; g.set(gc.slice(1),{autoAlpha:0,y:30}); var gbk={k:0}; function gbf(){ var k=gbk.k; gb.style.filter='blur('+(6+16*k).toFixed(1)+'px) saturate(.62) hue-rotate(14deg) brightness('+(.9-.5*k).toFixed(3)+') contrast(.96)'; gb.style.transform='translateY('+(-innerHeight*.75*k).toFixed(1)+'px)'; var H=innerHeight, e=Math.max(0,Math.min(1,(k-.25)/.75));
+      /* the background travels too: the greenhouse rises out of view while the earth comes up from below to meet the roots */
+      gv.style.transform='translateY('+(-H*.55*k).toFixed(1)+'px) scale(1.08)';
+      if(gvl){ gvl.style.opacity=1; gvl.style.transform='translateY('+(H*(1-.82*e)).toFixed(1)+'px)'; } if(k>0) gv.style.filter='blur('+(7+15*k).toFixed(1)+'px) brightness('+(1-.6*k).toFixed(3)+')'; } gbf();
     var gt=g.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:gr,start:'top top',end:'+=420%',pin:true,scrub:.5,anticipatePin:1,invalidateOnRefresh:true}});
     gt.to(gvt,{t:1,duration:1.2,onUpdate:function(){ var d=gv.duration; if(d&&isFinite(d)){ gw=Math.min(d-.05,gvt.t*d); gg(); } }},0)
       .to(gc[0],{autoAlpha:0,y:-30,duration:.2},1.05)

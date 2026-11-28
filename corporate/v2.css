@@ -1170,3 +1170,10 @@ html:not(.gs) .gr{height:auto} html:not(.gs) .gr-strip,html:not(.gs) .gr-c2,html
 .gr-bg .b7{--h:160vh;--x:-2%;--y:30vh;--r:5deg} .gr-bg .b8{--h:140vh;--x:36%;--y:36vh;--r:-3deg}
 /* the blurred bushes are a middle layer over the greenhouse video, not a replacement for it */
 .gr-bg{background:none!important}
+/* at the roots a violet veil rises from the bottom: transparent above, deep violet at the foot of the screen */
+.gr-veil{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(26,6,58,0) 0%,rgba(42,14,92,.35) 30%,rgba(26,6,58,.8) 62%,#1A063A 100%)!important}
+.gr-strip{z-index:2} .gr-cap{z-index:3}
+/* the earth: a deep violet ground with a soft top edge, rising from below the screen during the descent */
+.gr-veil{inset:auto 0 auto 0!important;top:0!important;height:160svh!important;opacity:1;transform:translateY(100svh);
+  background:linear-gradient(180deg,rgba(26,6,58,0) 0%,rgba(42,14,92,.55) 9%,rgba(26,6,58,.92) 20%,#1A063A 32%,#1A063A 100%)!important}
