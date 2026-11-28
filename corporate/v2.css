@@ -1177,3 +1177,25 @@ html:not(.gs) .gr{height:auto} html:not(.gs) .gr-strip,html:not(.gs) .gr-c2,html
 /* the earth: a deep violet ground with a soft top edge, rising from below the screen during the descent */
 .gr-veil{inset:auto 0 auto 0!important;top:0!important;height:160svh!important;opacity:1;transform:translateY(100svh);
   background:linear-gradient(180deg,rgba(26,6,58,0) 0%,rgba(42,14,92,.55) 9%,rgba(26,6,58,.92) 20%,#1A063A 32%,#1A063A 100%)!important}
+/* a smoother earth: a long, even fade from clear to deep violet */
+.gr-veil{background:linear-gradient(180deg,rgba(26,6,58,0) 0%,rgba(26,6,58,.08) 8%,rgba(30,8,66,.2) 16%,rgba(34,10,74,.38) 24%,rgba(30,8,66,.58) 32%,rgba(26,6,58,.76) 40%,rgba(26,6,58,.9) 48%,#1A063A 58%,#1A063A 100%)!important}
+/* glowing roots: the violet copy is revealed from the stem down (--gl) and breathes; sparks drawn on a canvas over the plant */
+.gr-strip .gr-glow{opacity:0;mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(var(--gl,75%) - 3%),transparent var(--gl,75%));mask-image:linear-gradient(180deg,#000 0,#000 calc(var(--gl,75%) - 3%),transparent var(--gl,75%));
+  filter:drop-shadow(0 0 4px rgba(203,185,238,.9)) drop-shadow(0 0 14px rgba(126,82,204,.85)) drop-shadow(0 0 32px rgba(90,34,179,.6));animation:gr-breathe 3.2s ease-in-out infinite}
+@keyframes gr-breathe{0%,100%{filter:drop-shadow(0 0 4px rgba(203,185,238,.9)) drop-shadow(0 0 14px rgba(126,82,204,.85)) drop-shadow(0 0 32px rgba(90,34,179,.6))}
+  50%{filter:drop-shadow(0 0 6px rgba(230,221,246,1)) drop-shadow(0 0 22px rgba(166,136,224,.95)) drop-shadow(0 0 48px rgba(90,34,179,.75))}}
+.gr-strip .gr-spark{position:absolute;left:66%;top:0;height:100%;aspect-ratio:667/2000;transform:translateX(-50%);pointer-events:none}
+@media (max-width:760px){ .gr-strip .gr-spark{left:50%} }
+@media (prefers-reduced-motion:reduce){ .gr-strip .gr-glow{animation:none} }
+/* the client's violet-roots plant is the glow layer: drawn normally (not screened) and revealed from the stem down */
+.gr-strip .gr-glow{mix-blend-mode:normal}
+/* the violet comes in gradually: a full-screen veil whose opacity rises with the descent, eased all the way down */
+.gr-veil{inset:0!important;height:auto!important;transform:none!important;
+  background:linear-gradient(180deg,rgba(26,6,58,0) 0%,rgba(26,6,58,.04) 12%,rgba(28,7,62,.1) 22%,rgba(30,8,66,.19) 32%,rgba(30,8,66,.3) 42%,rgba(28,7,62,.43) 52%,rgba(26,6,58,.57) 62%,rgba(26,6,58,.71) 72%,rgba(26,6,58,.84) 82%,rgba(26,6,58,.94) 91%,#1A063A 100%)!important}
+/* the bushes behind sway gently, each at its own pace */
+.gr-bg img{transform-origin:50% 100%;animation:gr-sway var(--sw,7s) ease-in-out infinite alternate;will-change:rotate,translate,filter}
+.gr-bg .b1{--sw:6.5s} .gr-bg .b2{--sw:8s;animation-delay:-2s} .gr-bg .b3{--sw:7.2s;animation-delay:-4s} .gr-bg .b4{--sw:9s;animation-delay:-1s}
+.gr-bg .b5{--sw:7.8s;animation-delay:-3s} .gr-bg .b6{--sw:6.8s;animation-delay:-5s} .gr-bg .b7{--sw:8.6s;animation-delay:-2.5s} .gr-bg .b8{--sw:7.4s;animation-delay:-.5s}
+@keyframes gr-sway{0%{rotate:-1.6deg} 100%{rotate:1.6deg}}
+@media (prefers-reduced-motion:reduce){ .gr-bg img{animation:none} }
